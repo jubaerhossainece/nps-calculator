@@ -1,0 +1,42 @@
+<?php
+
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProjectLinkController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+*/
+
+Route::post('test', function (Request $r){
+   $r->validate([
+       'name' => 'required'
+   ]);
+});
+
+Route::group(['prefix' => 'v1'], function () {
+    /* ================================== auth API starts ==================================*/
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+//    route::post('verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
+//    route::post('reset-password-mail', [AuthController::class, 'resetPasswordMail'])->name('reset.password.mail');
+//    route::post('resend/verification-code', [AuthController::class, 'resendVerifyCode'])->name('code.resend');
+//    Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset.submit');
+    /* ================================== auth API ends ==================================*/
+
+    Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::post('user/logout', [AuthController::class, 'logout']);
+        Route::get('user/info', [AuthController::class, 'myInfo']);
+
+        Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
+
+        Route::post('links', [ProjectLinkController::class, 'store']);
+        Route::get('links/{code}', [ProjectLinkController::class, 'show']);
+    });
+});
+
+
