@@ -43,7 +43,7 @@ class AuthController extends Controller
 
         try {
 
-            if (!Auth::attempt($request->only(['email', 'password']))) {
+            if (!Auth::guard('api')->attempt($request->only(['email', 'password']))) {
                 throw \Illuminate\Validation\ValidationException::withMessages(['password' => 'Email & Password does not match.']);
             }
 

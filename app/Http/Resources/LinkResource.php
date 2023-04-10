@@ -16,6 +16,7 @@ class LinkResource extends JsonResource
     {
         return [
             'link' => config('custom.shareable_app_url') . $this->code,
+            'link_code' => $this->code,
             'response' => $this->response,
             'project' => new ProjectResource($this->whenLoaded('project'))
         ];

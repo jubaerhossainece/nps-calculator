@@ -4,17 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LinkRequest;
-use App\Http\Requests\Api\StoreProjectRequest;
 use App\Http\Resources\LinkResource;
-use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectLink;
+use App\Models\ProjectLinkFeedback;
 use App\Services\ProjectLinkService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
+use Illuminate\Validation\Rule;
 
 class ProjectLinkController extends Controller
 {
@@ -87,11 +83,27 @@ class ProjectLinkController extends Controller
         return successResponseJson(null, 'Link updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function submitFeedback(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'code' => ['required', 'string', 'exists:project_links,code'],
+            'name' => ['nullable', 'string'],
+            'email' => ['nullable', 'email'],
+            'rating' => ['required', 'string', Rule::in(ProjectLinkFeedback::RATING_VALUE)],
+            'comment' => ['nullable', 'string', 'max:5000']
+        ]);
+
+        $validated['data'] = [
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent()
+        ];
+
+        $link = ProjectLink::where('code', $request->code)->first();
+
+        $link->feedback()->updateOrCreate([
+            'project_link_id' => $link->id
+        ], $validated);
+
+        return successResponseJson(null, $link->response);
     }
 }

@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreProjectRequest;
+use App\Http\Resources\FeedbackResource;
 use App\Http\Resources\LinkResource;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Models\ProjectLinkFeedback;
 use App\Services\ProjectLinkService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Spatie\FlareClient\Http\Exceptions\NotFound;
-use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class ProjectController extends Controller
 {
@@ -20,7 +18,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $projects = auth('sanctum')->user()->projects()->get();
+        $projects = auth('sanctum')->user()->projects;
         return successResponseJson(['projects' => ProjectResource::collection($projects)]);
     }
 
@@ -57,7 +55,8 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $project = Project::where('id', $id)->first();
+        return successResponseJson(['project' => new ProjectResource($project)]);
     }
 
     /**
@@ -66,11 +65,12 @@ class ProjectController extends Controller
     public function update(StoreProjectRequest $request, string $id)
     {
         $project = auth('sanctum')->user()->projects()->find($id);
-        if ($project) {
-            $project->update($request->validated());
-        } else {
+
+        if (!$project) {
             return errorResponseJson('Project not found', 404);
         }
+
+        $project->update($request->validated());
         return successResponseJson(null, 'Project updated successfully');
     }
 
@@ -81,11 +81,26 @@ class ProjectController extends Controller
     {
         $project = Project::find($id);
 
-        if ($project) {
-            $project->delete();
-            return successResponseJson(null, 'Project deleted.');
+        if (!$project) {
+            return errorResponseJson('Project not found', 404);
         }
 
-        return errorResponseJson('Project not found', 404);
+        $project->delete();
+        return successResponseJson(null, 'Project deleted.');
     }
+
+    public function getFeedbacks(string $projectId)
+    {
+//       return ProjectLinkFeedback::type(1);
+        $project = Project::find($projectId);
+
+        if (!$project) {
+            return errorResponseJson('Project not found', 404);
+        }
+
+        $feedbacks = $project->feedbacks;
+
+        return successResponseJson(['feedbacks' => FeedbackResource::collection($feedbacks)]);
+    }
+
 }

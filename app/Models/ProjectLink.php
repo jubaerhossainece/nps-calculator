@@ -20,8 +20,14 @@ class ProjectLink extends Model
         $this->attributes['code'] = Str::random(10);
     }
 
-    public function project(){
+    public function project()
+    {
         return $this->belongsTo(Project::class);
+    }
+
+    public function feedback()
+    {
+        return $this->hasOne(ProjectLinkFeedback::class);
     }
 
 }

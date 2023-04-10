@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\ProjectLinkController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -12,10 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('test', function (Request $r){
-   $r->validate([
-       'name' => 'required'
-   ]);
+Route::post('test', function (Request $r) {
+    $r->validate([
+        'name' => 'required'
+    ]);
 });
 
 Route::group(['prefix' => 'v1'], function () {
@@ -33,12 +34,16 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('user/info', [AuthController::class, 'myInfo']);
 
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
+        Route::get('projects/{projectId}/feedbacks', [ProjectController::class, 'getFeedbacks']);
 
         Route::get('links', [ProjectLinkController::class, 'index']);
         Route::post('links', [ProjectLinkController::class, 'store']);
         Route::post('links/{code}', [ProjectLinkController::class, 'update']);
         Route::get('links/{code}', [ProjectLinkController::class, 'show']);
+
     });
+
+    Route::post('feedback', [ProjectLinkController::class, 'submitFeedback']);
 });
 
 
