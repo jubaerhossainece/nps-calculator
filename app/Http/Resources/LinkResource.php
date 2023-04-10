@@ -15,7 +15,7 @@ class LinkResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'link' => config('nps.frontend_app_url') . $this->code,
+            'link' => config('custom.shareable_app_url') . $this->code,
             'response' => $this->response,
             'project' => new ProjectResource($this->whenLoaded('project'))
         ];

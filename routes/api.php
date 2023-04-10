@@ -20,8 +20,8 @@ Route::post('test', function (Request $r){
 
 Route::group(['prefix' => 'v1'], function () {
     /* ================================== auth API starts ==================================*/
-    Route::post('login', [AuthController::class, 'login'])->name('login');
-    Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
 //    route::post('verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
 //    route::post('reset-password-mail', [AuthController::class, 'resetPasswordMail'])->name('reset.password.mail');
 //    route::post('resend/verification-code', [AuthController::class, 'resendVerifyCode'])->name('code.resend');
@@ -34,7 +34,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
 
+        Route::get('links', [ProjectLinkController::class, 'index']);
         Route::post('links', [ProjectLinkController::class, 'store']);
+        Route::post('links/{code}', [ProjectLinkController::class, 'update']);
         Route::get('links/{code}', [ProjectLinkController::class, 'show']);
     });
 });

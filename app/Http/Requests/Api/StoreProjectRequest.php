@@ -45,6 +45,7 @@ class StoreProjectRequest extends FormRequest
             'wt_visibility' => 'nullable|boolean',
             'name_field_visibility' => 'nullable|boolean',
             'email_field_visibility' => 'nullable|boolean',
+            'comment_field_visibility' => 'nullable|boolean',
             'welcome_text' => 'nullable|max:255',
             'question' => 'nullable|max:255',
             'comment' => 'nullable|max:255',

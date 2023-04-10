@@ -9,6 +9,7 @@ use App\Http\Resources\LinkResource;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectLink;
+use App\Services\ProjectLinkService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,12 +18,28 @@ use Symfony\Component\Translation\Exception\NotFoundResourceException;
 
 class ProjectLinkController extends Controller
 {
+    protected $projectLinkService;
+
+    public function __construct(ProjectLinkService $linkService)
+    {
+        $this->projectLinkService = $linkService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-//        return
+        $project = Project::where([
+            'user_id' => auth('sanctum')->user()->id,
+            'id' => request('project_id')
+        ])->first();
+
+        $links = $project ? $project->links : [];
+
+        return successResponseJson([
+            'links' => LinkResource::collection($links)
+        ]);
     }
 
     /**
@@ -30,13 +47,10 @@ class ProjectLinkController extends Controller
      */
     public function store(LinkRequest $request)
     {
-        $validated = $request->validated();
-        $validated['code'] = Str::random(10);
-
-        $link = ProjectLink::create($validated);
+        $data = $this->projectLinkService->create($request->validated());
 
         return successResponseJson([
-            'project' => new LinkResource($link)
+            'project' => new LinkResource($data)
         ], 'Link created successfully');
     }
 
@@ -59,9 +73,18 @@ class ProjectLinkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreProjectRequest $request, string $id)
+    public function update(Request $request, string $code)
     {
-        //
+        $data = ProjectLink::where('code', $code)
+            ->whereHas('project', function ($query) {
+                return $query->where('user_id', auth('sanctum')->user()->id);
+            })
+            ->update([
+                'name' => $request->name,
+                'response' => $request->response
+            ]);
+
+        return successResponseJson(null, 'Link updated successfully');
     }
 
     /**

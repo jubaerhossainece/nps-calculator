@@ -14,6 +14,7 @@ class Project extends Model
         'wt_visibility',
         'name_field_visibility',
         'email_field_visibility',
+        'comment_field_visibility',
         'welcome_text',
         'question',
         'comment',
@@ -22,5 +23,10 @@ class Project extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function links()
+    {
+        return $this->hasMany(ProjectLink::class);
     }
 }

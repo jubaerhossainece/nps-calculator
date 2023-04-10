@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreProjectRequest;
+use App\Http\Resources\LinkResource;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Services\ProjectLinkService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Spatie\FlareClient\Http\Exceptions\NotFound;
@@ -37,8 +39,16 @@ class ProjectController extends Controller
 
         $project = Project::create($validated);
 
+        $link_data = [
+            'project_id' => $project->id,
+            'name' => $project->name,
+            'response' => 'We really appreciate your feedback'
+        ];
+        $link_data = (new ProjectLinkService())->create($link_data);
+
         return successResponseJson([
-            'project' => new ProjectResource($project)
+            'project' => new ProjectResource($project),
+            'link' => new LinkResource($link_data),
         ], 'Project created successfully');
     }
 
@@ -59,7 +69,7 @@ class ProjectController extends Controller
         if ($project) {
             $project->update($request->validated());
         } else {
-            return errorResponseJson('Project not found',404);
+            return errorResponseJson('Project not found', 404);
         }
         return successResponseJson(null, 'Project updated successfully');
     }

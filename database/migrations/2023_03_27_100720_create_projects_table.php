@@ -19,6 +19,7 @@ return new class extends Migration
             $table->boolean('wt_visibility')->default(true);
             $table->boolean('name_field_visibility')->default(true);
             $table->boolean('email_field_visibility')->default(true);
+            $table->boolean('comment_field_visibility')->default(true);
             $table->text('welcome_text')->nullable();
             $table->text('question')->nullable();
             $table->text('comment')->nullable();
