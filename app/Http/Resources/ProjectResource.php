@@ -22,6 +22,7 @@ class ProjectResource extends JsonResource
             'wt_visibility' => boolval($this->wt_visibility),
             'name_field_visibility' => boolval($this->name_field_visibility),
             'email_field_visibility' => boolval($this->email_field_visibility),
+            'comment_field_visibility' => boolval($this->comment_field_visibility),
             'welcome_text' => $this->welcome_text,
             'question' => $this->question,
             'comment' => $this->comment,

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\ProjectLinkFeedback;
+use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class FeedbackResource extends JsonResource
@@ -21,7 +22,7 @@ class FeedbackResource extends JsonResource
             'rating' => $this->rating,
             'type' => ProjectLinkFeedback::type($this->rating),
             'comment' => $this->comment,
-            'created_at' => $this->created_at
+            'created_at' => Carbon::parse($this->created_at)->diffForHumans()
         ];
     }
 }

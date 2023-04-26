@@ -89,18 +89,40 @@ class ProjectController extends Controller
         return successResponseJson(null, 'Project deleted.');
     }
 
-    public function getFeedbacks(string $projectId)
+    public function getFilterData(string $projectId)
     {
-//       return ProjectLinkFeedback::type(1);
-        $project = Project::find($projectId);
+        $project = Project::findOrFail($projectId);
 
-        if (!$project) {
-            return errorResponseJson('Project not found', 404);
-        }
+        return response()->json(Project::paginate(1));
 
         $feedbacks = $project->feedbacks;
 
-        return successResponseJson(['feedbacks' => FeedbackResource::collection($feedbacks)]);
+        $nps_score = $this->getScoreByFeedback($feedbacks);
+
+
+        return successResponseJson([
+            'score' => $nps_score,
+            'feedbacks' => FeedbackResource::collection($feedbacks),
+        ]);
+    }
+
+    public function getScoreByFeedback($feedbacks)
+    {
+        $nps_score = [];
+
+        $detractor_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::DETRACTOR)->count();
+        $passive_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::PASSIVE)->count();
+        $promoter_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::PROMOTER)->count();
+        $total_response = $feedbacks->count();
+
+        $nps_score['DETRACTOR'] = $detractor_count / $total_response * 100;
+        $nps_score['PASSIVE'] = $passive_count / $total_response * 100;
+        $nps_score['PROMOTER'] = $promoter_count / $total_response * 100;
+
+        // nps_score = (number of promoters - number of detractors) / number of responses * 100
+        $nps_score['score'] = ($nps_score['PROMOTER'] - $nps_score['DETRACTOR']) / $feedbacks->count() * 100;
+
+        return $nps_score;
     }
 
 }

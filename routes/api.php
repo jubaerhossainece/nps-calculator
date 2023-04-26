@@ -34,15 +34,15 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('user/info', [AuthController::class, 'myInfo']);
 
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
-        Route::get('projects/{projectId}/feedbacks', [ProjectController::class, 'getFeedbacks']);
+        Route::get('projects/{projectId}/filter', [ProjectController::class, 'getFilterData']);
 
         Route::get('links', [ProjectLinkController::class, 'index']);
         Route::post('links', [ProjectLinkController::class, 'store']);
         Route::post('links/{code}', [ProjectLinkController::class, 'update']);
-        Route::get('links/{code}', [ProjectLinkController::class, 'show']);
 
     });
 
+    Route::get('links/{code}', [ProjectLinkController::class, 'show']);
     Route::post('feedback', [ProjectLinkController::class, 'submitFeedback']);
 });
 

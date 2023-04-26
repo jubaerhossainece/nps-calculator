@@ -93,10 +93,10 @@ class ProjectLinkController extends Controller
             'comment' => ['nullable', 'string', 'max:5000']
         ]);
 
-        $validated['data'] = [
+        $validated['data'] = json_encode([
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent()
-        ];
+        ]);
 
         $link = ProjectLink::where('code', $request->code)->first();
 

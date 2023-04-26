@@ -6,6 +6,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -40,6 +41,12 @@ class Handler extends ExceptionHandler
         $this->renderable(function (ValidationException $e, Request $request) {
             if ($request->is('api/*')) {
                 return errorResponseJson($e->getMessage(), 422, $e->errors());
+            }
+        });
+
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return errorResponseJson('No data found', 404);
             }
         });
     }
