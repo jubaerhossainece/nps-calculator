@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ProjectController;
 use App\Http\Controllers\Api\ProjectLinkController;
 use Illuminate\Http\Request;
@@ -31,7 +32,10 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('user/logout', [AuthController::class, 'logout']);
-        Route::get('user/info', [AuthController::class, 'myInfo']);
+        Route::get('user/info', [ProfileController::class, 'myInfo']);
+
+        //user profile update
+        Route::post('/profile', [ProfileController::class, 'updateProfile']);
 
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
         Route::get('projects/{projectId}/filter', [ProjectController::class, 'getFilterData']);

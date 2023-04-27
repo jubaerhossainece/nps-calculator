@@ -18,6 +18,14 @@ Route::get(
     }
 );
 
+Route::get('/sym-link', function(){
+    Artisan::call('storage:link');
+    return response([
+        'status' => true,
+        'message' => 'Symbolic link created.'
+    ]);
+});
+
 require __DIR__ . '/auth.php';
 
 Route::group(['middleware' => 'auth'], function () {

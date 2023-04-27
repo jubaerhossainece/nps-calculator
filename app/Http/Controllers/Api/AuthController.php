@@ -65,12 +65,6 @@ class AuthController extends Controller
         return successResponseJson(null, 'Logout successfully');
     }
 
-    public function myInfo()
-    {
-        $user = auth('sanctum')->user();
-        return successResponseJson(['user' => new UserResource($user)]);
-    }
-
     public function verifyEmail(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -99,7 +93,7 @@ class AuthController extends Controller
                 return response()->json(['success' => false, 'errors' => $object, 'resend_code_link' => route('api.code.resend')], 422);
             }
             if ((int)$request->verification_code === $user->two_factor_code) {
-//            $user->markAsVerified();
+                //$user->markAsVerified();
                 $user->timestamps = false;
                 $user->two_factor_code = null;
                 $user->two_factor_created_at = null;
