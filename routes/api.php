@@ -25,9 +25,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
 //    route::post('verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
-//    route::post('reset-password-mail', [AuthController::class, 'resetPasswordMail'])->name('reset.password.mail');
+   route::post('reset-password-mail', [AuthController::class, 'resetPasswordMail'])->name('reset.password.mail');
 //    route::post('resend/verification-code', [AuthController::class, 'resendVerifyCode'])->name('code.resend');
-//    Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset.submit');
+   Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset.submit');
     /* ================================== auth API ends ==================================*/
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
