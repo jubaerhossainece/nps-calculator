@@ -171,7 +171,7 @@ class AuthController extends Controller
     public function resetPasswordMail(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|string|exists:users',
+            'email' => 'required|exists:users',
         ]);
         
         if ($validator->fails()) {
@@ -187,11 +187,10 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'message' => 'User not found !']);
         }
 
-        DB::table('password_reset_tokens')->insert([
-            'email' => $request->email,
-            'token' => Str::random(60),
-            'created_at' => Carbon::now()
-        ]);
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $request->email],
+            ['token' => Str::random(60), 'created_at' => Carbon::now()]
+        );
 
         $tokenData = DB::table('password_reset_tokens')->where('email', $request->email)->first();
 
