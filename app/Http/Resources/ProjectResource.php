@@ -18,7 +18,7 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'logo' => Storage::disk('public')->url('storage/'.$this->logo),
+            'logo' => $this->logo ? Storage::disk('public')->url($this->logo) : null,
             'wt_visibility' => boolval($this->wt_visibility),
             'name_field_visibility' => boolval($this->name_field_visibility),
             'email_field_visibility' => boolval($this->email_field_visibility),
