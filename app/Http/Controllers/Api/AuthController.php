@@ -224,14 +224,14 @@ class AuthController extends Controller
         }
 
         $password = $request->password;
-// Validate the token
+        // Validate the token
         $tokenData = DB::table('password_resets')->where('token', $request->token)->first();
-// Redirect the user back to the password reset request form if the token is invalid
+        // Redirect the user back to the password reset request form if the token is invalid
         if (!$tokenData) return response()->json(['success' => false, 'error' => 'Invalid link, Please verify!',]);
         $user = User::where('email', $tokenData->email)->first();
-// Redirect the user back if the email is invalid
+        // Redirect the user back if the email is invalid
         if (!$user) return response()->json(['success' => false, 'error' => 'User not found',]);
-//Hash and update the new password
+        //Hash and update the new password
         $user->password = Hash::make($password);
         $user->update(); //or $user->save();
         $user->tokens()->delete();

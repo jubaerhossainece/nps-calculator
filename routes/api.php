@@ -32,10 +32,12 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::post('user/logout', [AuthController::class, 'logout']);
-        Route::get('user/info', [ProfileController::class, 'myInfo']);
 
-        //user profile update
+        /* ==========user profile api=========== */
+        Route::get('user/info', [ProfileController::class, 'myInfo']);
         Route::post('/profile', [ProfileController::class, 'updateProfile']);
+        Route::post('/change-password', [ProfileController::class, 'changePassword']);
+        /* =========end user profile api========== */
 
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
         Route::get('projects/{projectId}/filter', [ProjectController::class, 'getFilterData']);
