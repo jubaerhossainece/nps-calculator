@@ -1,8 +1,9 @@
 <?php
 
+namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-
 
 
 Route::get(
@@ -27,6 +28,9 @@ Route::get('/sym-link', function(){
 });
 
 require __DIR__ . '/auth.php';
+
+// Route::get('login/{provider}', [Api\SocialAuthController::class, 'redirectToProvider']);
+// Route::get('login/{provider}/callback', [Api\SocialAuthController::class, 'handleProviderCallback']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');

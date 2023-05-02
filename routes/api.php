@@ -1,5 +1,7 @@
 <?php
 
+namespace App\Http\Controllers\Api;
+
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\ProjectController;
@@ -21,6 +23,10 @@ Route::post('test', function (Request $r) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
+    // login with socialite
+    Route::post('login/{provider}', [SocialAuthController::class, 'redirectToProvider']);
+    Route::get('login/{provider}/callback', [SocialAuthController::class, 'handleProviderCallback']);
+
     /* ================================== auth API starts ==================================*/
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
