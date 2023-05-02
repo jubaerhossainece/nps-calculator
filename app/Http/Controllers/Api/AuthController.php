@@ -170,6 +170,7 @@ class AuthController extends Controller
 
     public function resetPasswordMail(Request $request): JsonResponse
     {
+
         $validator = Validator::make($request->all(), [
             'email' => 'required|exists:users',
         ]);
@@ -204,8 +205,10 @@ class AuthController extends Controller
     public function sendResetEmail($email, $token): bool
     {
         $user = User::where('email', $email)->select('name', 'email')->first();
+
+        $url = config('custom.frontend_app_url').'reset-code/'.$token;
         try {
-            $user->notify(new ResetPasswordNotification($token));
+            $user->notify(new ResetPasswordNotification($url));
             return true;
         } catch (Exception $e) {
             return false;

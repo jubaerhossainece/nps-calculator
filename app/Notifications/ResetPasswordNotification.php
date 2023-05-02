@@ -11,16 +11,16 @@ class ResetPasswordNotification extends Notification
 {
     use Queueable;
 
-    protected $token;
+    protected $url;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct($url)
     {
-        $this->token = $token;
+        $this->url = $url;
     }
 
     /**
@@ -45,7 +45,7 @@ class ResetPasswordNotification extends Notification
         return (new MailMessage)
                     ->subject('Password reset')
                     ->line("You requested to reset the password for your nps calculator account. Click the button below to proceed.")
-                    ->action('Reset Password', url('/reset-code/'.$this->token))
+                    ->action('Reset Password', $this->url)
                     ->line('Thank you for using our application!');
     }
 
