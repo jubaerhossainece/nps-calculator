@@ -76,7 +76,11 @@ class SocialAuthController extends Controller
         ])->first();
 
         if($user){
-            return successResponseJson(new UserResource($user), 'You are logged in.');
+            return successResponseJson([
+            'access_token' => $user->createToken('authToken')->plainTextToken,
+            'token_type' => 'Bearer',
+            'user' => new UserResource($user)], 
+            'You are logged in.');
         }
 
         $result = DB::table('users')->insert([
@@ -92,7 +96,11 @@ class SocialAuthController extends Controller
         ])->first();
 
         if($result){
-            return successResponseJson(new UserResource($user), 'You are logged in.');
+            return successResponseJson([
+                'access_token' => $user->createToken('authToken')->plainTextToken,
+                'token_type' => 'Bearer',
+                'user' => new UserResource($user)
+            ], 'You are logged in.');
         }else{
             return errorResponseJson('Something went wrong',422);
         }
