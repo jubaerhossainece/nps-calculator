@@ -32,6 +32,11 @@ class Project extends Model
 
     public function feedbacks()
     {
-        return $this->hasManyThrough(ProjectLinkFeedback::class,ProjectLink::class);
+        return $this->hasMany(ProjectLinkFeedback::class);
     }
+
+//    public function feedbacks()
+//    {
+//        return $this->hasManyThrough(ProjectLinkFeedback::class,ProjectLink::class);
+//    }
 }

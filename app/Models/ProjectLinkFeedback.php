@@ -14,6 +14,7 @@ class ProjectLinkFeedback extends Model
 
     protected $fillable = [
         'project_link_id',
+        'project_id',
         'name',
         'email',
         'rating',

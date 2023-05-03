@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreProjectRequest;
 use App\Http\Resources\FeedbackResource;
 use App\Http\Resources\LinkResource;
+use App\Http\Resources\ProjectPaginateResouce;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectLinkFeedback;
@@ -89,25 +90,60 @@ class ProjectController extends Controller
         return successResponseJson(null, 'Project deleted.');
     }
 
-    public function getFilterData(string $projectId)
+    public function getFeedbacks(string $projectId)
     {
-        $project = Project::findOrFail($projectId);
+        $project = Project::find($projectId);
+        if (!$project) {
+            return errorResponseJson('No project found!', 404);
+        }
+        $feedbacks = ProjectLinkFeedback::where('project_id', $projectId);
 
-        return response()->json(Project::paginate(1));
+        //filter by response
+        if (request('response') === 'detractor') {
+            $feedbacks = $feedbacks->whereIn('rating', ProjectLinkFeedback::DETRACTOR);
+        } elseif (request('response') === 'passive') {
+            $feedbacks = $feedbacks->whereIn('rating', ProjectLinkFeedback::PASSIVE);
+        } elseif (request('response') === 'promoter') {
+            $feedbacks = $feedbacks->whereIn('rating', ProjectLinkFeedback::PROMOTER);
+        }
 
-        $feedbacks = $project->feedbacks;
+        //filter by comment
+        if (request('comment') === 'true') {
+            $feedbacks = $feedbacks->whereNotNull('comment');
+        } elseif (request('comment') === 'false') {
+            $feedbacks = $feedbacks->whereNull('comment');
+        }
 
-        $nps_score = $this->getScoreByFeedback($feedbacks);
+        //filter by date
+        $from = request('from');
+        $to = request('to') ?? now();
+        if ($from) {
+            $feedbacks = $feedbacks->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
+        }
 
+        //show graph
+        $graph['categories'] = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+
+        foreach ($graph['categories'] as $key => $month) {
+            $graph['data'][] = ProjectLinkFeedback::where('project_id', $projectId)->whereMonth('created_at', $key + 1)->count();
+        }
+
+        $feedbacks = $feedbacks->paginate(10);
 
         return successResponseJson([
-            'score' => $nps_score,
-            'feedbacks' => FeedbackResource::collection($feedbacks),
+            'graph' => $graph,
+            'feedbacks' => new ProjectPaginateResouce($feedbacks)
         ]);
     }
 
-    public function getScoreByFeedback($feedbacks)
+    public function getProjectScore($projectId)
     {
+        $project = Project::find($projectId);
+        if (!$project) {
+            return errorResponseJson('No project found!', 404);
+        }
+
+        $feedbacks = ProjectLinkFeedback::where('project_id', $projectId)->get();
         $nps_score = [];
 
         $detractor_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::DETRACTOR)->count();
@@ -120,9 +156,9 @@ class ProjectController extends Controller
         $nps_score['PROMOTER'] = $promoter_count / $total_response * 100;
 
         // nps_score = (number of promoters - number of detractors) / number of responses * 100
-        $nps_score['score'] = ($nps_score['PROMOTER'] - $nps_score['DETRACTOR']) / $feedbacks->count() * 100;
+        $nps_score['score'] = ($promoter_count - $detractor_count) / $feedbacks->count() * 100;
 
-        return $nps_score;
+        return successResponseJson(['score' => $nps_score]);
     }
 
 }
