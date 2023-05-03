@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class SocialAuthController extends Controller
 {
+    
     public function redirectToProvider(Request $request)
     {
         $request->validate([
@@ -19,16 +21,24 @@ class SocialAuthController extends Controller
         
         $token = $request->token;
         $provider = $request->provider; 
-
-        $providerUrl = User::$provider;
         
-        return $provider_user = Http::withHeaders([
+        $value = User::class.'::'.($provider);
+        $providerUrl = constant($value);
+        
+        $response = Http::withHeaders([
             'Authorization' => 'Bearer '.$token
         ])->get($providerUrl);
-
-
-
         
+
+        if(isset(json_decode($response)->error)){
+            return response()->json([
+                'mes' => 'Invalid token sent'
+            ]);
+        }
+
+        $response = Request::create();
+
+        return $this->providerLogin($response, $provider);
     }
 
     // /**
@@ -58,17 +68,19 @@ class SocialAuthController extends Controller
     // }
 
 
-    public function facebookLogin(Request $request)
+    public function providerLogin(Request $request, $provider)
     {
+        return $request->all();
         $request->validate([
             'name' => 'required|string|min:3',
-            'email' => 'email|string',
-            'facebook_id' => 'required|string',
+            'provider_id' => 'required|string',
             'image' => 'required|image'
         ]);
 
+        return $request->all();
+
         $user = User::where([
-            'facebook_id' => $request->facebook_id,
+            'provider_id' => $request->facebook_id,
         ]);
 
         if($user){
