@@ -16,6 +16,7 @@ class ProfileController extends Controller
     public function myInfo()
     {
         $user = auth('sanctum')->user();
+        $user->notify();
         
         return successResponseJson(['user' => new UserResource($user)]);
     }
@@ -44,7 +45,7 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return successResponseJson($user, 'Profile updated successfully!');
+        return successResponseJson(new UserResource($user), 'Profile updated successfully!');
     }
 
 
@@ -64,7 +65,7 @@ class ProfileController extends Controller
             $user->password = $request->new_password;
             $user->save();
 
-            return successResponseJson($user, "Password changed successfully!");
+            return successResponseJson(new UserResource($user), "Password changed successfully!");
         }else{
             return errorResponseJson('Current password does not match!', 422);
         }
