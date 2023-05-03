@@ -32,9 +32,7 @@ class SocialAuthController extends Controller
         
 
         if(isset(json_decode($response)->error)){
-            return response()->json([
-                'mes' => 'Invalid token sent'
-            ]);
+            return errorResponseJson('An invalid token was sent',422);
         }
 
         return $this->providerLogin(json_decode($response), $provider);
