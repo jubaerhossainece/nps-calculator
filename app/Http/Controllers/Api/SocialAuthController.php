@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 class SocialAuthController extends Controller
@@ -36,9 +37,7 @@ class SocialAuthController extends Controller
             ]);
         }
 
-        $response = Request::create();
-
-        return $this->providerLogin($response, $provider);
+        return $this->providerLogin(json_decode($response), $provider);
     }
 
     // /**
@@ -68,29 +67,34 @@ class SocialAuthController extends Controller
     // }
 
 
-    public function providerLogin(Request $request, $provider)
+    public function providerLogin($response, $provider)
     {
-        return $request->all();
-        $request->validate([
-            'name' => 'required|string|min:3',
-            'provider_id' => 'required|string',
-            'image' => 'required|image'
-        ]);
-
-        return $request->all();
-
+        // return $response->name;
+        $provider_id = $response->sub;
         $user = User::where([
-            'provider_id' => $request->facebook_id,
-        ]);
+            'provider_id' => $provider_id,
+        ])->first();
 
         if($user){
             return successResponseJson(new UserResource($user), 'You are logged in.');
         }
 
-        DB::table('users')->insert([
-            'facebook_id' => $request->facebook_id,
-            'name' => $request->name,
-            'image' => $request->image
+        $result = DB::table('users')->insert([
+            'provider_id' => $provider_id,
+            'name' => $response->name,
+            'email' => $response->email,
+            'image' => $response->picture,
+            'password' => Hash::make($provider_id)
         ]);
+
+        $user = User::where([
+            'provider_id' => $provider_id,
+        ])->first();
+
+        if($result){
+            return successResponseJson(new UserResource($user), 'You are logged in.');
+        }else{
+            return errorResponseJson('Something went wrong',422);
+        }
     }
 }
