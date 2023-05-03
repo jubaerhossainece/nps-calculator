@@ -85,8 +85,14 @@ class ProjectLinkController extends Controller
 
     public function submitFeedback(Request $request)
     {
+        $link = ProjectLink::where('code', $request->code)->first();
+
+        if (!$link) {
+            return errorResponseJson('No data found!', 404);
+        }
+
         $validated = $request->validate([
-            'code' => ['required', 'string', 'exists:project_links,code'],
+            'code' => ['required', 'string'],
             'name' => ['nullable', 'string'],
             'email' => ['nullable', 'email'],
             'rating' => ['required', 'string', Rule::in(ProjectLinkFeedback::RATING_VALUE)],
@@ -98,12 +104,11 @@ class ProjectLinkController extends Controller
             'user_agent' => $request->userAgent()
         ]);
 
-        $link = ProjectLink::where('code', $request->code)->first();
-
         $link->feedback()->updateOrCreate([
-            'project_link_id' => $link->id
+            'project_link_id' => $link->id,
+            'project_id' => $link->project->id
         ], $validated);
 
-        return successResponseJson(null, $link->response);
+        return successResponseJson(['message' => $link->response], 'Feedback submitted successfully.');
     }
 }

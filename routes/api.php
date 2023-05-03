@@ -40,7 +40,8 @@ Route::group(['prefix' => 'v1'], function () {
         /* =========end user profile api========== */
 
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
-        Route::get('projects/{projectId}/filter', [ProjectController::class, 'getFilterData']);
+        Route::get('projects/{projectId}/feedbacks', [ProjectController::class, 'getFeedbacks']);
+        Route::get('projects/{projectId}/score', [ProjectController::class, 'getProjectScore']);
 
         Route::get('links', [ProjectLinkController::class, 'index']);
         Route::post('links', [ProjectLinkController::class, 'store']);

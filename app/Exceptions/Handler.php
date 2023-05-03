@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
@@ -44,7 +45,7 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+        $this->renderable(function (ModelNotFoundException $e, Request $request) {
             if ($request->is('api/*')) {
                 return errorResponseJson('No data found', 404);
             }
