@@ -132,7 +132,6 @@ class ProjectController extends Controller
 
         return successResponseJson([
             'graph' => $graph,
-            'score' => $this->getProjectScore($projectId),
             'feedbacks' => new ProjectPaginateResouce($feedbacks)
         ]);
     }
