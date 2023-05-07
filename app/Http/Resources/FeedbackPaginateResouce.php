@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProjectPaginateResouce extends JsonResource
+class FeedbackPaginateResouce extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,7 +15,7 @@ class ProjectPaginateResouce extends JsonResource
     public function toArray($request)
     {
         return [
-            'feedbacks' => ProjectResource::collection($this->items()),
+            'feedbacks' => FeedbackResource::collection($this->items()),
             'meta' => [
                 'current_page' => $this->currentPage(),
                 'total_items' => $this->total(),

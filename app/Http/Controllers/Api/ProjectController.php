@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreProjectRequest;
 use App\Http\Resources\FeedbackResource;
 use App\Http\Resources\LinkResource;
-use App\Http\Resources\ProjectPaginateResouce;
+use App\Http\Resources\FeedbackPaginateResouce;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectLinkFeedback;
@@ -132,7 +132,7 @@ class ProjectController extends Controller
 
         return successResponseJson([
             'graph' => $graph,
-            'feedbacks' => new ProjectPaginateResouce($feedbacks)
+            'feedbacks' => new FeedbackPaginateResouce($feedbacks)
         ]);
     }
 
