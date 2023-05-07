@@ -12,6 +12,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     const google = "https://www.googleapis.com/oauth2/v3/userinfo";
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +22,7 @@ class User extends Authenticatable
         'name',
         'image',
         'email',
+        'provider_id',
         'password',
         'provider_id'
     ];
