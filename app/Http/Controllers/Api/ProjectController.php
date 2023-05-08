@@ -73,7 +73,11 @@ class ProjectController extends Controller
         }
 
         $project->update($request->validated());
-        return successResponseJson($project, 'Project updated successfully');
+
+        return successResponseJson([
+            'project' => new ProjectResource($project),
+            'link' => new LinkResource($project->link),
+        ], 'Project updated successfully');
     }
 
     /**

@@ -31,10 +31,10 @@ class ProjectLinkController extends Controller
             'id' => request('project_id')
         ])->first();
 
-        $links = $project ? $project->links : [];
+        $link = $project ? $project->link : [];
 
         return successResponseJson([
-            'links' => LinkResource::collection($links)
+            'link' => new LinkResource($link)
         ]);
     }
 
