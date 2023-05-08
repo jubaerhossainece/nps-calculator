@@ -73,7 +73,7 @@ class ProjectController extends Controller
         }
 
         $project->update($request->validated());
-        return successResponseJson(null, 'Project updated successfully');
+        return successResponseJson($project, 'Project updated successfully');
     }
 
     /**
