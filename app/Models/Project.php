@@ -25,9 +25,9 @@ class Project extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function links()
+    public function link()
     {
-        return $this->hasMany(ProjectLink::class);
+        return $this->hasOne(ProjectLink::class);
     }
 
     public function feedbacks()
