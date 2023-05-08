@@ -32,7 +32,7 @@ class ProjectController extends Controller
         $validated = $request->validated();
         if ($request->hasFile('logo')) {
             $image = $request->file('logo');
-            $image_name = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
+            $image_name = $image->hashName();
             $path = $image->storeAs('upload/images/project-logo', $image_name, 'public');
             $validated['logo'] = $path;
         }
@@ -93,11 +93,13 @@ class ProjectController extends Controller
 
     public function getFeedbacks(string $projectId)
     {
-        $project = Project::find($projectId);
+        $project = Project::where('id', $projectId)->where('user_id', auth()->user()->id)->first();
         if (!$project) {
             return errorResponseJson('No project found!', 404);
         }
+
         $feedbacks = ProjectLinkFeedback::where('project_id', $projectId);
+
 
         //filter by response
         if (request('response') === 'detractor') {
@@ -122,11 +124,24 @@ class ProjectController extends Controller
             $feedbacks = $feedbacks->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
         }
 
+        if (\request('users')) {
+            $users = explode(',', \request('users'));
+
+            if (gettype($users) === 'array' && count($users) > 0) {
+                $feedbacks->whereIn('id', $users);
+            }
+        }
+
+
+//        $f = $d->selectRaw('MONTH(created_at) as month')->get();
+
         //show graph
         $graph['categories'] = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
 
+        //TODO: optimize query
         foreach ($graph['categories'] as $key => $month) {
-            $graph['data'][] = ProjectLinkFeedback::where('project_id', $projectId)->whereMonth('created_at', $key + 1)->count();
+            $d = clone $feedbacks;
+            $graph['data'][] = $d->whereMonth('created_at', $key + 1)->count();
         }
 
         $feedbacks = $feedbacks->paginate(10);
@@ -139,12 +154,26 @@ class ProjectController extends Controller
 
     public function getProjectScore($projectId)
     {
-        $project = Project::find($projectId);
+        $project = Project::where('id', $projectId)
+            ->where('user_id', auth()->user()->id)
+            ->first();
+
         if (!$project) {
             return errorResponseJson('No project found!', 404);
         }
 
         $feedbacks = ProjectLinkFeedback::where('project_id', $projectId)->get();
+
+        //TODO: isEmpty method can be removed
+        if ($feedbacks->isEmpty()) {
+            return successResponseJson(['score' => [
+                'DETRACTOR' => 0,
+                'PASSIVE' => 0,
+                'PROMOTER' => 0,
+                'score' => 0,
+            ]]);
+        }
+
         $nps_score = [];
 
         $detractor_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::DETRACTOR)->count();
@@ -160,6 +189,18 @@ class ProjectController extends Controller
         $nps_score['score'] = ($promoter_count - $detractor_count) / $feedbacks->count() * 100;
 
         return successResponseJson(['score' => $nps_score]);
+    }
+
+    public function getProjectUsers($projectId)
+    {
+        $project = Project::where('id', $projectId)->where('user_id', auth()->user()->id)->first();
+        if (!$project) {
+            return errorResponseJson('No project found!', 404);
+        }
+
+        $users = ProjectLinkFeedback::where('project_id', $projectId)->get(['id', 'name']);
+
+        return successResponseJson(['users' => $users]);
     }
 
 }
