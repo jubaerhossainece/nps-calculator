@@ -75,14 +75,20 @@ class ProjectLinkController extends Controller
      */
     public function update(Request $request, string $code)
     {
-        $data = ProjectLink::where('code', $code)
+        $request->validate([
+            'name' => ['required', 'string'],
+            'response' => ['required', 'string', 'max:2000']
+        ]);
+
+        $link = ProjectLink::where('code', $code)
             ->whereHas('project', function ($query) {
                 return $query->where('user_id', auth('sanctum')->user()->id);
-            })
-            ->update([
-                'name' => $request->name,
-                'response' => $request->response
-            ]);
+            })->first();
+
+        $link->update([
+            'name' => $request->name,
+            'response' => $request->response
+        ]);
 
         return successResponseJson(null, 'Link updated successfully');
     }
