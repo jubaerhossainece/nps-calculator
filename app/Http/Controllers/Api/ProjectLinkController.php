@@ -31,6 +31,10 @@ class ProjectLinkController extends Controller
             'id' => request('project_id')
         ])->first();
 
+        if (!$project) {
+            return errorResponseJson('No project found!', 404);
+        }
+
         $link = $project ? $project->link : [];
 
         return successResponseJson([
@@ -91,23 +95,28 @@ class ProjectLinkController extends Controller
             return errorResponseJson('No data found!', 404);
         }
 
+        $request->merge([
+            'project_link_id' => $link->id,
+            'project_id' => $link->project->id
+        ]);
+
         $validated = $request->validate([
             'code' => ['required', 'string'],
             'name' => ['nullable', 'string'],
             'email' => ['nullable', 'email'],
             'rating' => ['required', 'string', Rule::in(ProjectLinkFeedback::RATING_VALUE)],
-            'comment' => ['nullable', 'string', 'max:5000']
+            'comment' => ['nullable', 'string', 'max:5000'],
+            'project_link_id' => ['required', 'integer'],
+            'project_id' => ['required', 'integer']
         ]);
 
         $validated['data'] = json_encode([
             'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
+            'user_agent' => $request->userAgent(),
+
         ]);
 
-        $link->feedback()->updateOrCreate([
-            'project_link_id' => $link->id,
-            'project_id' => $link->project->id
-        ], $validated);
+        $link->feedbacks()->create($validated);
 
         return successResponseJson(['message' => $link->response], 'Feedback submitted successfully.');
     }

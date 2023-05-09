@@ -152,7 +152,8 @@ class ProjectController extends Controller
 
         return successResponseJson([
             'graph' => $graph,
-            'feedbacks' => new FeedbackPaginateResouce($feedbacks)
+            'feedbacks' => new FeedbackPaginateResouce($feedbacks),
+            'link' => new LinkResource($project->link)
         ]);
     }
 

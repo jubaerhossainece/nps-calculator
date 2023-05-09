@@ -27,6 +27,11 @@ class ProjectLinkFeedback extends Model
         return $this->belongsTo(ProjectLink::class);
     }
 
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
+    }
+
     protected function type($rating)
     {
         if (in_array($rating, ProjectLinkFeedback::DETRACTOR)) {

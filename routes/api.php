@@ -51,8 +51,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('projects/{projectId}/users', [ProjectController::class, 'getProjectUsers']);
 
         Route::get('links', [ProjectLinkController::class, 'index']);
-        Route::post('links', [ProjectLinkController::class, 'store']);
-        Route::post('links/{code}', [ProjectLinkController::class, 'update']);
+//        Route::post('links', [ProjectLinkController::class, 'store']);
+//        Route::post('links/{code}', [ProjectLinkController::class, 'update']);
 
     });
 

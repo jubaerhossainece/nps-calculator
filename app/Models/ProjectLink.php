@@ -25,9 +25,9 @@ class ProjectLink extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function feedback()
+    public function feedbacks()
     {
-        return $this->hasOne(ProjectLinkFeedback::class);
+        return $this->hasMany(ProjectLinkFeedback::class);
     }
 
 }

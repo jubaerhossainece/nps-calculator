@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Project;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('project_links', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(\App\Models\Project::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete(); //TODO: project_id should be unique
             $table->string('name');
             $table->string('code')->unique();
             $table->string('response')->default('We really appreciate your feedback.');
