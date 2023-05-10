@@ -31,6 +31,10 @@ class ProjectLinkController extends Controller
             'id' => request('project_id')
         ])->first();
 
+        if (!$project) {
+            return errorResponseJson('No project found!', 404);
+        }
+
         $link = $project ? $project->link : [];
 
         return successResponseJson([
@@ -71,14 +75,20 @@ class ProjectLinkController extends Controller
      */
     public function update(Request $request, string $code)
     {
-        $data = ProjectLink::where('code', $code)
+        $request->validate([
+            'name' => ['required', 'string'],
+            'response' => ['required', 'string', 'max:2000']
+        ]);
+
+        $link = ProjectLink::where('code', $code)
             ->whereHas('project', function ($query) {
                 return $query->where('user_id', auth('sanctum')->user()->id);
-            })
-            ->update([
-                'name' => $request->name,
-                'response' => $request->response
-            ]);
+            })->first();
+
+        $link->update([
+            'name' => $request->name,
+            'response' => $request->response
+        ]);
 
         return successResponseJson(null, 'Link updated successfully');
     }
@@ -91,23 +101,28 @@ class ProjectLinkController extends Controller
             return errorResponseJson('No data found!', 404);
         }
 
+        $request->merge([
+            'project_link_id' => $link->id,
+            'project_id' => $link->project->id
+        ]);
+
         $validated = $request->validate([
             'code' => ['required', 'string'],
             'name' => ['nullable', 'string'],
             'email' => ['nullable', 'email'],
             'rating' => ['required', 'string', Rule::in(ProjectLinkFeedback::RATING_VALUE)],
-            'comment' => ['nullable', 'string', 'max:5000']
+            'comment' => ['nullable', 'string', 'max:5000'],
+            'project_link_id' => ['required', 'integer'],
+            'project_id' => ['required', 'integer']
         ]);
 
         $validated['data'] = json_encode([
             'ip' => $request->ip(),
-            'user_agent' => $request->userAgent()
+            'user_agent' => $request->userAgent(),
+
         ]);
 
-        $link->feedback()->updateOrCreate([
-            'project_link_id' => $link->id,
-            'project_id' => $link->project->id
-        ], $validated);
+        $link->feedbacks()->create($validated);
 
         return successResponseJson(['message' => $link->response], 'Feedback submitted successfully.');
     }

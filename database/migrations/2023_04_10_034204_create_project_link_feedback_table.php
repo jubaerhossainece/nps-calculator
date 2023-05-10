@@ -18,7 +18,7 @@ class CreateProjectLinkFeedbackTable extends Migration
     {
         Schema::create('project_link_feedback', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(ProjectLink::class)->unique()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(ProjectLink::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete();
             $table->string('name')->nullable();
             $table->string('email')->nullable();
