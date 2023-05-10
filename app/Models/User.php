@@ -61,4 +61,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class);
     }
+
+
+    public function feedbacks(){
+        return $this->hasManyThrough(ProjectLinkFeedback::class, Project::class);
+    }
 }

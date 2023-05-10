@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -34,4 +35,14 @@ require __DIR__ . '/auth.php';
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/profile/show', [Admin\ProfileController::class, 'profile'])->name('admin.profile.show');
+    Route::get('/change-password', [Admin\ProfileController::class, 'changePassword'])->name('admin.change-password');
+
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
+    Route::get('/projects/list', [ProjectController::class, 'list'])->name('projects.list');
+
+    // routes for audiences
+    Route::get('/audiences', [UserController::class, 'index'])->name('users');
+    Route::get('/audiences/list/{type}', [UserController::class, 'list'])->name('users.list');
+    Route::post('/audiences/{id}/status-change', [UserController::class, 'toggleStatus'])->name('users.status-change');
 });

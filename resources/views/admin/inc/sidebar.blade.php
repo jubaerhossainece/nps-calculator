@@ -40,14 +40,16 @@
         </li>
 
         <li>
-            <a href="javascript: void(0);" class="waves-effect">
-                <i class="fa fa-users"></i>
-                <span> Users </span>
-                <span class="menu-arrow"></span>
-            </a>
-            <ul class="nav-second-level" aria-expanded="false">
-                <li><a href="#">List</a></li>
-            </ul>
+            
+            <a href="{{route('users')}}"><i class="fas fa-users"></i> Audiences</a>
+        </li>
+            
+        <li>
+            <a href="{{route('admin.profile.show')}}"><i class="fas fa-user-circle"></i> Profile</a>
+        </li>
+            
+        <li>
+            <a href="{{route('admin.change-password')}}"><i class="fas fa-cog"></i> Setting</a>
         </li>
 
     </ul>
