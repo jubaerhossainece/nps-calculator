@@ -1,0 +1,12 @@
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: #cfcece !important;
+    opacity: 1; /* Firefox */
+  }
+  
+  input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #cfcece !important; /*cfcece*/
+  }
+  
+  input::-ms-input-placeholder { /* Microsoft Edge */
+    color: #cfcece !important;
+  }

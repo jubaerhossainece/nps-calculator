@@ -12,7 +12,7 @@
                     {{ auth()->user()->name }} <i class="mdi mdi-chevron-down"></i>
                 </a>
                 <ul class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
-                    <li><a href="javascript:void(0)" class="dropdown-item"><i class="mdi mdi-face-profile mr-2"></i> Profile<div class="ripple-wrapper"></div></a></li>
+                    <li><a href="{{route('admin.profile.show')}}" class="dropdown-item"><i class="mdi mdi-face-profile mr-2"></i> Profile<div class="ripple-wrapper"></div></a></li>
                     <li><a href="javascript:void(0)" class="dropdown-item"><i class="mdi mdi-settings mr-2"></i> Settings</a></li>
                     <li>
                         <form action="{{ route('logout') }}" method="post">
@@ -49,7 +49,7 @@
         </li>
             
         <li>
-            <a href="{{route('admin.change-password')}}"><i class="fas fa-cog"></i> Setting</a>
+            <a href="{{route('admin.change-password')}}"><i class="fas fa-cog"></i> Settings</a>
         </li>
 
     </ul>

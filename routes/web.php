@@ -35,9 +35,11 @@ require __DIR__ . '/auth.php';
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/profile/show', [Admin\ProfileController::class, 'profile'])->name('admin.profile.show');
+    Route::get('/profile/show', [Admin\ProfileController::class, 'show'])->name('admin.profile.show');
     Route::get('/profile/edit', [Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
-    Route::patch('/profile/update', [Admin\ProfileController::class, 'update'])->name('admin.profile.update');
+    Route::put('/profile/update', [Admin\ProfileController::class, 'update'])->name('admin.profile.update');
+    Route::put('/profile/change-password', [Admin\ProfileController::class, 'changePassword'])->name('admin.profile.change-password');
+    Route::get('/profile/test', [Admin\ProfileController::class, 'test'])->name('admin.profile.test');
     
     Route::get('/change-password', [Admin\ProfileController::class, 'changePassword'])->name('admin.change-password');
 

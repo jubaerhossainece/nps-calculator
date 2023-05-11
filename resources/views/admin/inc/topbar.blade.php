@@ -18,11 +18,11 @@
                 <!-- item-->
                 <div class="dropdown-item noti-title">
                     <h5 class="font-16 m-0">
-                                    <span class="float-right">
-                                        <a href="" class="text-dark">
-                                            <small>Clear All</small>
-                                        </a>
-                                    </span>Notification
+                        <span class="float-right">
+                            <a href="" class="text-dark">
+                                <small>Clear All</small>
+                            </a>
+                        </span>Notification
                     </h5>
                 </div>
 
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="{{route('admin.profile.show')}}" class="dropdown-item notify-item">
                     <i class="mdi mdi-face-profile"></i>
                     <span>Profile</span>
                 </a>

@@ -34,7 +34,7 @@ class ProfileController extends Controller
             $extension = $file->getClientOriginalExtension();
             $filename_with_ext = time() . '.' . $extension;
             if ($user->image) {
-                Storage::delete('public/organization/' . $user->photo);
+                Storage::delete('public/organization/' . $user->image);
             }
             $request->file('image')->storeAs($path, $filename_with_ext);
             $user->image = $filename_with_ext;
