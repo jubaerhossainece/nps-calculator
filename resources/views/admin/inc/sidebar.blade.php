@@ -4,7 +4,7 @@
     <div class="user-box">
 
         <div class="float-left">
-            <img src="assets/images/users/avatar-1.jpg" alt="" class="avatar-md rounded-circle">
+            <img src="{{auth()->user()->image ? Storage::url('public/admin/'. auth()->user()->image) : asset('assets/images/7074311_3551739.jpg')}}" alt="" class="avatar-md rounded-circle">
         </div>
         <div class="user-info">
             <div class="dropdown">
@@ -34,7 +34,7 @@
 
         <li>
             <a href="{{ route('dashboard.index') }}" class="waves-effect">
-                <i class="mdi mdi-home"></i>
+            <i class="fas fa-columns"></i>
                 <span> Dashboard </span>
             </a>
         </li>
@@ -50,6 +50,16 @@
             
         <li>
             <a href="{{route('admin.password.edit')}}"><i class="fas fa-cog"></i> Settings</a>
+        </li>
+
+        <li>
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button type="submit" class="dropdown-item notify-item">
+                   <i class="fas fa-sign-out-alt mr-3"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
         </li>
 
     </ul>

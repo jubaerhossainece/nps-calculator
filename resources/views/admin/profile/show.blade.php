@@ -6,6 +6,7 @@
     .form-body{
         background-color: white;
         padding: 2rem 2.5rem;
+        border-radius: 10px;
     }
 
     .avatar-upload {
@@ -34,43 +35,40 @@
 @endpush
 
 @section('content')
-        <div class="container mt-5 mb-5">
-            <div class="row justify-content-center">
-                <div class="col-md-6 form-body rounded">
-                    <div class="form-group">
-                        
-                        <div class="avatar-upload">
-                            <div class="avatar-preview">
-                                <div id="imagePreview" style="background-image: url({{ $admin->image ? Storage::url('public/admin/'. $admin->image) : asset('assets/images/7074311_3551739.jpg')}});">
-                                </div>
+    <div class="container mt-5 mb-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6 form-body">
+                <div class="form-group">
+                    
+                    <div class="avatar-upload">
+                        <div class="avatar-preview">
+                            <div id="imagePreview" style="background-image: url({{ $admin->image ? Storage::url('public/admin/'. $admin->image) : asset('assets/images/7074311_3551739.jpg')}});">
                             </div>
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <div>
-                        <input type="text" class="form-control" id="name" name="name" value="{{$admin->name ?? ''}}" readonly>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <div>
-                        <input type="text" class="form-control" id="name" name="name" value="{{$admin->email ?? ''}}" readonly>
-
-
-                        </div>
-                    </div>
-                    <div class="form-row d-flex justify-content-center">
-                        <a href="{{route('admin.profile.edit')}}" class="btn btn-lg btn-info">Edit Profile</a>
-                    </div>
-
                 </div>
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <div>
+                    <input type="text" class="form-control" id="name" name="name" value="{{$admin->name ?? ''}}" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <div>
+                    <input type="text" class="form-control" id="name" name="name" value="{{$admin->email ?? ''}}" readonly>
+
+
+                    </div>
+                </div>
+                <div class="form-row d-flex justify-content-center">
+                    <a href="{{route('admin.profile.edit')}}" class="btn btn-lg btn-info">Edit Profile</a>
+                </div>
+
             </div>
         </div>
-        
-
-
+    </div>
 @endsection
 
 @push('scripts')

@@ -6,10 +6,12 @@
     .form-body{
         background-color: white;
         padding: 2rem 2.5rem;
+        border-radius: 10px;
     }
     .password-container{
         position: relative;
     }
+    
     .password-container input[type="password"],
     .password-container input[type="text"]{
         width: 100%;
@@ -33,7 +35,7 @@
 
     <div class="container mt-5 mb-5">
         <div class="row justify-content-center">
-            <div class="col-md-6 form-body rounded">
+            <div class="col-md-6 form-body">
 
             @if(session('message'))
                 <div class="alert alert-success alert-dismissible fade show" role="alert">

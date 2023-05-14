@@ -69,7 +69,7 @@
 
         <li class="dropdown notification-list">
             <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                <img src="assets/images/users/avatar-1.jpg" alt="user-image" class="rounded-circle">
+                <img src="{{auth()->user()->image ? Storage::url('public/admin/'. auth()->user()->image) : asset('assets/images/7074311_3551739.jpg')}}" alt="user-image" class="rounded-circle">
             </a>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                 <!-- item-->

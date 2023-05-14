@@ -5,20 +5,10 @@
 
 @section('content')
     <div class="container-fluid">
-
         <!-- start page title -->
-        <div class="row">
+        <div class="row mt-4 mb-3">
             <div class="col-12">
-                <div class="page-title-box">
-                    <h4 class="page-title">Audience</h4>
-                    <div class="page-title-right">
-                        <ol class="breadcrumb p-0 m-0">
-                            <li class="breadcrumb-item"><a href="{{ route('dashboard.index') }}">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Index</li>
-                        </ol>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
+                
                 <div class="card">
 					<div class="card-header d-flex justify-content-between bg-white">
 						<div>
