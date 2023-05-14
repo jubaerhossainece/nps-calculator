@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -51,9 +52,32 @@ class ProfileController extends Controller
     }
 
 
-    public function changePassword(){
-        return view('admin.profile.change-password');
+    public function editPassword(){
+        return view('admin.profile.edit-password');
     }
+
+
+    public function updatePassword(Request $request)
+    {
+
+        $request->validate([
+            'old_password' => 'required|different:new_password|current_password',
+            'new_password' => 'required|min:6|confirmed|string',
+            'new_password_confirmation' => 'required'
+        ]);
+
+        $user = auth()->user();
+        $user->password = Hash::make($request->new_password);
+        $result = $user->save();
+
+        if($result){
+            return redirect()->back()->withMessage('Password updated successfully.');
+        }
+
+        return redirect()->back()->withError('Something went wrong.');
+
+    }
+
 
     public function test()
     {

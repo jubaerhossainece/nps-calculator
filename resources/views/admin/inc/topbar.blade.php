@@ -84,7 +84,7 @@
                 </a>
 
                 <!-- item-->
-                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                <a href="{{route('admin.password.edit')}}" class="dropdown-item notify-item">
                     <i class="mdi mdi-settings"></i>
                     <span>Settings</span>
                 </a>

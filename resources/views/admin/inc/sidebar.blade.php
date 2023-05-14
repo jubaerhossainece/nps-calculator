@@ -49,7 +49,7 @@
         </li>
             
         <li>
-            <a href="{{route('admin.change-password')}}"><i class="fas fa-cog"></i> Settings</a>
+            <a href="{{route('admin.password.edit')}}"><i class="fas fa-cog"></i> Settings</a>
         </li>
 
     </ul>

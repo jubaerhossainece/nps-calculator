@@ -38,10 +38,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/profile/show', [Admin\ProfileController::class, 'show'])->name('admin.profile.show');
     Route::get('/profile/edit', [Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::put('/profile/update', [Admin\ProfileController::class, 'update'])->name('admin.profile.update');
-    Route::put('/profile/change-password', [Admin\ProfileController::class, 'changePassword'])->name('admin.profile.change-password');
-    Route::get('/profile/test', [Admin\ProfileController::class, 'test'])->name('admin.profile.test');
     
-    Route::get('/change-password', [Admin\ProfileController::class, 'changePassword'])->name('admin.change-password');
+    Route::get('/password/edit', [Admin\ProfileController::class, 'editPassword'])->name('admin.password.edit');
+    Route::put('/password/update', [Admin\ProfileController::class, 'updatePassword'])->name('admin.password.update');
+    
+    Route::get('/profile/test', [Admin\ProfileController::class, 'test'])->name('admin.profile.test');
 
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
     Route::get('/projects/list', [ProjectController::class, 'list'])->name('projects.list');
