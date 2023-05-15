@@ -31,30 +31,29 @@ Route::get('/sym-link', function(){
 require __DIR__ . '/auth.php';
 
 
-Route::get('/dashboard/audience/{type}/chart', [Admin\DashboardController::class, 'audienceChartData']);
 
 // Route::get('login/{provider}', [Api\SocialAuthController::class, 'redirectToProvider']);
 // Route::get('login/{provider}/callback', [Api\SocialAuthController::class, 'handleProviderCallback']);
 
 Route::group(['middleware' => 'auth'], function () {
+    // Dashboard routes
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/recent-audience', [Admin\DashboardController::class, 'recentAudience']);
-    // Route::get('/dashboard/audience/{type}/chart', [Admin\DashboardController::class, 'audienceChartData']);
+    Route::get('/dashboard/audience/{type}/chart', [Admin\DashboardController::class, 'audienceChartData']);
     
-
+    // Profile 
     Route::get('/profile/show', [Admin\ProfileController::class, 'show'])->name('admin.profile.show');
     Route::get('/profile/edit', [Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::put('/profile/update', [Admin\ProfileController::class, 'update'])->name('admin.profile.update');
     
     Route::get('/password/edit', [Admin\ProfileController::class, 'editPassword'])->name('admin.password.edit');
     Route::put('/password/update', [Admin\ProfileController::class, 'updatePassword'])->name('admin.password.update');
-    
-    Route::get('/profile/test', [Admin\ProfileController::class, 'test'])->name('admin.profile.test');
 
+    // Project
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
     Route::get('/projects/list', [ProjectController::class, 'list'])->name('projects.list');
 
-    // routes for audiences
+    // Routes for audiences
     Route::get('/audiences', [UserController::class, 'index'])->name('users');
     Route::get('/audiences/list/{type}', [UserController::class, 'list'])->name('users.list');
     Route::post('/audiences/{id}/status-change', [UserController::class, 'toggleStatus'])->name('users.status-change');

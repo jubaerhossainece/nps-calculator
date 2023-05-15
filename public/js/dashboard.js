@@ -24,20 +24,15 @@ function generateChart(response){
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)');
-    // gradient.addColorStop(0.5, 'rgba(243, 252, 255, 1)');
-    // gradient.addColorStop(1, 'rgba(242, 251, 255, 0.5)');
 
     const audienceChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: response.label,
-            // labels: data.label,
             datasets: [{
                 data: response.audience,
                 backgroundColor: gradient,
-                // borderColor: "#1DAAE2",
                 pointColor: "#fff",
-                // pointStrokeColor: "rgba(215,14,84,0.75)",
                 borderWidth: 1,
                 tension: 0.3,
                 fill: 'origin'
@@ -56,7 +51,8 @@ function generateChart(response){
                     title: {
                         display: true,
                         text: 'Audience'
-                    }
+                    },
+                    suggestedMin: 0
                 }
             }
         }
