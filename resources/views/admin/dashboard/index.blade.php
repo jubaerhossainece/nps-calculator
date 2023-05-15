@@ -1,11 +1,23 @@
 @extends('admin.layouts.app')
 @push('styles')
     <style>
+
+        /* yajra datatables customization */
+        /* .table-responsive {
+            overflow-x: none;
+        } */
+
+        .card-header:first-child {
+            border-radius: 10px;
+            background: white;
+        }
+
         .card{
             border-radius: 10px;
         }
 
-        .card-body{
+        /* css for summery section */
+        .summery .card-body{
             padding: 0px;
         }
 
@@ -112,7 +124,7 @@
 
 @section('content')
     <div class="container mt-5 mb-5">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center summery">
             <div class="col-md-4">
                 <div class="card">
                     <div class="card-body d-flex">
@@ -166,29 +178,37 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <div>Audience summery</div>
+                        <div><h4>Audience summery</h4></div>
                         <div>
                             <ul class="nav nav-tabs tabs-bordered" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="all" data-toggle="tab" role="tab" aria-selected="true" onclick="getData('all')">
-                                        <span class="d-none d-sm-block">All</span>
+                                    <a class="nav-link active" data-toggle="tab" href="#" role="tab" aria-selected="true" onclick="getAudienceData('year')">
+                                        <span class="d-none d-sm-block">Yearly</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="active" data-toggle="tab" href="#profile-b1" role="tab" aria-controls="profile-b1" aria-selected="false" onclick="getData('active')">
-                                        <span class="d-none d-sm-block">Active</span>
+                                    <a class="nav-link" data-toggle="tab" href="#" role="tab" aria-selected="false" onclick="getAudienceData('month')">
+                                        <span class="d-none d-sm-block">Monthly</span>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="inactive" data-toggle="tab" href="#message-b1" role="tab" aria-controls="message-b1" aria-selected="false" onclick="getData('inactive')">
-                                        <span class="d-none d-sm-block">Inactive</span>
+                                    <a class="nav-link" data-toggle="tab" href="#" role="tab" aria-selected="false" onclick="getAudienceData('week')">
+                                        <span class="d-none d-sm-block">Weekly</span>
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                     <div class="card-body">
-
+                        <div id="cardCollpase1" class="collapse show">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <canvas id="audience-summery"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -199,14 +219,14 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-
+                        <h4>Recent Audience</h4>
                     </div>
 
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-bordered" id="audience-table">
                                 <thead>
-                                    
+
                                 </thead>
                             </table>
                         </div>
@@ -219,8 +239,7 @@
 @endsection
 
 @push('scripts')
-<script>
-    
-</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{asset('js/dashboard.js')}}"></script>
 @endpush
 

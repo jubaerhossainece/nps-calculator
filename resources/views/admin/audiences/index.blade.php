@@ -18,17 +18,17 @@
 						<div>
 							<ul class="nav nav-tabs tabs-bordered" role="tablist">
 								<li class="nav-item">
-									<a class="nav-link active" id="all" data-toggle="tab" role="tab" aria-selected="true" onclick="getData('all')">
+									<a class="nav-link active" id="all" data-toggle="tab" href="#" role="tab" aria-selected="true" onclick="getData('all')">
 										<span class="d-none d-sm-block">All</span>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" id="active" data-toggle="tab" href="#profile-b1" role="tab" aria-controls="profile-b1" aria-selected="false" onclick="getData('active')">
+									<a class="nav-link" id="active" data-toggle="tab" href="#" role="tab" aria-controls="profile-b1" aria-selected="false" onclick="getData('active')">
 										<span class="d-none d-sm-block">Active</span>
 									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" id="inactive" data-toggle="tab" href="#message-b1" role="tab" aria-controls="message-b1" aria-selected="false" onclick="getData('inactive')">
+									<a class="nav-link" id="inactive" data-toggle="tab" href="#" role="tab" aria-controls="message-b1" aria-selected="false" onclick="getData('inactive')">
 										<span class="d-none d-sm-block">Inactive</span>
 									</a>
 								</li>

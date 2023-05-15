@@ -1,0 +1,117 @@
+
+// audience summery chart
+function getAudienceData(type){
+    let chartStatus = Chart.getChart("audience-summery"); // <canvas> id
+    if (chartStatus != undefined) {
+        chartStatus.destroy();
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "dashboard/audience/"+type+"/chart",
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        success: function(response){
+            let type = $(".nav-link.active").attr('id');
+            console.log(response);
+            generateChart(response);
+        }
+    });
+}
+
+function generateChart(response){
+
+    const ctx = document.getElementById('audience-summery').getContext("2d");
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)');
+    // gradient.addColorStop(0.5, 'rgba(243, 252, 255, 1)');
+    // gradient.addColorStop(1, 'rgba(242, 251, 255, 0.5)');
+
+    const audienceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: response.label,
+            // labels: data.label,
+            datasets: [{
+                data: response.audience,
+                backgroundColor: gradient,
+                // borderColor: "#1DAAE2",
+                pointColor: "#fff",
+                // pointStrokeColor: "rgba(215,14,84,0.75)",
+                borderWidth: 1,
+                tension: 0.3,
+                fill: 'origin'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        // text: 'Time'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Audience'
+                    }
+                }
+            }
+        }
+    });
+
+}
+
+
+
+// recent audience datatables
+function getData(){
+    
+    $('#audience-table').DataTable({
+    "bPaginate": false,
+    "bFilter": false,
+    "bInfo": false,
+    processing: true,
+    serverSide: true,
+    autoWidth: true,
+    destroy: true,
+    // order: [4, "desc"],
+    
+    ajax: {
+        url : "/dashboard/recent-audience"
+    },
+    columns: [
+            {data: "DT_RowIndex",name:'DT_RowIndex', title: "Serial", searchable: false, orderable: false},
+            {data: 'name', title:'Name',orderable: false},
+            {data: 'email', title:'Email',orderable: false},
+            {data: 'projects', title:'Total Project'},
+            {data: 'feedbacks', title:'Total NPS Collect'},
+            
+            {data: 'status', title:'Status',orderable: false},
+            {data: 'action', title:'Action',orderable: false},
+        ]
+    });
+}
+
+$(document).ready(function(){
+    getAudienceData('year');
+    getData();
+
+});
+
+function changeStatus(id){
+
+    $.ajax({
+        type: "POST",
+        url: "/audiences/"+id+"/status-change",
+        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+        success: function(data){
+            let type = $(".nav-link.active").attr('id');
+            
+            getData();
+        }
+    });
+
+}

@@ -30,11 +30,18 @@ Route::get('/sym-link', function(){
 
 require __DIR__ . '/auth.php';
 
+
+Route::get('/dashboard/audience/{type}/chart', [Admin\DashboardController::class, 'audienceChartData']);
+
 // Route::get('login/{provider}', [Api\SocialAuthController::class, 'redirectToProvider']);
 // Route::get('login/{provider}/callback', [Api\SocialAuthController::class, 'handleProviderCallback']);
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/dashboard/recent-audience', [Admin\DashboardController::class, 'recentAudience']);
+    // Route::get('/dashboard/audience/{type}/chart', [Admin\DashboardController::class, 'audienceChartData']);
+    
+
     Route::get('/profile/show', [Admin\ProfileController::class, 'show'])->name('admin.profile.show');
     Route::get('/profile/edit', [Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::put('/profile/update', [Admin\ProfileController::class, 'update'])->name('admin.profile.update');
