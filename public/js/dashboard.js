@@ -17,7 +17,6 @@ function getAudienceData(type){
 }
 
 function generateChart(response, chartType){
-    console.log(chartType);
     const ctx = document.getElementById('audience-summery').getContext("2d");
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -51,6 +50,11 @@ function generateChart(response, chartType){
                         text: 'Audience'
                     },
                     suggestedMin: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
                 }
             }
         }
