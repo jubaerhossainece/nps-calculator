@@ -10,3 +10,52 @@ input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   input::-ms-input-placeholder { /* Microsoft Edge */
     color: #cfcece !important;
   }
+
+  .navbar-custom{
+    background-color: white;
+  }
+
+  span.logo-lg img {
+    height: 40px;
+  }
+  
+  /* .left-side-menu{
+    background-color: black;
+    width: 256px;
+  }
+
+  .metismenu li {
+    list-style: none;
+    margin: 7px 20px;
+  }
+
+  #sidebar-menu>ul>li>a {
+    transition: all .3s;
+    color: #fffc;
+  }
+
+  #sidebar-menu>ul>li>a.active {
+    color: #fffc;
+    background: linear-gradient(271.36deg, #2558DC 1.08%, #00B4EF 98.84%);
+  }
+
+  #sidebar-menu>ul>li>a.active {
+    color: #fffc;
+    border-radius: 10px;
+    background: linear-gradient(271.36deg, #2558DC 1.08%, #00B4EF 98.84%);
+  }
+
+  .left-side-menu .dropdown-item.notify-item {
+    padding: 13px 20px;
+    color: #fffc;
+    transition: all .3s;
+  }
+  
+  .left-side-menu .dropdown-item.notify-item:hover {
+    background: black;
+    color: #317eeb;
+  }
+
+  .user-box .user-info a.dropdown-toggle{
+    color: white;
+  } */

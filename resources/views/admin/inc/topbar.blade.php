@@ -108,23 +108,23 @@
     <div class="logo-box">
         <a href="{{ \App\Providers\RouteServiceProvider::HOME }}" class="logo text-center logo-dark">
             <span class="logo-lg">
-                <img src="{{asset('assets/images/logo.nps.svg')}}" alt="" height="16">
+                <img src="{{asset('assets/images/logo.nps.png')}}" alt="" height="16">
                 <!-- <span class="logo-lg-text-dark">NPS</span> -->
             </span>
             <span class="logo-sm">
                 <!-- <span class="logo-lg-text-dark">NPS</span> -->
-                <img src="{{asset('assets/images/logo.nps.svg')}}" alt="" height="25">
+                <img src="{{asset('assets/images/logo.nps.png')}}" alt="" height="25">
             </span>
         </a>
 
         <a href="{{ \App\Providers\RouteServiceProvider::HOME }}" class="logo text-center logo-light">
             <span class="logo-lg">
-                <img src="{{asset('assets/images/logo.nps.svg')}}" alt="" height="16">
+                <img src="{{asset('assets/images/logo.nps.png')}}" alt="" height="16">
                 <!-- <span class="logo-lg-text-dark">NPS</span> -->
             </span>
             <span class="logo-sm">
                 <!-- <span class="logo-lg-text-dark">NPS</span> -->
-                <img src="{{asset('assets/images/logo.nps.svg')}}" alt="" height="25">
+                <img src="{{asset('assets/images/logo.nps.png')}}" alt="" height="25">
             </span>
         </a>
     </div>
