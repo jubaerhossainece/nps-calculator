@@ -11,15 +11,13 @@ function getAudienceData(type){
         url: "dashboard/audience/"+type+"/chart",
         headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
         success: function(response){
-            let type = $(".nav-link.active").attr('id');
-            console.log(response);
-            generateChart(response);
+            generateChart(response, type);
         }
     });
 }
 
-function generateChart(response){
-
+function generateChart(response, chartType){
+    console.log(chartType);
     const ctx = document.getElementById('audience-summery').getContext("2d");
 
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -44,7 +42,7 @@ function generateChart(response){
                 x: {
                     title: {
                         display: true,
-                        // text: 'Time'
+                        text: chartType
                     }
                 },
                 y: {
