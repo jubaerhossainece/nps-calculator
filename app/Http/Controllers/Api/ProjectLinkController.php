@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
 use App\Services\ProjectLinkService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -57,7 +58,7 @@ class ProjectLinkController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $code)
+    public function show(Request $request, string $code)
     {
         $link = ProjectLink::with('project')
             ->where('code', $code)
@@ -65,6 +66,14 @@ class ProjectLinkController extends Controller
 
         if (!$link) {
             return errorResponseJson('No link found', 404);
+        }
+
+        $ip = $request->ip();
+        $hasAlreadyFeedback = ProjectLinkFeedback::where('project_link_id', $link->id)
+                                                   ->where('created_at', '>',Carbon::now()->subHours(1))
+                                                   ->whereJsonContains('data->ip', $ip)->first();
+        if($hasAlreadyFeedback){
+            return errorResponseJson('You cannot make two consecutive submissions within one hour, please try later!', 400);
         }
 
         return successResponseJson(['link' => new LinkResource($link)]);
@@ -100,6 +109,15 @@ class ProjectLinkController extends Controller
         if (!$link) {
             return errorResponseJson('No data found!', 404);
         }
+
+        $ip = $request->ip();
+        $hasAlreadyFeedback = ProjectLinkFeedback::where('project_link_id', $link->id)
+                                                   ->where('created_at', '>',Carbon::now()->subHours(1))
+                                                   ->whereJsonContains('data->ip', $ip)->first();
+        if($hasAlreadyFeedback){
+            return errorResponseJson('You cannot make two consecutive submissions within one hour, please try later!', 400);
+        }
+
 
         $request->merge([
             'project_link_id' => $link->id,
