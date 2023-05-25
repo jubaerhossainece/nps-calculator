@@ -32,7 +32,9 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return $this->verify2FAStatus();
+
+        // return redirect()->intended(RouteServiceProvider::HOME);
     }
 
     /**
@@ -50,5 +52,14 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+
+    protected function verify2FAStatus(){
+        if(auth()->user()->google2fa_enable_status){
+            //redirect to 2fa verification page
+            return redirect()->route('twoFaVerification.show');
+        }
+        return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

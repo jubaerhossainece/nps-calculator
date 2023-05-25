@@ -20,6 +20,9 @@ class CreateAdminsTable extends Migration
             $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->longText("google2fa_secret_key")->nullable();
+            $table->boolean("google2fa_enable_status")->default(false);
+            $table->enum("google2fa_verify_status",['verified','failed','unverified'])->default('unverified');
             $table->rememberToken();
             $table->timestamps();
         });

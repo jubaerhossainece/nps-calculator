@@ -51,6 +51,9 @@
         <li>
             <a href="{{route('admin.password.edit')}}"><i class="fas fa-cog"></i> Settings</a>
         </li>
+        <li>
+            <a href="{{route('twoFa.index')}}"><i class="fas fa-shield"></i> 2FA Setting</a>
+        </li>
 
         <li>
             <form action="{{ route('logout') }}" method="post">

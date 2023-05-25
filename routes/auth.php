@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\twoFaVerificationController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,4 +54,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
+    //2fa-verification
+    Route::get('2fa-verification', [twoFaVerificationController::class, 'show'])->name('twoFaVerification.show');
+    Route::post('2fa-verification', [twoFaVerificationController::class, 'store'])->name('twoFaVerification.store');
+    Route::post('2fa-verification-verify', [twoFaVerificationController::class, 'verify'])->name('twoFaVerification.verify');
 });

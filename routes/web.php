@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Auth\twoFaVerificationController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,8 @@ require __DIR__ . '/auth.php';
 // Route::get('login/{provider}/callback', [Api\SocialAuthController::class, 'handleProviderCallback']);
 
 Route::group(['middleware' => 'auth'], function () {
+
+    Route::group(['middleware' => '2Fa'], function () {
     // Dashboard routes
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/recent-audience', [Admin\DashboardController::class, 'recentAudience']);
@@ -58,4 +61,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/audiences', [UserController::class, 'index'])->name('users');
     Route::get('/audiences/list/{type}', [UserController::class, 'list'])->name('users.list');
     Route::post('/audiences/{id}/status-change', [UserController::class, 'toggleStatus'])->name('users.status-change');
+
+    //2fa setting opetions
+    Route::get('/2fa-setting', [twoFaVerificationController::class, 'index'])->name('twoFa.index');
+    Route::get('/2fa-status-modify', [twoFaVerificationController::class, 'twoFaEnableStatus'])->name('twoFa.status-change');
+    });
 });
