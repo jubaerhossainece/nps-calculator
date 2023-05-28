@@ -134,7 +134,7 @@ class DashboardController extends Controller
         $to_date = $request->to_date;
         $from_date = $request->from_date;
 
-        $db_data_query = ProjectLinkFeedback::select(DB::raw("(COUNT(*)) as count"), DB::raw($type . " (created_at) as " . $type));
+        $db_data_query = ProjectLinkFeedback::query();
 
 
         if ($project_id) {
@@ -147,26 +147,35 @@ class DashboardController extends Controller
             $db_data_query->whereYear('created_at', date('Y'));
         }
 
-        $db_data = $db_data_query->groupBy($type)
-            ->orderBy($type)
-            ->get();
+        $feedbacks =  $db_data_query->get();
+        $nps_score = [];
 
-        $temp = [];
-        foreach ($db_data as $value) {
-            $temp[$value->$type] = $value->count;
-        }
+        $detractor_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::DETRACTOR)->count();
+        $passive_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::PASSIVE)->count();
+        $promoter_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::PROMOTER)->count();
+        $total_response = $feedbacks->count();
+
+        $nps_score['DETRACTOR'] = $detractor_count / $total_response * 100;
+        $nps_score['PASSIVE'] = $passive_count / $total_response * 100;
+        $nps_score['PROMOTER'] = $promoter_count / $total_response * 100;
+
+        // nps_score = (number of promoters - number of detractors) / number of responses * 100
+        $nps_score['score'] = ($promoter_count - $detractor_count) / $feedbacks->count() * 100;
+        
+        
 
         $data = [];
 
-        $label = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        $label = ["DETRACTOR", "PASSIVE", "PROMOTER"];
 
-        foreach ($label as $key => $value) {
-            $data[$key] = $temp[$key + 1] ?? 0;
-        }
+        $data[0] =  $nps_score['DETRACTOR'] ?? 0;
+        $data[1] =  $nps_score['PASSIVE'] ?? 0;
+        $data[2] =  $nps_score['PROMOTER'] ?? 0;
 
         return response([
             'label' => $label,
-            'audience' => $data,
+            'data' => $data,
+            'score' => $nps_score['score'] ?? 0,
         ]);
     }
 }

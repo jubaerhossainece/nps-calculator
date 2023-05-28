@@ -93,50 +93,57 @@ function getProjectFeedback(type = 'month') {
 }
 
 function generateChartForProjectFeedback(response, chartType) {
-  const ctx = document.getElementById('project-feedback').getContext('2d')
+  console.log(response);
+  var myChart = document.getElementById('project-feedback').getContext('2d');
+        var label = response.label;
+        var data =response.data;
+        var score =response.score;
+        var myNPSChart = new Chart(myChart, {
+            type: 'pie',
+            data: {
+                labels: label,
+                datasets: [{
+                    label: '% of Votes',
+                    data: data,
+                    backgroundColor: [
+                        '#b91d47',
+                        '#00aba9',
+                        '#2b5797',
+                        '#e8c3b9',
+                    ],
 
-  const gradient = ctx.createLinearGradient(0, 0, 0, 400)
-  gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
-
-  const audienceChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels: response.label,
-      datasets: [
-        {
-          data: response.audience,
-          backgroundColor: gradient,
-          pointColor: '#fff',
-          borderWidth: 1,
-          tension: 0.3,
-          fill: 'origin',
-        },
-      ],
-    },
-    options: {
-      responsive: true,
-      scales: {
-        x: {
-          title: {
-            display: true,
-            text: chartType,
-          },
-        },
-        y: {
-          title: {
-            display: true,
-            text: 'NPS',
-          },
-          suggestedMin: 0,
-        },
-      },
-      plugins: {
-        legend: {
-          display: false,
-        },
-      },
-    },
-  })
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                    position: 'top'
+                },
+                tooltips: {
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            var dataset = data.datasets[tooltipItem.datasetIndex];
+                            var meta = dataset._meta[Object.keys(dataset._meta)[0]];
+                            var total = meta.total;
+                            var currentValue = dataset.data[tooltipItem.index];
+                            var percentage = parseFloat((currentValue / total * 100).toFixed(1));
+                            return currentValue + ' (' + percentage + '%)';
+                        },
+                        title: function(tooltipItem, data) {
+                            return data.labels[tooltipItem[0].index];
+                        }
+                    }
+                },
+                plugins: {
+                  title: {
+                      display: true,
+                      text: 'NPS Score '+score,
+                  }
+              }
+            }
+        });
 }
 
 // recent audience datatables
