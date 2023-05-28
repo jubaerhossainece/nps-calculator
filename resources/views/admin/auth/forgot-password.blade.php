@@ -11,7 +11,7 @@
         </div>
         <div class="form-group mb-0">
             <div class="input-group">
-                <input type="email" class="form-control" placeholder="Enter Email" required="">
+                <input type="email" name="email" class="form-control" placeholder="Enter Email" required="">
                 <span class="input-group-append"> <button type="submit" class="btn btn-primary waves-effect waves-light">Reset</button> </span>
             </div>
         </div>
