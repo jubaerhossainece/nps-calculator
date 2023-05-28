@@ -29,7 +29,7 @@ class DashboardController extends Controller
         $users = User::select('id', 'name', 'email', 'status')
             ->withCount('projects')
             ->withCount('feedbacks')
-            ->latest()
+            ->latest('id')
             ->limit(5);
 
         return DataTables::of($users)

@@ -15,6 +15,7 @@
     <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap-stylesheet"/>
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
 </head>
 
@@ -51,6 +52,8 @@
 
 <!-- App js -->
 <script src="assets/js/app.min.js"></script>
+<script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+{!! Toastr::message() !!}
 
 </body>
 

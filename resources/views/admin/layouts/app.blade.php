@@ -20,6 +20,7 @@
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-stylesheet" />
     <link rel="stylesheet" href="{{asset('/css/custom.css')}}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     @stack('styles')
 
 </head>
@@ -77,6 +78,8 @@
 <!-- App js -->
 <script src="{{ asset('assets/js/app.min.js') }}"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+{!! Toastr::message() !!}
 @stack('scripts')
 </body>
 

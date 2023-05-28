@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -59,7 +60,8 @@ class AuthenticatedSessionController extends Controller
         if(auth()->user()->google2fa_enable_status){
             //redirect to 2fa verification page
             return redirect()->route('twoFaVerification.show');
-        }
+        }        
+      Toastr::success('Login successful.', 'Message', ["positionClass" => "toast-bottom-right"]);
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 }

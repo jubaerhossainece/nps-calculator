@@ -55,6 +55,10 @@ class AuthController extends Controller
             return errorResponseJson($error->getMessage(),422);
         }
 
+        if(!$user->status){
+            return errorResponseJson('You are ban from our system. Please contact with authorization', 400);
+        }
+
         return successResponseJson([
             'access_token' => $user->createToken('authToken')->plainTextToken,
             'token_type' => 'Bearer',

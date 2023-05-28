@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Validator;
 
 class twoFaVerificationController extends Controller
@@ -67,6 +68,7 @@ class twoFaVerificationController extends Controller
             'code' => 'required|numeric'
             ]);
         if ($validated->fails()){
+            Toastr::error('Invalid 2FA Code.', 'Message', ["positionClass" => "toast-bottom-right"]);
             return redirect()->back()->with(['error'=> 'Invalid 2FA code!']);
         }
         $user = Admin::findOrfail(Auth::id());
@@ -76,8 +78,10 @@ class twoFaVerificationController extends Controller
             session(['2fa_verified'=> true]);
             $user->google2fa_verify_status = 'verified';
             $user->save();
+           Toastr::success('Login successful.', 'Message', ["positionClass" => "toast-bottom-right"]);
             return redirect()->route('dashboard.index');
         } else{
+            Toastr::error('Invalid 2FA Code.', 'Message', ["positionClass" => "toast-bottom-right"]);
             return redirect()->back()->with(['error'=> 'Invalid 2FA code!']);
         }
     }

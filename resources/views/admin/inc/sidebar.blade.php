@@ -13,7 +13,7 @@
                 </a>
                 <ul class="dropdown-menu" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 29px, 0px); top: 0px; left: 0px; will-change: transform;">
                     <li><a href="{{route('admin.profile.show')}}" class="dropdown-item"><i class="mdi mdi-face-profile mr-2"></i> Profile<div class="ripple-wrapper"></div></a></li>
-                    <li><a href="javascript:void(0)" class="dropdown-item"><i class="mdi mdi-settings mr-2"></i> Settings</a></li>
+                    <li><a href="{{route('admin.password.edit')}}" class="dropdown-item"><i class="mdi mdi-settings mr-2"></i> Settings</a></li>
                     <li>
                         <form action="{{ route('logout') }}" method="post">
                             @csrf
@@ -26,7 +26,7 @@
                     </li>
                 </ul>
             </div>
-            <p class="font-13 text-muted m-0">{{ auth()->user()->email }}</p>
+            <p class="font-13 text-muted m-0"> {{  strlen(auth()->user()->email) >= 15 ? substr( auth()->user()->email, 0, 2) . '...' . substr( auth()->user()->email, -10) : auth()->user()->email }} </p>
         </div>
     </div>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -47,8 +48,8 @@ class ProfileController extends Controller
             $admin->image = $filename_with_ext;
         }
         $admin->save();
-
-        return redirect()->route('admin.profile.edit')->withMessage('Profile updated successfully.');
+        Toastr::success('Profile updated successfully.', 'Message', ["positionClass" => "toast-bottom-right"]);
+        return redirect()->route('admin.profile.show')->withMessage('Profile updated successfully.');
     }
 
 

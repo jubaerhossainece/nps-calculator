@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\PersonalAccessToken;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -49,6 +50,13 @@ class UserController extends Controller
 
         $user->status = !$user->status;
         $user->save();
+
+        if(!$user->satus){
+            // Revoke all access tokens for the user
+            $user->tokens()->each(function (PersonalAccessToken $token) {
+                $token->delete();
+            });
+        }
         
     }
 }
