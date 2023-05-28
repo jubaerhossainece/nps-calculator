@@ -225,26 +225,28 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header row">
-                        <div class="col-4">
-                            <h4>Project feedback statistics</h4>
-                        </div>
-                        <div class="col-8">
-                            <div class="row mt-2">
-                                <div class="col-md-6 form-group">
-                                    {{-- <label> Projects </label> --}}
-                                    <select name="select_box" class="form-select form-select-lg mb-3 select_with_search"
-                                        id="projectId" data-live-search="true" onchange="getProjectFeedback()">
-                                        <option value="">Select Project</option>
-                                        @foreach ($projects as $key => $project)
-                                            <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-6 form-group">
-                                    {{-- <label> Date range </label> --}}
-                                    <input type="text" class="form-control" id="date-range"
-                                        placeholder="Select Date Ranges">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Project NPS statistics</h4>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row mt-2">
+                                    <div class="col-md-6 form-group">
+                                        {{-- <label> Projects </label> --}}
+                                        <select name="select_box" class="form-select form-select-lg mb-3 select_with_search"
+                                            id="projectId" data-live-search="true" onchange="getProjectFeedback()">
+                                            <option value="">Select Project</option>
+                                            @foreach ($projects as $key => $project)
+                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        {{-- <label> Date range </label> --}}
+                                        <input type="text" class="form-control" id="date-range"
+                                            placeholder="Select Date Ranges">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -298,6 +300,7 @@
     <script>
         $(document).ready(function() {
             $('.select_with_search').select2();
+            $('.select2-selection--single').css('height','38px');
         });
     </script>
 @endpush

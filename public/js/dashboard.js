@@ -139,7 +139,7 @@ function generateChartForProjectFeedback(response, chartType) {
                 plugins: {
                   title: {
                       display: true,
-                      text: 'NPS Score '+score,
+                      text: 'NPS Score : '+score,
                   }
               }
             }

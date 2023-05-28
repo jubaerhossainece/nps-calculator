@@ -186,12 +186,12 @@ class ProjectController extends Controller
         $promoter_count = $feedbacks->whereIn('rating', ProjectLinkFeedback::PROMOTER)->count();
         $total_response = $feedbacks->count();
 
-        $nps_score['DETRACTOR'] = $detractor_count / $total_response * 100;
-        $nps_score['PASSIVE'] = $passive_count / $total_response * 100;
-        $nps_score['PROMOTER'] = $promoter_count / $total_response * 100;
+        $nps_score['DETRACTOR'] = round( $detractor_count / $total_response * 100, 2);
+        $nps_score['PASSIVE'] = round( $passive_count / $total_response * 100, 2);
+        $nps_score['PROMOTER'] = round( $promoter_count / $total_response * 100, 2);
 
         // nps_score = (number of promoters - number of detractors) / number of responses * 100
-        $nps_score['score'] = ($promoter_count - $detractor_count) / $feedbacks->count() * 100;
+        $nps_score['score'] = round( ($promoter_count - $detractor_count) / $feedbacks->count() * 100, 2);
 
         return successResponseJson(['score' => $nps_score]);
     }
