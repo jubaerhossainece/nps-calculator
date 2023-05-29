@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\ReportAbuseController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\twoFaVerificationController;
+use App\Models\ReportAbuseForProjectLink;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
@@ -66,5 +68,9 @@ Route::group(['middleware' => 'auth'], function () {
     //2fa setting opetions
     Route::get('/2fa-setting', [twoFaVerificationController::class, 'index'])->name('twoFa.index');
     Route::get('/2fa-status-modify', [twoFaVerificationController::class, 'twoFaEnableStatus'])->name('twoFa.status-change');
+
+    //Report abuse 
+    Route::get('/abuse-reports', [ReportAbuseController::class, 'index'])->name('abuse-reports');
+    Route::get('/abuse-reports/list/{type}', [ReportAbuseController::class, 'list'])->name('abuse-reports');
     });
 });
