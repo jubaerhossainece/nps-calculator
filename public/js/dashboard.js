@@ -10,6 +10,7 @@ function getAudienceData(type) {
     url: 'dashboard/audience/' + type + '/chart',
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
+      console.log(response);
       generateChart(response, type)
     },
   })
@@ -75,7 +76,7 @@ function getProjectFeedback(type = 'month') {
   var startDate = dates[0]
   var endDate = dates[1]
 
-  console.log(projectId + ' ' + startDate + ' ' + endDate)
+  // console.log(projectId + ' ' + startDate + ' ' + endDate)
 
   $.ajax({
     type: 'GET',
@@ -146,6 +147,85 @@ function generateChartForProjectFeedback(response, chartType) {
         });
 }
 
+
+// NPS Line chart
+function getNpsData(type = 'date') {
+  let chartStatus = Chart.getChart('nps-score') // <canvas> id
+  if (chartStatus != undefined) {
+    chartStatus.destroy()
+  }
+
+  var projectId = $('#projectIdNps').val()
+  var dateRangeInput = $('#date-range-ano').val()
+  var dates = dateRangeInput.split(' - ')
+
+  var startDate = dates[0]
+  var endDate = dates[1]
+
+  $.ajax({
+    type: 'GET',
+    url: '/dashboard/nps-score/chart',
+    data: {
+      project_id: projectId,
+      from_date: startDate,
+      to_date: endDate,
+    },
+    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+    success: function (response) {
+      generateNpsChart(response, type)
+    },
+  })
+}
+
+function generateNpsChart(response, chartType) {
+  const ctx = document.getElementById('nps-score').getContext('2d')
+
+  const gradient = ctx.createLinearGradient(0, 0, 0, 400)
+  gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
+
+  const audienceChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: response.label,
+      datasets: [
+        {
+          data: response.data,
+          backgroundColor: gradient,
+          pointColor: '#fff',
+          borderWidth: 1,
+          tension: 0.3,
+          fill: 'origin',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: chartType,
+          },
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Audience',
+          },
+          suggestedMin: 0,
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  })
+}
+
+
+
 // recent audience datatables
 function getData() {
   $('#audience-table').DataTable({
@@ -184,6 +264,7 @@ $(document).ready(function () {
   getAudienceData('year')
   getData()
   getProjectFeedback()
+  getNpsData()
 })
 
 function changeStatus(id) {

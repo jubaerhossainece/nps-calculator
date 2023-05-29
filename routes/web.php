@@ -44,6 +44,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/recent-audience', [Admin\DashboardController::class, 'recentAudience']);
     Route::get('/dashboard/audience/{type}/chart', [Admin\DashboardController::class, 'audienceChartData']);
     Route::get('/dashboard/project-feedback/chart', [Admin\DashboardController::class, 'projectFeedbackChartData']);
+    Route::get('/dashboard/nps-score/chart', [Admin\DashboardController::class, 'npsScoreChartData']);
     
     // Profile 
     Route::get('/profile/show', [Admin\ProfileController::class, 'show'])->name('admin.profile.show');

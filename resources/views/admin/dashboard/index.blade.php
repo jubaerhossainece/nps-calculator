@@ -271,6 +271,51 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>NPS score</h4>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row mt-2">
+                                    <div class="col-md-6 form-group">
+                                        {{-- <label> Projects </label> --}}
+                                        <select name="select_box" class="form-select form-select-lg mb-3 select_with_search"
+                                            id="projectIdNps" data-live-search="true" onchange="getNpsData()">
+                                            <option value="">Select Project</option>
+                                            @foreach ($projects as $key => $project)
+                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        {{-- <label> Date range </label> --}}
+                                        <input type="text" class="form-control" id="date-range-ano"
+                                            placeholder="Select Date Ranges">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="cardCollpase2" class="collapse show">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <canvas id="nps-score"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
                         <h4>Recent Audience</h4>
                     </div>
 

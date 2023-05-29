@@ -178,4 +178,40 @@ class DashboardController extends Controller
             'score' => $nps_score['score'] ?? 0,
         ]);
     }
+
+    public function npsScoreChartData(Request $request){
+
+        $type = 'date';
+        $from_date = $request->from_date ?? '2023-05-22';
+        $to_date = $request->to_date ?? '2023-05-29';
+        $project_ids = $request->project_id ? [$request->project_id] : Project::orderBy('id','asc')->pluck('id')->toArray();
+
+        $score_ranges = [
+            'DETRACTOR' => [0,6],
+            'PASSIVE' => [7,8],
+            'PROMOTER' => [9,10],
+        ];
+
+        $collections = ProjectLinkFeedback::select( 
+        DB::raw('SUM(CASE WHEN rating >= ' . $score_ranges['DETRACTOR'][0] . ' AND rating <= ' . $score_ranges['DETRACTOR'][1] . ' THEN 1 ELSE 0 END) AS DETRACTOR'),
+        DB::raw('SUM(CASE WHEN rating >= ' . $score_ranges['PASSIVE'][0] . ' AND rating <= ' . $score_ranges['PASSIVE'][1] . ' THEN 1 ELSE 0 END) AS PASSIVE'),
+        DB::raw('SUM(CASE WHEN rating >= ' . $score_ranges['PROMOTER'][0] . ' AND rating <= ' . $score_ranges['PROMOTER'][1] . ' THEN 1 ELSE 0 END) AS PROMOTER'), DB::raw($type . " (created_at) as " . $type))
+        ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)
+        ->whereIntegerInRaw('project_id',$project_ids)
+        ->groupBy($type)
+        ->orderBy($type)
+        ->get();
+
+        return $collections->toArray();
+
+
+        foreach($collections as $key => $_data){
+            $label[] = $_data->date;
+            $data[] =  round( ($_data->PROMOTER - $_data->DETRACTOR) / ( $_data->PROMOTER + $_data->PASSIVE +  $_data->DETRACTOR) * 100, 2) ?? 0;
+        }
+        return response([
+            'label' => $label,
+            'data' => $data,
+        ]);
+    }
 }

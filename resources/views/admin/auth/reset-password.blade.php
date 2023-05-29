@@ -3,7 +3,7 @@
 @section('form-title','Password reset to NPS')
 @section('content')
 
-        <form method="POST" action="{{ route('password.email') }}">
+        <form method="POST" action="{{ route('password.update') }}">
             @csrf
 
             <!-- Password Reset Token -->
