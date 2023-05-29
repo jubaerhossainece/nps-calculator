@@ -71,6 +71,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     //Report abuse 
     Route::get('/abuse-reports', [ReportAbuseController::class, 'index'])->name('abuse-reports');
-    Route::get('/abuse-reports/list/{type}', [ReportAbuseController::class, 'list'])->name('abuse-reports');
+    Route::get('/abuse-reports/list/{type}', [ReportAbuseController::class, 'list'])->name('abuse-reports.list');
     });
 });

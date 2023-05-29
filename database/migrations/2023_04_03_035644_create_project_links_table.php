@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(Project::class)->constrained()->cascadeOnDelete(); //TODO: project_id should be unique
             $table->string('name');
             $table->string('code')->unique();
+            $table->boolean('status')->default(true);
             $table->string('response')->default('We really appreciate your feedback.');
             $table->timestamps();
         });

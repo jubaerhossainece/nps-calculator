@@ -37,7 +37,7 @@
 					</div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover table-bordered" id="project-table">
+                            <table class="table table-hover table-bordered" id="project-report-table">
                                 <thead>
                                 </thead>
                             </table>
@@ -59,7 +59,7 @@
 
 	function getData(type){
 		
-		$('#project-table').DataTable({
+		$('#project-report-table').DataTable({
 		processing: true,
 		serverSide: true,
 		autoWidth: true,
@@ -71,12 +71,12 @@
 		},
 		columns: [
 				{data: "DT_RowIndex",name:'DT_RowIndex', title: "Serial", searchable: false, orderable: false},
-				{data: 'name', title:'Name',orderable: false},
-				{data: 'email', title:'Email',orderable: false},
-				{data: 'projects', title:'Total Project'},
-				{data: 'feedbacks', title:'Total NPS Collect'},
-				
+				{data: 'user_name', title:'User',orderable: false},
+				{data: 'project_name', title:'Project Name',orderable: false},		
 				{data: 'status', title:'Status',orderable: false},
+				{data: 'code', title:'Code',orderable: false},		
+				{data: 'report_type_id', title:'Report Type',orderable: false},
+				{data: 'comment', title:'Report Comment',orderable: false},
 				{data: 'action', title:'Action',orderable: false},
 			]
 		});

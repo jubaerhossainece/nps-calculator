@@ -43,6 +43,11 @@
             
             <a href="{{route('users')}}"><i class="fas fa-users"></i> Audiences</a>
         </li>
+
+        <li>
+            
+            <a href="{{route('abuse-reports')}}"><i class="fas fa-users"></i> Report abuses </a>
+        </li>
             
         <li>
             <a href="{{route('admin.profile.show')}}"><i class="fas fa-user-circle"></i> Profile</a>
