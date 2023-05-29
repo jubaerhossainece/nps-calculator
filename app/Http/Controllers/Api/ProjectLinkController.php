@@ -8,6 +8,7 @@ use App\Http\Resources\LinkResource;
 use App\Models\Project;
 use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
+use App\Models\Setting;
 use App\Services\ProjectLinkService;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -142,5 +143,48 @@ class ProjectLinkController extends Controller
         $link->feedbacks()->create($validated);
 
         return successResponseJson(['message' => $link->response], 'Feedback submitted successfully.');
+    }
+
+
+    /**
+     * Display the specified resource for report abuse.
+     */
+    public function showReportAbuse( Request $request,string $code ){
+
+        $link = ProjectLink::where('code', $code)->first();
+
+        if (!$link) {
+            return errorResponseJson('No Link found!', 404);
+        }
+
+        $report_abuse_options = Setting::getReportAbuseOptionList();
+
+        return successResponseJson($report_abuse_options, 'Report abuse option list.');      
+
+    }
+
+    public function storeReportAbuse(Request $request){
+        $link = ProjectLink::where('code', $request->code)->first();
+
+        if (!$link) {
+            return errorResponseJson('No Link found!', 404);
+        }
+
+        $request->merge([
+            'project_link_id' => $link->id,
+            'project_id' => $link->project->id
+        ]);
+// return $request;
+        $validated = $request->validate([
+            'code' => ['required', 'string'],
+            'report_abuse_option_id' => ['required'],
+            'comment' => ['nullable', 'string', 'max:5000'],
+            'project_link_id' => ['required', 'integer'],
+            'project_id' => ['required', 'integer']
+        ]);
+
+        $link->reportAbuse()->create($validated);
+
+        return successResponseJson(['message' => "Thanks for you submission. We will take an action according your report as soon as possible."], 'Report abuse submitted successfully.');
     }
 }

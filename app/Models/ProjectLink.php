@@ -30,4 +30,9 @@ class ProjectLink extends Model
         return $this->hasMany(ProjectLinkFeedback::class);
     }
 
+    public function reportAbuse()
+    {
+        return $this->hasMany(ReportAbuseForProjectLink::class);
+    }
+
 }

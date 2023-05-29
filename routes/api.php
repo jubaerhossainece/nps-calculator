@@ -58,6 +58,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('links/{code}', [ProjectLinkController::class, 'show']);
     Route::post('feedback', [ProjectLinkController::class, 'submitFeedback']);
+    Route::get('report-abuse/{code}', [ProjectLinkController::class, 'showReportAbuse']);
+    Route::post('store/report-abuse', [ProjectLinkController::class, 'storeReportAbuse']);
 });
 
 
