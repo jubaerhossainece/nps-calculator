@@ -31,4 +31,8 @@ class ReportAbuseForProjectLink extends Model
         return Setting::get_data_by_index('getReportAbuseOptionList', $this->report_type_id, 'name');
     }
 
+    public function getReportTypeUsingId($id){
+        return Setting::get_data_by_index('getReportAbuseOptionList', $id, 'name');
+    }
+
 }

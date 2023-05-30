@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectLink;
 use App\Models\ReportAbuseForProjectLink;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,8 +22,8 @@ class ReportAbuseController extends Controller
         ->join('project_links as plink', 'plink.id', '=', 'rep.project_link_id')
         ->join('projects as p', 'p.id', '=', 'plink.project_id')
         ->join('users as u', 'u.id', '=', 'p.user_id')
-        ->select('rep.id as id','rep.report_abuse_option_id as report_type_id','rep.comment as comment',DB::raw('date(rep.created_at) as date'), 'plink.id as project_link_id', 'plink.code', 'plink.status as project_link_status', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status')
-        ->get();
+        ->select('rep.id as id','rep.report_abuse_option_id as report_type_id','rep.comment as comment',DB::raw('date(rep.created_at) as date'), 'plink.id as project_link_id', 'plink.code', 'plink.status as project_link_status', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status');
+        // ->get();
 
         if($type == 'inactive'){
             $reports = $reports->where('status', false);
@@ -63,6 +64,26 @@ class ReportAbuseController extends Controller
         ->make(true);       
         
        
+    }
+
+    public function getReportRecords($project_link_id){
+        $link_reports =DB::table('report_abuse_for_project_links as rep')
+        ->join('project_links as plink', 'plink.id', '=', 'rep.project_link_id')
+        ->join('projects as p', 'p.id', '=', 'plink.project_id')
+        ->join('users as u', 'u.id', '=', 'p.user_id')
+        ->where('rep.project_link_id', '=', $project_link_id)
+        ->select('rep.id as id','rep.report_abuse_option_id as report_type_id','rep.comment as comment',DB::raw('date(rep.created_at) as date'), 'plink.id as project_link_id', 'plink.code', 'plink.status as project_link_status', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status')
+        ->get();
+
+        $reportModel = new ReportAbuseForProjectLink();
+        $projectLink = ProjectLink::find($project_link_id);
+        
+        return view('admin.survey_reports.full-report-list',compact('link_reports','reportModel','projectLink'));
+    }
+
+    public function getReportRecordsTopFive($project_link_id){
+        $link_reports = ReportAbuseForProjectLink::select('id','report_abuse_option_id','comment')->where('project_link_id', $project_link_id)->latest('id')->take(5)->get();
+        return view('admin.survey_reports.modal.modal_table', compact('link_reports','project_link_id'));
     }
 
 }

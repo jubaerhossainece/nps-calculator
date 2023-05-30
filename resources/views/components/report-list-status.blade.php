@@ -5,5 +5,6 @@
     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
       <a class="dropdown-item" href="" onclick="changeStatus({{$report->user_id}}); return false;">{{$report->status ? 'Deactivate user' : 'Activate user'}}</a>
       <a class="dropdown-item" href="" onclick="changeProjectLinkStatus({{$report->project_link_id}}); return false;">{{$report->project_link_status ? 'Deactivate project link' : 'Activate project link'}}</a>
+      <span class="dropdown-item"  onclick="reportLogs({{$report->project_link_id}}); return false;" style="cursor: pointer;">Reports</span>
     </div>
 </div>
