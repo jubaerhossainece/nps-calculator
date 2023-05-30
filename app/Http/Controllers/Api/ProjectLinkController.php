@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
 use App\Models\Setting;
+use App\Models\User;
 use App\Services\ProjectLinkService;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -67,14 +68,28 @@ class ProjectLinkController extends Controller
             ->first();
 
         if (!$link) {
-            return errorResponseJson('No link found', 404);
+            return errorResponseJson('No link found.', 404);
         }
+
+        $project = Project::find($link->project_id);
+
+        if (!$project) {
+            return errorResponseJson('Project not found.', 404);
+        }
+
+        $user = User::find($project->user_id);
+
+        if( !$user || !$user->status){
+            return errorResponseJson('Link is deactivated.', 400);
+        }
+
         $device_id = $request->device_id ?? Str::random(15);
         $hasAlreadyFeedback = ProjectLinkFeedback::where('project_link_id', $link->id)
             ->where('created_at', '>', Carbon::now()->subHours(1))
             ->whereJsonContains('data->device_id', $device_id)->first();
+            
         if ($hasAlreadyFeedback) {
-            return errorResponseJson('You cannot make two consecutive submissions within one hour, please try later!', 400);
+            return errorResponseJson('You cannot make two consecutive submissions within one hour, please try after one hour.', 400);
         }
         return successResponseJson(['link' => new LinkResource($link)]);
     }

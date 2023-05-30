@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Http\Request;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Password;
 
 class PasswordResetLinkController extends Controller
@@ -39,9 +41,24 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
-        return $status == Password::RESET_LINK_SENT
-                    ? back()->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+        //Check the admin is exist or not in our system
+        //if not exits then show an error
+        $admin = Admin::where('email', $request->email)->first();
+
+        if (!$admin) {
+            Toastr::error('Email not found.', 'Message', ["positionClass" => "toast-bottom-right"]);
+            return  back()->withInput($request->only('email'));
+        }
+
+        $sent = $status == Password::RESET_LINK_SENT;
+
+        if ($sent) {
+            Toastr::success('A reset link sent to your email.', 'Message', ["positionClass" => "toast-bottom-right"]);
+            return redirect()->route('login')->with('status', __($status));
+        }
+
+        Toastr::error('Something wrong.', 'Message', ["positionClass" => "toast-bottom-right"]);
+        return  back()->withInput($request->only('email'))
+            ->withErrors(['status' => __($status)]);
     }
 }

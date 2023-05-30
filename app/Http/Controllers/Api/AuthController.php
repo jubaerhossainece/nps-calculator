@@ -56,7 +56,7 @@ class AuthController extends Controller
         }
 
         if(!$user->status){
-            return errorResponseJson('You are ban from our system. Please contact with authorization', 400);
+            return errorResponseJson('You have been deactivated from our system.', 400);
         }
 
         return successResponseJson([

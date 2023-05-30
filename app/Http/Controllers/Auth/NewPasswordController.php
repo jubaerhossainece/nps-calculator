@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 
@@ -54,12 +56,27 @@ class NewPasswordController extends Controller
             }
         );
 
+        //Check the admin is exist or not in our system
+        //if not exits then show an error
+        $admin = Admin::where('email', $request->email)->first();
+
+        if (!$admin) {
+            Toastr::error('Email not found.', 'Message', ["positionClass" => "toast-bottom-right"]);
+            return  back()->withInput($request->only('email'));
+        }
+
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
-        return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                            ->withErrors(['email' => __($status)]);
+        //check the response is password reset or others, it retun false if already use the link with a token.
+        $reset = $status == Password::PASSWORD_RESET;
+
+        if ($reset) {
+            Toastr::success('Password reset successful.', 'Message', ["positionClass" => "toast-bottom-right"]);
+            return redirect()->route('login')->with('status', __($status));
+        }
+        Toastr::error('Something wrong.', 'Message', ["positionClass" => "toast-bottom-right"]);
+        return back()->withInput($request->only('email'))
+            ->withErrors(['status' => __($status)]);
     }
 }

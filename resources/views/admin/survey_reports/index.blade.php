@@ -12,7 +12,7 @@
                 <div class="card">
 					<div class="card-header d-flex justify-content-between bg-white">
 						<div>
-							<h4>Audience List</h4>
+							<h4>Survey Report Abuse List</h4>
 						</div>
 
 						<div>
