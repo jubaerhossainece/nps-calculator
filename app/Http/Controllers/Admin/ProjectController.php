@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\ProjectLink;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -92,5 +93,13 @@ class ProjectController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function toggleStatus($id){
+        $link = ProjectLink::find($id);
+
+        $link->status = !$link->status;
+        $link->save();
+       
     }
 }

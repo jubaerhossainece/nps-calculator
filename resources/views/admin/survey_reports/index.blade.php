@@ -73,8 +73,9 @@
 				{data: "DT_RowIndex",name:'DT_RowIndex', title: "Serial", searchable: false, orderable: false},
 				{data: 'user_name', title:'User',orderable: false},
 				{data: 'project_name', title:'Project Name',orderable: false},		
-				{data: 'status', title:'Status',orderable: false},
+				{data: 'status', title:'User Status',orderable: false},
 				{data: 'code', title:'Code',orderable: false},		
+				{data: 'project_link_status', title:'Survey link status',orderable: false},		
 				{data: 'report_type_id', title:'Report Type',orderable: false},
 				{data: 'comment', title:'Report Comment',orderable: false},
 				{data: 'action', title:'Action',orderable: false},
@@ -102,6 +103,23 @@
 		});
   
 	}
+
+	
+	function changeProjectLinkStatus(id){
+		console.log(id);
+
+$.ajax({
+	type: "POST",
+	url: "/project-link/"+id+"/status-change",
+	headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+	success: function(data){
+		let type = $(".nav-link.active").attr('id');
+		
+		getData(type);
+	}
+});
+
+}
 
 </script>
 @endpush

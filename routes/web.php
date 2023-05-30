@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ReportAbuseController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\twoFaVerificationController;
@@ -59,6 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
     // Project
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
     Route::get('/projects/list', [ProjectController::class, 'list'])->name('projects.list');
+    Route::post('/project-link/{id}/status-change', [ProjectController::class, 'toggleStatus'])->name('project-link.status-change');
+
 
     // Routes for audiences
     Route::get('/audiences', [UserController::class, 'index'])->name('users');

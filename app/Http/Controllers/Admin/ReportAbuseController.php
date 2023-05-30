@@ -21,7 +21,7 @@ class ReportAbuseController extends Controller
         ->join('project_links as plink', 'plink.id', '=', 'rep.project_link_id')
         ->join('projects as p', 'p.id', '=', 'plink.project_id')
         ->join('users as u', 'u.id', '=', 'p.user_id')
-        ->select('rep.id as id','rep.report_abuse_option_id as report_type_id','rep.comment as comment',DB::raw('date(rep.created_at) as date'), 'plink.code', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status')
+        ->select('rep.id as id','rep.report_abuse_option_id as report_type_id','rep.comment as comment',DB::raw('date(rep.created_at) as date'), 'plink.id as project_link_id', 'plink.code', 'plink.status as project_link_status', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status')
         ->get();
 
         if($type == 'inactive'){
@@ -29,6 +29,9 @@ class ReportAbuseController extends Controller
         }elseif($type == 'active'){
             $reports = $reports->where('status', true);
         }
+
+        $active_status = "<span class='text-success'><i class='mr-2 fas fa-circle fa-xs'></i>Active</span>";
+        $inactive_status = "<span class='text-danger'><i class='mr-2 fas fa-circle fa-xs'></i>Inactive</span>";
 
         return DataTables::of($reports)
         ->addColumn('name', function($report){
@@ -40,19 +43,22 @@ class ReportAbuseController extends Controller
         ->addColumn('code', function($report){
             return $report->code;
         })
+        ->addColumn('project_link_status', function($report) use($active_status, $inactive_status){
+            return $report->project_link_status ?  $active_status : $inactive_status ;
+        })
         ->addColumn('report_type_id', function($report){
             $model = new ReportAbuseForProjectLink();
             $model->report_type_id = $report->report_type_id;
             return $model->getReportType();
         })
-        ->addColumn('status', function($report){
-            return $report->status ? "<span class='text-success'><i class='mr-2 fas fa-circle fa-xs'></i>Active</span>" : "<span class='text-danger'><i class='mr-2 fas fa-circle fa-xs'></i>Inactive</span>";
+        ->addColumn('status', function($report) use($active_status, $inactive_status){
+            return $report->status ? $active_status : $inactive_status;
         })
         ->addColumn('action', function($report){
             
             return view('components.report-list-status', compact('report'));
         })
-        ->rawColumns(['status', 'action'])
+        ->rawColumns(['status', 'action', 'project_link_status'])
         ->addIndexColumn()
         ->make(true);       
         

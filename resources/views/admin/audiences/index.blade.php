@@ -73,8 +73,8 @@
 				{data: "DT_RowIndex",name:'DT_RowIndex', title: "Serial", searchable: false, orderable: false},
 				{data: 'name', title:'Name',orderable: false},
 				{data: 'email', title:'Email',orderable: false},
-				{data: 'projects', title:'Total Project'},
-				{data: 'feedbacks', title:'Total NPS Collect'},
+				{data: 'projects', title:'Total Project',orderable: false},
+				{data: 'feedbacks', title:'Total NPS Collect',orderable: false},
 				
 				{data: 'status', title:'Status',orderable: false},
 				{data: 'action', title:'Action',orderable: false},
