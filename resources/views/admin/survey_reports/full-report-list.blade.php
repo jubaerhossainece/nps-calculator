@@ -7,54 +7,155 @@
 @section('content')
     <div class="container-fluid">
         <!-- start page title -->
-         <div class="card">
-            <div class="row">
-                <div class="col col-sm-6">
-                    <h4 class="page-title">Report</h4>
-                    <table class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Project Name</th>
-                                <td id="project_name">
-                                    {{ $projectLink->name }}
-                                </td>
-                            </tr>
-    
-                            <tr>
-                                <th>Code</th>
-                                <td id="code">
-                                    {{ $projectLink->code }}
-                                </td>
-                            </tr>
-    
-                        </thead>
-                    </table>
+        <div class="row mt-4 mb-3">
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between bg-white">
+                        <div>
+                            <h4>Survey Report Abuse List</h4>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>User name</th>
+                                        <td id="uname">
+                                            {{ $projectLink->user_name }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email</th>
+                                        <td id="uemail">
+                                            {{ $projectLink->user_email }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Project Name</th>
+                                        <td id="project_name">
+                                            {{ $projectLink->project_name }}
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <th>Code</th>
+                                        <td id="code">
+                                            {{ $projectLink->code }}
+                                        </td>
+                                    </tr>
+
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="full-report-table">
+                                <thead>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Report Type</th>
-                        <th scope="col">Comment</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse ($link_reports as $key=>$report)
-                        <tr>
-                            <td>{{ ((request('page') ?: 1) - 1) * 10 + $key + 1 }}</td>
-                            <td>{{ $reportModel->getReportTypeUsingId($report->report_type_id) }}</td>
-                            <td>{{ $report->comment }}</td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="3" class="text-center">No data available</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-         </div>
+        </div>
         <!-- end page title -->
 
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function getData(id) {
+
+            $('#full-report-table').DataTable({
+                processing: true,
+                serverSide: true,
+                autoWidth: true,
+                destroy: true,
+                // order: [4, "desc"],
+
+                ajax: {
+                    url: "/abuse-reports-records/all/" + id
+                },
+                columns: [{
+                        data: "DT_RowIndex",
+                        name: 'DT_RowIndex',
+                        title: "Serial",
+                        searchable: false,
+                        orderable: false
+                    },
+                    {
+                        data: 'report_type_id',
+                        title: 'Report Type',
+                        searchable: true,
+                        orderable: false
+                    },
+                    {
+                        data: 'comment',
+                        title: 'Comment',
+                        searchable: true,
+                        orderable: false
+                    },
+
+                ]
+            });
+        }
+
+        $(document).ready(function() {
+            const url = new URL(window.location.href);
+            const id = url.pathname.split("/").pop();
+            getData(id);
+
+        });
+
+        function changeStatus(id) {
+
+            $.ajax({
+                type: "POST",
+                url: "/audiences/" + id + "/status-change",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    let type = $(".nav-link.active").attr('id');
+
+                    getData(type);
+                }
+            });
+
+        }
+
+
+        function changeProjectLinkStatus(id) {
+            console.log(id);
+
+            $.ajax({
+                type: "POST",
+                url: "/project-link/" + id + "/status-change",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    let type = $(".nav-link.active").attr('id');
+
+                    getData(type);
+                }
+            });
+
+        }
+
+        function reportLogs(project_link_id) {
+            $.ajax({
+                type: "GET",
+                url: "/abuse-reports-records/top-five/" + project_link_id,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    $('.modal-body').html(data);
+                    $('#abuseReportModal').modal('show');
+                }
+            });
+
+        }
+    </script>
+@endpush

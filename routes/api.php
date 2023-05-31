@@ -30,10 +30,10 @@ Route::group(['prefix' => 'v1'], function () {
     /* ================================== auth API starts ==================================*/
     Route::post('login', [AuthController::class, 'login']);
     Route::post('register', [AuthController::class, 'register']);
-//    route::post('verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
-   route::post('reset-password-mail', [AuthController::class, 'resetPasswordMail'])->name('reset.password.mail');
-//    route::post('resend/verification-code', [AuthController::class, 'resendVerifyCode'])->name('code.resend');
-   Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset.submit');
+    //    route::post('verify', [AuthController::class, 'verifyEmail'])->name('email.verify');
+    route::post('reset-password-mail', [AuthController::class, 'resetPasswordMail'])->name('reset.password.mail');
+    //    route::post('resend/verification-code', [AuthController::class, 'resendVerifyCode'])->name('code.resend');
+    Route::post('password/reset', [AuthController::class, 'resetPassword'])->name('password.reset.submit');
     /* ================================== auth API ends ==================================*/
 
     Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -46,14 +46,14 @@ Route::group(['prefix' => 'v1'], function () {
         /* =========end user profile api========== */
 
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
+        Route::post('projects-update/{projectId}', [ProjectController::class, 'update']);
         Route::get('projects/{projectId}/feedbacks', [ProjectController::class, 'getFeedbacks']);
         Route::get('projects/{projectId}/score', [ProjectController::class, 'getProjectScore']);
         Route::get('projects/{projectId}/users', [ProjectController::class, 'getProjectUsers']);
 
         Route::get('links', [ProjectLinkController::class, 'index']);
-//        Route::post('links', [ProjectLinkController::class, 'store']);
+        //        Route::post('links', [ProjectLinkController::class, 'store']);
         Route::post('links/{code}', [ProjectLinkController::class, 'update']);
-
     });
 
     Route::get('links/{code}', [ProjectLinkController::class, 'show']);
@@ -61,5 +61,3 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('report-abuse/{code}', [ProjectLinkController::class, 'showReportAbuse']);
     Route::post('store/report-abuse', [ProjectLinkController::class, 'storeReportAbuse']);
 });
-
-

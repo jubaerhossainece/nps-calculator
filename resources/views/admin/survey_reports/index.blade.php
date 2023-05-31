@@ -88,13 +88,13 @@
                         orderable: false
                     },
                     {
-                        data: 'project_name',
-                        title: 'Project Name',
+                        data: 'status',
+                        title: 'User Status',
                         orderable: false
                     },
                     {
-                        data: 'status',
-                        title: 'User Status',
+                        data: 'project_name',
+                        title: 'Project Name',
                         orderable: false
                     },
                     {
@@ -105,16 +105,6 @@
                     {
                         data: 'project_link_status',
                         title: 'Survey link status',
-                        orderable: false
-                    },
-                    {
-                        data: 'report_type_id',
-                        title: 'Report Type',
-                        orderable: false
-                    },
-                    {
-                        data: 'comment',
-                        title: 'Report Comment',
                         orderable: false
                     },
                     {
