@@ -30,12 +30,9 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $validated = $request->validated();
-        if ($request->hasFile('logo')) {
-            $image = $request->file('logo');
-            $image_name = $image->hashName();
-            $path = $image->storeAs('upload/images/project-logo', $image_name, 'public');
-            $validated['logo'] = $path;
-        }
+
+        //@params description to upload image respectively request, field_name, upload_path(destination) and exist_file as exist file path.
+        $validated['logo'] = imageUpload($request,'logo','upload/images/project-logo',null);
 
         $project = Project::create($validated);
 
@@ -64,15 +61,18 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreProjectRequest $request, string $id)
+    public function update(StoreProjectRequest $request, Project $project)
     {
-        $project = auth('sanctum')->user()->projects()->find($id);
-
         if (!$project) {
             return errorResponseJson('Project not found', 404);
         }
+        $exist_file = $project->logo ?? null;
+        $validated = $request->validated();
 
-        $project->update($request->validated());
+        //@params description to upload image respectively request, field_name, upload_path(destination) and exist_file as exist file path.
+        $validated['logo'] = imageUpload($request,'logo','upload/images/project-logo',$exist_file);
+
+        $project->update($validated);
 
         return successResponseJson([
             'project' => new ProjectResource($project),

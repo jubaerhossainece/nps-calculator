@@ -11,6 +11,9 @@
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 
 /**
  * api error response as json format
@@ -20,7 +23,7 @@ use Illuminate\Http\RedirectResponse;
  * @return JsonResponse
  */
 
-if (! function_exists('errorResponseJson')) {
+if (!function_exists('errorResponseJson')) {
     function errorResponseJson(string $error_msg, int $error_code, $errors = null): JsonResponse
     {
         return response()->json([
@@ -31,28 +34,28 @@ if (! function_exists('errorResponseJson')) {
             'errors' => $errors,
         ], $error_code);
     }
-//    function errorResponseJson(Exception $exception, int $code = 500): JsonResponse
-//    {
-//        $error_code = $exception->getCode() == '0' ? $code : $exception->getCode();
-//        $error_msg = $exception->getMessage();
-//        $errors = null;
-//
-//        if (method_exists($exception,'errors')){
-//            $errors = $exception->errors();
-//        }
-//
-//        if (!config('app.debug')){
-//            $error_msg = 'Something went wrong!';
-//        }
-//
-//        return response()->json([
-//            'status' => false,
-//            'status_code' => $error_code,
-//            'api' => url()->current(),
-//            'message' => $error_msg,
-//            'errors' => $errors,
-//        ], $error_code);
-//    }
+    //    function errorResponseJson(Exception $exception, int $code = 500): JsonResponse
+    //    {
+    //        $error_code = $exception->getCode() == '0' ? $code : $exception->getCode();
+    //        $error_msg = $exception->getMessage();
+    //        $errors = null;
+    //
+    //        if (method_exists($exception,'errors')){
+    //            $errors = $exception->errors();
+    //        }
+    //
+    //        if (!config('app.debug')){
+    //            $error_msg = 'Something went wrong!';
+    //        }
+    //
+    //        return response()->json([
+    //            'status' => false,
+    //            'status_code' => $error_code,
+    //            'api' => url()->current(),
+    //            'message' => $error_msg,
+    //            'errors' => $errors,
+    //        ], $error_code);
+    //    }
 }
 
 
@@ -73,4 +76,25 @@ function successResponseJson($data = null, string $message = 'Success', int $cod
         'message' => $message,
         'data' => $data,
     ], $code);
+}
+
+function imageUpload(Request $request, $field, $upload_path = "", $exist_file = null)
+{
+
+    if ($request->hasFile($field)) {
+        $image = $request->file($field);
+        $image_name = $image->hashName();
+
+        if ($exist_file != null) {
+            $imagePath = $exist_file;
+
+            if (Storage::disk('public')->exists($imagePath)) {
+                Storage::disk('public')->delete($imagePath);
+            }
+        }
+        $path = $image->storeAs($upload_path, $image_name, 'public');
+    } else {
+        $path = $exist_file;
+    }
+    return $path;
 }
