@@ -10,7 +10,6 @@ function getAudienceData(type) {
     url: 'dashboard/audience/' + type + '/chart',
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
-      console.log(response);
       generateChart(response, type)
     },
   })
@@ -76,8 +75,6 @@ function getProjectFeedback(type = 'month') {
   var startDate = dates[0]
   var endDate = dates[1]
 
-  // console.log(projectId + ' ' + startDate + ' ' + endDate)
-
   $.ajax({
     type: 'GET',
     url: 'dashboard/project-feedback/chart',
@@ -94,7 +91,6 @@ function getProjectFeedback(type = 'month') {
 }
 
 function generateChartForProjectFeedback(response, chartType) {
-  console.log(response);
   var myChart = document.getElementById('project-feedback').getContext('2d');
         var label = response.label;
         var data =response.data;
@@ -182,7 +178,6 @@ function generateNpsChart(response, chartType) {
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
   gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
-
   const audienceChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -204,13 +199,13 @@ function generateNpsChart(response, chartType) {
         x: {
           title: {
             display: true,
-            text: chartType,
+            text: "Date",
           },
         },
         y: {
           title: {
             display: true,
-            text: 'Audience',
+            text: 'NPS Score',
           },
           suggestedMin: 0,
         },
@@ -263,7 +258,7 @@ function getData() {
 $(document).ready(function () {
   getAudienceData('year')
   getData()
-  getProjectFeedback()
+  // getProjectFeedback()
   getNpsData()
 })
 

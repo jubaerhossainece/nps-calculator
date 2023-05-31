@@ -202,16 +202,14 @@ class DashboardController extends Controller
         ->orderBy($type)
         ->get();
 
-        return $collections->toArray();
-
 
         foreach($collections as $key => $_data){
             $label[] = $_data->date;
             $data[] =  round( ($_data->PROMOTER - $_data->DETRACTOR) / ( $_data->PROMOTER + $_data->PASSIVE +  $_data->DETRACTOR) * 100, 2) ?? 0;
         }
         return response([
-            'label' => $label,
-            'data' => $data,
+            'label' => $label ?? [],
+            'data' => $data ?? [],
         ]);
     }
 }

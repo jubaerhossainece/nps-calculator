@@ -222,7 +222,7 @@
 
         </div>
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -233,7 +233,6 @@
                             <div class="col-md-8">
                                 <div class="row mt-2">
                                     <div class="col-md-6 form-group">
-                                        {{-- <label> Projects </label> --}}
                                         <select name="select_box" class="form-select form-select-lg mb-3 select_with_search"
                                             id="projectId" data-live-search="true" onchange="getProjectFeedback()">
                                             <option value="">Select Project</option>
@@ -243,7 +242,6 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        {{-- <label> Date range </label> --}}
                                         <input type="text" class="form-control" id="date-range"
                                             placeholder="Select Date Ranges">
                                     </div>
@@ -265,7 +263,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-md-12">
