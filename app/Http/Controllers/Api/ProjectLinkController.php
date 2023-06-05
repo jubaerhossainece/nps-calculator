@@ -172,7 +172,7 @@ class ProjectLinkController extends Controller
             return errorResponseJson('No Link found!', 404);
         }
 
-        $report_abuse_options = Setting::getReportAbuseOptionList();
+        $report_abuse_options = Setting::get_array_without_index(Setting::getReportAbuseOptionList());
 
         return successResponseJson($report_abuse_options, 'Report abuse option list.');      
 

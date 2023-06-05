@@ -11,11 +11,13 @@ class Setting extends Model
 
     public static function getReportAbuseOptionList(){
         return [
-           1 => ['name' => 'Nudity','id' => 1],
-           2 => ['name' => 'Promotes hate, violence or illegal/offensive activities', 'id' => 2],
-           3 => ['name' => 'Spam, malware or "phishing" (fake login)', 'id' => 3],
-           4 => ['name' => 'Private and confidential information', 'id' => 4],
-           5 => ['name' => 'Copyright infringement', 'id' => 5],
+           1 => ['name' => 'Nudity','title'=>'Our policy on nudity','title_description'=> 'We don\'t allow the sharing or publishing of content depicting nudity, graphic sex acts, or other sexually explicit material. We also don\'t allow content that drives traffic to commercial pornography sites or that promotes pedophilia, incest, or bestiality.','id' => 1],
+           2 => ['name' => 'Promotes hate, violence or illegal/offensive activities','title'=>'Our policy on hate, violence and illegal or offensive activities', 'title_description'=>'Users may not share or publish content that promotes hate or violence towards other groups based on race, ethnicity, religion, disability, gender, age, veteran status, or sexual orientation/gender identity. Please note that individuals are not considered a protected group.
+           Users may not share or publish crude content or violent content that is shockingly graphic.
+           We will also remove content that threatens, harasses or bullies other people or promotes dangerous and illegal activities.', 'id' => 2],
+           3 => ['name' => 'Spam, malware or "phishing" (fake login)','title'=>'Our policy on spam, malware and "phishing" (fake login)','title_description'=>'We do not allow spamming or content that transmits viruses, causes pop-ups, attempts to install software with the user\'s consent, or otherwise impacts users with malicious code or scripts. Also, we do not allow phishing activity.', 'id' => 3],
+           4 => ['name' => 'Private and confidential information','title'=>'Our policy on private and confidential information', 'title_description'=> 'We do not allow the posting of another person\'s personal and confidential account or identification information. For example, we do not allow the sharing or publishing of another person\'s credit card number or account passwords.', 'id' => 4],
+           5 => ['name' => 'Copyright infringement','title'=>'Our policy on copyright infringement', 'title_description'=>'It is our policy to respond to clear notices of alleged copyright infringement. If you own the copyright to material in this document, please use this form to report an official Digital Millennium Copyright Act (DMCA) complaint:', 'id' => 5],
         ];
     }
 

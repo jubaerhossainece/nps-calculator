@@ -15,7 +15,7 @@ class LinkResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'link' => config('custom.shareable_app_url') . $this->code,
+            'link' =>  config('app.env') == 'production' ? config('custom.shareable_app_url') . $this->code : config('custom.shareable_app_url_local') . $this->code ,
             'link_code' => $this->code,
             'response' => $this->response,
             'project' => new ProjectResource($this->whenLoaded('project'))
