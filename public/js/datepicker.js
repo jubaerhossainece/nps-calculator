@@ -25,24 +25,23 @@ $(document).ready(function () {
 
 $(document).ready(function () {
   $('#date-range-ano').daterangepicker({
-    singleDatePicker: true,
     opens: 'left',
     autoUpdateInput: false,
     locale: {
       format: 'YYYY-MM-DD',
     },
-  })
+  });
 
   $('#date-range-ano').on('apply.daterangepicker', function (ev, picker) {
     $(this).val(
       picker.startDate.format('YYYY-MM-DD') +
         ' - ' +
-        picker.endDate.format('YYYY-MM-DD'),
-    )
-    getNpsData()
-  })
+        picker.endDate.format('YYYY-MM-DD')
+    );
+    getNpsData();
+  });
 
   $('#date-range-ano').on('cancel.daterangepicker', function (ev, picker) {
-    $(this).val('')
-  })
-})
+    $(this).val('');
+  });
+});

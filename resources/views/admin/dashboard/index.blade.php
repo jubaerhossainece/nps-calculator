@@ -287,8 +287,7 @@
                                     </div>
                                     <div class="col-md-6 form-group">
                                         {{-- <label> Date range </label> --}}
-                                        <input type="text" class="form-control" id="date-range-ano"
-                                            placeholder="Select Date Ranges">
+                                        <input type="text" class="form-control" id="date-range-ano" placeholder="Select Date Range">
                                     </div>
                                 </div>
                             </div>
