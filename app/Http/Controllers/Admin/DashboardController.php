@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectLinkFeedback;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -182,8 +183,8 @@ class DashboardController extends Controller
     public function npsScoreChartData(Request $request){
 
         $type = 'date';
-        $from_date = $request->from_date ?? '2023-05-22';
-        $to_date = $request->to_date ?? '2023-05-29';
+        $from_date = $request->from_date ??  Carbon::today()->startOfMonth()->toDateString();
+        $to_date = $request->to_date ?? Carbon::today()->endOfMonth()->toDateString();
         $project_ids = $request->project_id ? [$request->project_id] : Project::orderBy('id','asc')->pluck('id')->toArray();
 
         $score_ranges = [
