@@ -42,9 +42,9 @@ class ReportAbuseController extends Controller
             ->select('plink.id as project_link_id', 'plink.code', 'plink.status as project_link_status', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status');
 
         if ($type == 'inactive') {
-            $reports = $reports->where('status', false);
+            $reports = $reports->where('plink.status', false);
         } elseif ($type == 'active') {
-            $reports = $reports->where('status', true);
+            $reports = $reports->where('plink.status', true);
         }
 
         $active_status = "<span class='text-success'><i class='mr-2 fas fa-circle fa-xs'></i>Active</span>";
