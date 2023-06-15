@@ -148,7 +148,7 @@
                     <div class="card-body d-flex">
                         <div class="nps">
                             <div class="nps-icon">
-                                <i class="fas fa-users"></i>
+                            <i class="fas fa-layer-group"></i>
                             </div>
                         </div>
                         <div class="stats nps-stat">

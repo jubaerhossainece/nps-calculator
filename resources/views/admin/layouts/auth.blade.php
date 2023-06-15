@@ -45,18 +45,21 @@
             margin: 0px;
         }
 
-        .login-footer .div-right{
-            display: flex;
-            justify-content: space-around;
-        }
-
         .login-footer .div-left span {
             color: #EEEEEE;
             font-size: 14px;
             font-weight: 400;
             line-height: 16px;
             letter-spacing: 0em;
-            padding-left: 150px;
+            /* padding-left: 150px; */
+        }
+        .login-footer .div-left{
+            text-align: center;
+        }
+
+        .login-footer .div-right{
+            display: flex;
+            justify-content: space-around;
         }
 
 
@@ -98,14 +101,14 @@
     </div>
 </div>
 <div class="login-footer row">
-    <div class="div-left col-md-6">
+    <div class="div-left col-md-12">
         <span>© 2023 – Riseup Labs | All Rights Reserved</span>
     </div>
-    <div class="div-right col-md-6">
+    <!-- <div class="div-right col-md-6">
         <a href="">Terms of Service</a>
         <a href="">Privacy Policy</a>
         <a href="">Security Statement</a>
-    </div>
+    </div> -->
 </div>
 <!-- Vendor js -->
 <script src="{{ asset('assets/js/vendor.min.js') }}"></script>

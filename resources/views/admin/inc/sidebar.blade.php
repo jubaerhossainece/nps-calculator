@@ -46,7 +46,7 @@
 
         <li>
             
-            <a href="{{route('abuse-reports')}}"><i class="fas fa-users"></i> Report abuses </a>
+            <a href="{{route('abuse-reports')}}"><i class="fas fa-flag-checkered"></i> Report abuses </a>
         </li>
             
         <li>
