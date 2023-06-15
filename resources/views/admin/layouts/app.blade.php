@@ -61,7 +61,6 @@
         <!-- end content -->
 
 
-        @include('admin.inc.footer')
 
     </div>
 

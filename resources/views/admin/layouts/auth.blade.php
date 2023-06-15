@@ -16,21 +16,24 @@
     <link href="{{ asset('assets/css/icons.min.css')  }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css" id="app-stylesheet"/>
     <link rel="stylesheet" href="https://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
-
+    <style>
+        .login-header{
+            background-color: white;
+        }
+    </style>
 </head>
 
 <body class="authentication-page">
-
+<div class="p-4 login-header">
+    hello
+</div>
 <div class="account-pages my-5">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6 col-xl-5">
                 <div class="card mt-4">
-                    <div class="card-header bg-img p-5 position-relative">
-                        <div class="bg-overlay"></div>
-                        <h4 class="text-white text-center mb-0">@yield('form-title', 'Login')</h4>
-                    </div>
                     <div class="card-body p-4 mt-2">
+
                         @yield('content')
                     </div>
                     <!-- end card-body -->
