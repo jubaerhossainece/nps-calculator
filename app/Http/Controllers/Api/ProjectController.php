@@ -9,6 +9,7 @@ use App\Http\Resources\LinkResource;
 use App\Http\Resources\FeedbackPaginateResouce;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
 use App\Services\ProjectLinkService;
 use Illuminate\Http\Request;
@@ -95,23 +96,23 @@ class ProjectController extends Controller
         return successResponseJson(null, 'Project deleted.');
     }
 
-    public function getFeedbacks(string $projectId)
+    public function getFeedbacks()
     {
-        return $projectId = Project::where('user_id', auth()->user()->id)->get()->all();
-
-        $project = Project::where('id', $projectId)->where('user_id', auth()->user()->id)->first();
-        if (!$project) {
-            return errorResponseJson('No project found!', 404);
-        }
 
         if(request('project_id')){
             $projectId = [request('project_id')];
+            $link = ProjectLink::where('project_id', request('project_id'))->first();
         }else{
-            return $projectId = Project::where('user_id', auth()->user()->id)->get()->all();
+            $projectId = Project::where('user_id', auth()->user()->id)->pluck('id')->all();
+            $link = '';
         }
 
-        $feedbacks = ProjectLinkFeedback::where('project_id', $projectId);
+        $project = Project::whereIn('id', $projectId)->where('user_id', auth()->user()->id)->get();
+        if ($project->isEmpty()) {
+            return errorResponseJson('No project found!', 404);
+        }
 
+        $feedbacks = ProjectLinkFeedback::whereIn('project_id', $projectId);
 
         //filter by response
         if (request('response') === 'detractor') {
@@ -161,7 +162,7 @@ class ProjectController extends Controller
         return successResponseJson([
             'graph' => $graph,
             'feedbacks' => new FeedbackPaginateResouce($feedbacks),
-            'link' => new LinkResource($project->link)
+            'link' => $link ? new LinkResource($link) : ''
         ]);
     }
 
