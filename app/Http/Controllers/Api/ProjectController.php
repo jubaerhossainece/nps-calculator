@@ -97,9 +97,17 @@ class ProjectController extends Controller
 
     public function getFeedbacks(string $projectId)
     {
+        return $projectId = Project::where('user_id', auth()->user()->id)->get()->all();
+
         $project = Project::where('id', $projectId)->where('user_id', auth()->user()->id)->first();
         if (!$project) {
             return errorResponseJson('No project found!', 404);
+        }
+
+        if(request('project_id')){
+            $projectId = [request('project_id')];
+        }else{
+            return $projectId = Project::where('user_id', auth()->user()->id)->get()->all();
         }
 
         $feedbacks = ProjectLinkFeedback::where('project_id', $projectId);
