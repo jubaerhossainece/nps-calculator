@@ -136,6 +136,11 @@ class ProjectController extends Controller
         if ($from) {
             $feedbacks = $feedbacks->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
         }
+        
+        if(request('search_param')){
+            $feedbacks = $feedbacks->where('name', 'like', "%".request('search_param')."%")
+                                ->orWhere('email', 'like', "%".request('search_param')."%");
+        }
 
         if (\request('users')) {
             $users = explode(',', \request('users'));
@@ -144,7 +149,6 @@ class ProjectController extends Controller
                 $feedbacks->whereIn('id', $users);
             }
         }
-
 
 //        $f = $d->selectRaw('MONTH(created_at) as month')->get();
 
