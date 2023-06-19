@@ -9,6 +9,7 @@ use App\Http\Resources\LinkResource;
 use App\Http\Resources\FeedbackPaginateResouce;
 use App\Http\Resources\ProjectResource;
 use App\Models\Project;
+use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
 use App\Services\ProjectLinkService;
 use Illuminate\Http\Request;
@@ -95,15 +96,23 @@ class ProjectController extends Controller
         return successResponseJson(null, 'Project deleted.');
     }
 
-    public function getFeedbacks(string $projectId)
+    public function getFeedbacks()
     {
-        $project = Project::where('id', $projectId)->where('user_id', auth()->user()->id)->first();
-        if (!$project) {
+
+        if(request('project_id')){
+            $projectId = [request('project_id')];
+            $link = ProjectLink::where('project_id', request('project_id'))->first();
+        }else{
+            $projectId = Project::where('user_id', auth()->user()->id)->pluck('id')->all();
+            $link = '';
+        }
+
+        $project = Project::whereIn('id', $projectId)->where('user_id', auth()->user()->id)->get();
+        if ($project->isEmpty()) {
             return errorResponseJson('No project found!', 404);
         }
 
-        $feedbacks = ProjectLinkFeedback::where('project_id', $projectId);
-
+        $feedbacks = ProjectLinkFeedback::whereIn('project_id', $projectId);
 
         //filter by response
         if (request('response') === 'detractor') {
@@ -127,6 +136,11 @@ class ProjectController extends Controller
         if ($from) {
             $feedbacks = $feedbacks->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
         }
+        
+        if(request('search_param')){
+            $feedbacks = $feedbacks->where('name', 'like', "%".request('search_param')."%")
+                                ->orWhere('email', 'like', "%".request('search_param')."%");
+        }
 
         if (\request('users')) {
             $users = explode(',', \request('users'));
@@ -135,7 +149,6 @@ class ProjectController extends Controller
                 $feedbacks->whereIn('id', $users);
             }
         }
-
 
 //        $f = $d->selectRaw('MONTH(created_at) as month')->get();
 
@@ -153,21 +166,27 @@ class ProjectController extends Controller
         return successResponseJson([
             'graph' => $graph,
             'feedbacks' => new FeedbackPaginateResouce($feedbacks),
-            'link' => new LinkResource($project->link)
+            'link' => $link ? new LinkResource($link) : ''
         ]);
     }
 
-    public function getProjectScore($projectId)
+    public function getProjectScore()
     {
-        $project = Project::where('id', $projectId)
-            ->where('user_id', auth()->user()->id)
-            ->first();
+        if(request('project_id')){
+            $projectId = [request('project_id')];
+        }else{
+            $projectId = Project::where('user_id', auth()->user()->id)->pluck('id')->all();
+        }
 
-        if (!$project) {
+        $project = Project::whereIn('id', $projectId)
+            ->where('user_id', auth()->user()->id)
+            ->get();
+
+        if ($project->isEmpty()) {
             return errorResponseJson('No project found!', 404);
         }
 
-        $feedbacks = ProjectLinkFeedback::where('project_id', $projectId)->get();
+        $feedbacks = ProjectLinkFeedback::whereIn('project_id', $projectId)->get();
 
         //TODO: isEmpty method can be removed
         if ($feedbacks->isEmpty()) {
