@@ -170,17 +170,23 @@ class ProjectController extends Controller
         ]);
     }
 
-    public function getProjectScore($projectId)
+    public function getProjectScore()
     {
-        $project = Project::where('id', $projectId)
-            ->where('user_id', auth()->user()->id)
-            ->first();
+        if(request('project_id')){
+            $projectId = [request('project_id')];
+        }else{
+            $projectId = Project::where('user_id', auth()->user()->id)->pluck('id')->all();
+        }
 
-        if (!$project) {
+        $project = Project::whereIn('id', $projectId)
+            ->where('user_id', auth()->user()->id)
+            ->get();
+
+        if ($project->isEmpty()) {
             return errorResponseJson('No project found!', 404);
         }
 
-        $feedbacks = ProjectLinkFeedback::where('project_id', $projectId)->get();
+        $feedbacks = ProjectLinkFeedback::whereIn('project_id', $projectId)->get();
 
         //TODO: isEmpty method can be removed
         if ($feedbacks->isEmpty()) {

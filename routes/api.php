@@ -46,10 +46,10 @@ Route::group(['prefix' => 'v1'], function () {
         /* =========end user profile api========== */
 
         Route::get('projects/feedbacks', [ProjectController::class, 'getFeedbacks']);
+        Route::get('projects/score', [ProjectController::class, 'getProjectScore']);
         Route::apiResource('projects', 'App\Http\Controllers\Api\ProjectController');
         Route::post('projects-update/{project}', [ProjectController::class, 'update']);
         // Route::get('projects/{projectId}/feedbacks', [ProjectController::class, 'getFeedbacks']);
-        Route::get('projects/{projectId}/score', [ProjectController::class, 'getProjectScore']);
         Route::get('projects/{projectId}/users', [ProjectController::class, 'getProjectUsers']);
 
         Route::get('links', [ProjectLinkController::class, 'index']);
