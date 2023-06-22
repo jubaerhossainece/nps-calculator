@@ -73,10 +73,13 @@ class SocialAuthController extends Controller
         ])->first();
 
         if($user){
+            $has_name = $user->name ? true : false;
+            $user->name = $response->name;
+
             return successResponseJson([
             'access_token' => $user->createToken('authToken')->plainTextToken,
             'token_type' => 'Bearer',
-            'has_name' => $user->name ? true : false,
+            'has_name' => $has_name,
             'user' => new UserResource($user)],
             'You are logged in.');
         }
@@ -93,10 +96,13 @@ class SocialAuthController extends Controller
         ])->first();
 
         if($result){
+            $has_name = $user->name ? true : false;
+            $user->name = $response->name;
+
             return successResponseJson([
                 'access_token' => $user->createToken('authToken')->plainTextToken,
                 'token_type' => 'Bearer',
-                'has_name' => $user->name ? true : false,
+                'has_name' => $has_name,
                 'user' => new UserResource($user)
             ], 'You are logged in.');
         }else{
