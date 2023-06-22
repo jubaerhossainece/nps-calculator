@@ -17,8 +17,7 @@ class SocialAuthController extends Controller
     public function redirectToProvider(Request $request)
     {
         $request->validate([
-            'token' => 'required|string',
-            'org_name' => 'required|string'
+            'token' => 'required|string'
         ]);
         
         $token = $request->token;
@@ -36,7 +35,7 @@ class SocialAuthController extends Controller
             return errorResponseJson('An invalid token was sent',422);
         }
 
-        return $this->providerLogin(json_decode($response), $request->all());
+        return $this->providerLogin(json_decode($response));
     }
 
     // /**
@@ -66,7 +65,7 @@ class SocialAuthController extends Controller
     // }
 
 
-    public function providerLogin($response, $request)
+    public function providerLogin($response)
     {
         $provider_id = $response->sub;
         $user = User::where([
@@ -77,14 +76,13 @@ class SocialAuthController extends Controller
             return successResponseJson([
             'access_token' => $user->createToken('authToken')->plainTextToken,
             'token_type' => 'Bearer',
-            'user' => new UserResource($user)], 
+            'has_name' => $user->name ? true : false,
+            'user' => new UserResource($user)],
             'You are logged in.');
         }
 
         $result = DB::table('users')->insert([
             'provider_id' => $provider_id,
-            'name' => $response->name,
-            'org_name' => $request->org_name,
             'email' => $response->email,
             'image' => $response->picture,
             'password' => Hash::make($provider_id)
@@ -98,6 +96,7 @@ class SocialAuthController extends Controller
             return successResponseJson([
                 'access_token' => $user->createToken('authToken')->plainTextToken,
                 'token_type' => 'Bearer',
+                'has_name' => $user->name ? true : false,
                 'user' => new UserResource($user)
             ], 'You are logged in.');
         }else{
