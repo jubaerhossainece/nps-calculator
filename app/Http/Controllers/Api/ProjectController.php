@@ -138,17 +138,19 @@ class ProjectController extends Controller
         }
         
         if(request('search_param')){
-            $feedbacks = $feedbacks->where('name', 'like', "%".request('search_param')."%")
-                                ->orWhere('email', 'like', "%".request('search_param')."%");
+            $feedbacks = $feedbacks->where(function($q){
+                return $q->where('name', 'like', "%".request('search_param')."%")
+                ->orWhere('email', 'like', "%".request('search_param')."%");
+            });
         }
 
-        if (\request('users')) {
-            $users = explode(',', \request('users'));
+        // if (\request('users')) {
+        //     $users = explode(',', \request('users'));
 
-            if (gettype($users) === 'array' && count($users) > 0) {
-                $feedbacks->whereIn('id', $users);
-            }
-        }
+        //     if (gettype($users) === 'array' && count($users) > 0) {
+        //         $feedbacks->whereIn('id', $users);
+        //     }
+        // }
 
 //        $f = $d->selectRaw('MONTH(created_at) as month')->get();
 
