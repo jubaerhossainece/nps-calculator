@@ -74,7 +74,7 @@ class SocialAuthController extends Controller
 
         if($user){
             $has_name = $user->name ? true : false;
-            $user->name = $response->name;
+            $user->name = $user->name ? $user->name : $response->name;
 
             return successResponseJson([
             'access_token' => $user->createToken('authToken')->plainTextToken,
