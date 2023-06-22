@@ -16,11 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('test', function (Request $r) {
-    $r->validate([
-        'name' => 'required'
-    ]);
-});
+Route::get('test', [TestController::class, 'test']);
 
 Route::group(['prefix' => 'v1'], function () {
     // login with socialite
