@@ -17,7 +17,8 @@ class SocialAuthController extends Controller
     public function redirectToProvider(Request $request)
     {
         $request->validate([
-            'token' => 'required|string'
+            'token' => 'required|string',
+            'org_name' => 'required|string'
         ]);
         
         $token = $request->token;
@@ -35,7 +36,7 @@ class SocialAuthController extends Controller
             return errorResponseJson('An invalid token was sent',422);
         }
 
-        return $this->providerLogin(json_decode($response), $provider);
+        return $this->providerLogin(json_decode($response), $request->all());
     }
 
     // /**
@@ -65,9 +66,8 @@ class SocialAuthController extends Controller
     // }
 
 
-    public function providerLogin($response, $provider)
+    public function providerLogin($response, $request)
     {
-        // return $response->name;
         $provider_id = $response->sub;
         $user = User::where([
             'provider_id' => $provider_id,
@@ -84,6 +84,7 @@ class SocialAuthController extends Controller
         $result = DB::table('users')->insert([
             'provider_id' => $provider_id,
             'name' => $response->name,
+            'org_name' => $request->org_name,
             'email' => $response->email,
             'image' => $response->picture,
             'password' => Hash::make($provider_id)
