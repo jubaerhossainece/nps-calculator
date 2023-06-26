@@ -15,17 +15,17 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $audiences = User::count();
+        $users = User::count();
         $nps = ProjectLinkFeedback::count();
         $project_query = Project::select('id', 'name');
         $total_project = $project_query->count();
         $projects = $project_query->get();
 
-        return view('admin.dashboard.index', compact('audiences', 'nps', 'projects', 'total_project'));
+        return view('admin.dashboard.index', compact('users', 'nps', 'projects', 'total_project'));
     }
 
 
-    public function recentAudience()
+    public function recentUser()
     {
         $users = User::select('id', 'name', 'email', 'status')
             ->withCount('projects')
@@ -52,7 +52,7 @@ class DashboardController extends Controller
             ->make(true);
     }
 
-    public function audienceChartData($type)
+    public function userChartData($type)
     {
         $db_data = User::select(DB::raw("(COUNT(*)) as count"), DB::raw($type . " (created_at) as " . $type))
             ->whereYear('created_at', date('Y'))
@@ -102,7 +102,7 @@ class DashboardController extends Controller
 
         return response([
             'label' => $label,
-            'audience' => $data,
+            'user' => $data,
         ]);
 
 

@@ -200,7 +200,7 @@ class AuthController extends Controller
         $tokenData = DB::table('password_reset_tokens')->where('email', $request->email)->first();
 
         if ($this->sendResetEmail($request->email, $tokenData->token)) {
-            return response()->json(['success' => true, 'message' => 'A reset link has been sent to your email address.',]);
+            return response()->json(['success' => true, 'message' => 'We have sent a password recover instructions to your email.',]);
         } else {
             return response()->json(['success' => false, 'message' => 'A Network Error occurred. Please try again.',]);
         }

@@ -1,0 +1,161 @@
+.card-header:first-child {
+    border-radius: 10px;
+    background: white;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+/* css for summery section */
+.summery .card-body {
+    padding: 0px;
+}
+
+.card-body .stats {
+    font-weight: 600;
+}
+
+.card-body .stats h2,
+.card-body .stats span {
+    color: white;
+    margin-bottom: 0px;
+}
+
+.stats h2 {
+    font-size: 33px;
+}
+
+.user {
+    padding: 17px;
+    color: white;
+    background-color: #1877E2;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.user-icon {
+    background-color: #519DEB;
+    height: 86px;
+    width: 86px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-icon i {
+    font-size: 20px;
+}
+
+.user-stat {
+    background-image: linear-gradient(to right, #1979E3, #98e2fd);
+    width: 100%;
+}
+
+
+.nps {
+    padding: 17px;
+    color: white;
+    background-color: #F7931D;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.nps-icon {
+    background-color: #FAB25E;
+    height: 86px;
+    width: 86px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nps-icon i {
+    font-size: 20px;
+}
+
+.nps-stat {
+    background-image: linear-gradient(to right, #F7931D, #FCC07A);
+    width: 100%;
+}
+
+
+.avg-nps {
+    padding: 17px;
+    color: white;
+    background-color: #DC396A;
+    border-radius: 10px 0px 0px 10px;
+}
+
+.avg-nps-icon {
+    background-color: #E76E92;
+    height: 86px;
+    width: 86px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.avg-nps-icon i {
+    font-size: 30px;
+}
+
+.avg-nps-stat {
+    background-image: linear-gradient(to right, #DC396A, #FD5F8E);
+    width: 100%;
+}
+
+.stats {
+    padding: 20px;
+    border-radius: 0px 10px 10px 0px;
+}
+
+
+/* user chart */
+.user-filter-box{
+    width: 200px;
+}
+
+
+/** select2 css */
+.select2-container .select2-selection--single {
+    height: 38px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 38px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 34px;
+    }
+
+    .select2-results {
+    display: block;
+    border-radius: 0px 0px 4px 4px;
+}
+
+.select2-container--open .select2-dropdown--above{
+    border: none;
+    box-shadow: 0px -6px 11px 3px #d2d2ea;
+}
+
+.select2-container--open .select2-dropdown--below {
+    border: none;
+    box-shadow: 0px 6px 11px 3px #d2d2ea;
+}
+
+.select2-results__option:last-child {
+    border-radius: 0px 0px 5px 5px;
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #EEEEEE;
+}
+
+/* datepicker css*/
+.daterangepicker {
+    border-color: #F1F1F1;
+    box-shadow: 0px 6px 20px 1px #d4d6ef;
+}
