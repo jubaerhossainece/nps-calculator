@@ -36,7 +36,7 @@ class StoreProjectRequest extends FormRequest
     {
         return [
             'user_id' => 'required',
-            'name' => ['required', 'string', 'max:30',
+            'name' => ['required', 'string', 'max:64',
                 Rule::unique('projects')->where(function ($query) {
                     $query->where('user_id', $this->user_id)->where('name', $this->name);
                 })->ignore($this->project)
