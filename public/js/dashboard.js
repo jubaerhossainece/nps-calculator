@@ -1,13 +1,13 @@
-// audience summery chart
-function getAudienceData(type) {
-  let chartStatus = Chart.getChart('audience-summery') // <canvas> id
+// chart for user summery 
+function getUserData(type) {
+  let chartStatus = Chart.getChart('user-summery') // <canvas> id
   if (chartStatus != undefined) {
     chartStatus.destroy()
   }
 
   $.ajax({
     type: 'GET',
-    url: 'dashboard/audience/' + type + '/chart',
+    url: 'dashboard/user/' + type + '/chart',
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
       generateChart(response, type)
@@ -16,18 +16,18 @@ function getAudienceData(type) {
 }
 
 function generateChart(response, chartType) {
-  const ctx = document.getElementById('audience-summery').getContext('2d')
+  const ctx = document.getElementById('user-summery').getContext('2d')
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
   gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
 
-  const audienceChart = new Chart(ctx, {
+  const userChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: response.label,
       datasets: [
         {
-          data: response.audience,
+          data: response.user,
           backgroundColor: gradient,
           pointColor: '#fff',
           borderWidth: 1,
@@ -48,7 +48,7 @@ function generateChart(response, chartType) {
         y: {
           title: {
             display: true,
-            text: 'Audience',
+            text: 'user',
           },
           suggestedMin: 0,
         },
@@ -178,7 +178,7 @@ function generateNpsChart(response, chartType) {
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
   gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
-  const audienceChart = new Chart(ctx, {
+  const npsChart = new Chart(ctx, {
     type: 'line',
     data: {
       labels: response.label,
@@ -221,9 +221,9 @@ function generateNpsChart(response, chartType) {
 
 
 
-// recent audience datatables
+// datatables for recent user 
 function getData() {
-  $('#audience-table').DataTable({
+  $('#user-table').DataTable({
     bPaginate: false,
     bFilter: false,
     bInfo: false,
@@ -234,7 +234,7 @@ function getData() {
     // order: [4, "desc"],
 
     ajax: {
-      url: '/dashboard/recent-audience',
+      url: '/dashboard/recent-user',
     },
     columns: [
       {
@@ -256,7 +256,7 @@ function getData() {
 }
 
 $(document).ready(function () {
-  getAudienceData('year')
+  getUserData('year')
   getData()
   // getProjectFeedback()
   getNpsData()
@@ -265,7 +265,7 @@ $(document).ready(function () {
 function changeStatus(id) {
   $.ajax({
     type: 'POST',
-    url: '/audiences/' + id + '/status-change',
+    url: '/users/' + id + '/status-change',
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (data) {
       let type = $('.nav-link.active').attr('id')

@@ -44,8 +44,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => '2Fa'], function () {
     // Dashboard routes
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/dashboard/recent-audience', [Admin\DashboardController::class, 'recentAudience']);
-    Route::get('/dashboard/audience/{type}/chart', [Admin\DashboardController::class, 'audienceChartData']);
+    Route::get('/dashboard/recent-user', [Admin\DashboardController::class, 'recentUser']);
+    Route::get('/dashboard/user/{type}/chart', [Admin\DashboardController::class, 'userChartData']);
     Route::get('/dashboard/project-feedback/chart', [Admin\DashboardController::class, 'projectFeedbackChartData']);
     Route::get('/dashboard/nps-score/chart', [Admin\DashboardController::class, 'npsScoreChartData']);
     
@@ -63,10 +63,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/project-link/{id}/status-change', [ProjectController::class, 'toggleStatus'])->name('project-link.status-change');
 
 
-    // Routes for audiences
-    Route::get('/audiences', [UserController::class, 'index'])->name('users');
-    Route::get('/audiences/list/{type}', [UserController::class, 'list'])->name('users.list');
-    Route::post('/audiences/{id}/status-change', [UserController::class, 'toggleStatus'])->name('users.status-change');
+    // Routes for users
+    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/users/list/{type}', [UserController::class, 'list'])->name('users.list');
+    Route::post('/users/{id}/status-change', [UserController::class, 'toggleStatus'])->name('users.status-change');
 
     //2fa setting opetions
     Route::get('/2fa-setting', [twoFaVerificationController::class, 'index'])->name('twoFa.index');
