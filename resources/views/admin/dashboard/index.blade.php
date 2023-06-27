@@ -63,11 +63,12 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
                         <div>
-                            <h4>User Summery</h4>
+                            <h4>User Summary</h4>
                         </div>
-                        <div class="user-filter-box">
+                        <div class="filter-box">
 
-                                <select name="user_filter" class="form-select form-select-lg mb-3 select_with_search" id="user-filter" onchange="getNpsData()">
+                        <span>filter</span>
+                        <select name="user_time_filter" class="form-select form-select-lg mb-3 select_with_search" id="user-time-filter" onchange="getNpsData()">
                                     <option value="">This Year</option>
                                     <option value="">Last week</option>
                                     <option value="">Last month</option>
@@ -117,19 +118,19 @@
 
         </div>
 
-        {{-- <div class="row">
+        <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-4">
-                                <h4>Project NPS statistics</h4>
+                                <h4>Collected NPS Summary</h4>
                             </div>
                             <div class="col-md-8">
                                 <div class="row mt-2">
                                     <div class="col-md-6 form-group">
-                                        <select name="select_box" class="form-select form-select-lg mb-3 select_with_search"
-                                            id="projectId" data-live-search="true" onchange="getProjectFeedback()">
+                                        <select name="nps_filter" class="form-select form-select-lg mb-3 select_with_search"
+                                            id="nps-filter" data-live-search="true" onchange="getProjectFeedback()">
                                             <option value="">Select Project</option>
                                             @foreach ($projects as $key => $project)
                                                 <option value="{{ $project->id }}">{{ $project->name }}</option>
@@ -158,9 +159,53 @@
                 </div>
             </div>
 
-        </div> --}}
+        </div>
+
 
         <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h4>Project Summary</h4>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row mt-2">
+                                    <div class="col-md-6 form-group">
+                                        <select name="project_filter" class="form-select form-select-lg mb-3 select_with_search"
+                                            id="project-filter" data-live-search="true" onchange="getProjectFeedback()">
+                                            <option value="">Select Project</option>
+                                            @foreach ($projects as $key => $project)
+                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <input type="text" class="form-control" id="date-range"
+                                            placeholder="Select Date Ranges">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="cardCollpase2" class="collapse show">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <canvas id="project"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -202,7 +247,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> -->
 
     </div>
 @endsection

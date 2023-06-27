@@ -113,8 +113,14 @@
 
 
 /* user chart */
-.user-filter-box{
+.filter-box {
     width: 200px;
+    display: flex;
+    align-items: center;
+}
+
+.filter-box span{
+    color: #4D4D4D;
 }
 
 
