@@ -12,7 +12,7 @@
                 <div class="card">
 					<div class="card-header d-flex justify-content-between bg-white">
 						<div>
-							<h4>Audience List</h4>
+							<h4>User List</h4>
 						</div>
 
 						<div>
@@ -67,7 +67,7 @@
 		// order: [4, "desc"],
 		
 		ajax: {
-			url : "/audiences/list/"+type
+			url : "/users/list/"+type
 		},
 		columns: [
 				{data: "DT_RowIndex",name:'DT_RowIndex', title: "Serial", searchable: false, orderable: false},
@@ -92,7 +92,7 @@
 
 		$.ajax({
 			type: "POST",
-			url: "/audiences/"+id+"/status-change",
+			url: "/users/"+id+"/status-change",
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			success: function(data){
 				let type = $(".nav-link.active").attr('id');

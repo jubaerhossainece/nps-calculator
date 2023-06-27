@@ -41,7 +41,7 @@
 
         <li>
             
-            <a href="{{route('users')}}"><i class="fas fa-users"></i> Audiences</a>
+            <a href="{{route('users')}}"><i class="fas fa-users"></i> Users</a>
         </li>
 
         <li>
