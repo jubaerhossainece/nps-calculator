@@ -212,7 +212,7 @@ class AuthController extends Controller
 
         $url = config('custom.frontend_app_url').'reset-code/'.$token;
         try {
-            $user->notify(new ResetPasswordNotification($url));
+            $user->notify(new ResetPasswordNotification($url, $user->name));
             return true;
         } catch (Exception $e) {
             return false;
