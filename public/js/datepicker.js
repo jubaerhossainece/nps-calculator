@@ -1,47 +1,114 @@
-//Date Range picker related
-$(document).ready(function () {
-  $('#date-range').daterangepicker({
-    opens: 'left',
-    autoUpdateInput: false,
-    locale: {
-      format: 'YYYY-MM-DD',
-    },
-  })
+//date range
+$(function() {
 
-  $('#date-range').on('apply.daterangepicker', function (ev, picker) {
-    $(this).val(
-      picker.startDate.format('YYYY-MM-DD') +
-        ' - ' +
-        picker.endDate.format('YYYY-MM-DD'),
-    )
-    getProjectFeedback()
-  })
+  var start = moment().subtract(364, 'days');
+  var end = moment();
 
-  $('#date-range').on('cancel.daterangepicker', function (ev, picker) {
-    $(this).val('')
-  })
-})
+  function cb(start, end) {
+      $('#user-report-range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+  }
+
+  $('#user-report-range').daterangepicker({
+      startDate: start,
+      endDate: end,
+      ranges: {
+         'Today': [moment(), moment()],
+         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+         'Last 365 days': [moment().subtract(364, 'days'), moment()]
+      }
+  }, cb);
+
+  cb(start, end);
+
+  // nps datepicker
+  function cbNps(start, end) {
+    $('#nps-report-range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+  }
+
+  $('#nps-report-range').daterangepicker({
+    startDate: start,
+    endDate: end,
+    ranges: {
+       'Today': [moment(), moment()],
+       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'Last 365 days': [moment().subtract(364, 'days'), moment()]
+    }
+  }, cbNps);
+
+  cbNps(start, end);
 
 
-$(document).ready(function () {
-  $('#date-range-ano').daterangepicker({
-    opens: 'left',
-    autoUpdateInput: false,
-    locale: {
-      format: 'YYYY-MM-DD',
-    },
-  });
+  // date picker for projects
+  function cbProject(start, end) {
+    $('#project-report-range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+  }
 
-  $('#date-range-ano').on('apply.daterangepicker', function (ev, picker) {
-    $(this).val(
-      picker.startDate.format('YYYY-MM-DD') +
-        ' - ' +
-        picker.endDate.format('YYYY-MM-DD')
-    );
-    getNpsData();
-  });
+  $('#project-report-range').daterangepicker({
+    startDate: start,
+    endDate: end,
+    ranges: {
+       'Today': [moment(), moment()],
+       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'Last 365 days': [moment().subtract(364, 'days'), moment()]
+    }
+  }, cbProject);
 
-  $('#date-range-ano').on('cancel.daterangepicker', function (ev, picker) {
-    $(this).val('');
-  });
+  cbProject(start, end);
+  
 });
+
+
+//Date Range picker related
+// $(document).ready(function () {
+//   $('#date-range').daterangepicker({
+//     opens: 'left',
+//     autoUpdateInput: false,
+//     locale: {
+//       format: 'YYYY-MM-DD',
+//     },
+//   })
+
+//   $('#date-range').on('apply.daterangepicker', function (ev, picker) {
+//     $(this).val(
+//       picker.startDate.format('YYYY-MM-DD') +
+//         ' - ' +
+//         picker.endDate.format('YYYY-MM-DD'),
+//     )
+//     getProjectFeedback()
+//   })
+
+//   $('#date-range').on('cancel.daterangepicker', function (ev, picker) {
+//     $(this).val('')
+//   })
+// })
+
+
+
+// $(document).ready(function () {
+//   $('#date-range-ano').daterangepicker({
+//     opens: 'left',
+//     autoUpdateInput: false,
+//     locale: {
+//       format: 'YYYY-MM-DD',
+//     },
+//   });
+
+//   $('#date-range-ano').on('apply.daterangepicker', function (ev, picker) {
+//     $(this).val(
+//       picker.startDate.format('YYYY-MM-DD') +
+//         ' - ' +
+//         picker.endDate.format('YYYY-MM-DD')
+//     );
+//     getNpsData();
+//   });
+
+//   $('#date-range-ano').on('cancel.daterangepicker', function (ev, picker) {
+//     $(this).val('');
+//   });
+// });
+
+
+

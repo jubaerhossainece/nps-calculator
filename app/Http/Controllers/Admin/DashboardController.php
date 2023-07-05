@@ -16,6 +16,7 @@ class DashboardController extends Controller
     public function index()
     {
         $users = User::count();
+        $users = User::select('id', 'name', 'email');
         $nps = ProjectLinkFeedback::count();
         $project_query = Project::select('id', 'name');
         $total_project = $project_query->count();
@@ -52,8 +53,9 @@ class DashboardController extends Controller
             ->make(true);
     }
 
-    public function userChartData($type)
+    public function userChartData(Request $request)
     {
+        return $request->all();
         $db_data = User::select(DB::raw("(COUNT(*)) as count"), DB::raw($type . " (created_at) as " . $type))
             ->whereYear('created_at', date('Y'))
             ->groupBy($type)

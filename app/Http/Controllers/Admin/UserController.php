@@ -11,7 +11,7 @@ use Yajra\DataTables\Facades\DataTables;
 class UserController extends Controller
 {
     public function index(){
-        return view('admin.audiences.index');
+        return view('admin.users.index');
     }
 
     public function list($type){
@@ -51,7 +51,7 @@ class UserController extends Controller
         $user->status = !$user->status;
         $user->save();
 
-        if(!$user->satus){
+        if(!$user->status){
             // Revoke all access tokens for the user
             $user->tokens()->each(function (PersonalAccessToken $token) {
                 $token->delete();

@@ -34,7 +34,7 @@ Route::get('/sym-link', function(){
 
 require __DIR__ . '/auth.php';
 
-
+Route::get('/test', [TestController::class, 'test']);
 
 // Route::get('login/{provider}', [Api\SocialAuthController::class, 'redirectToProvider']);
 // Route::get('login/{provider}/callback', [Api\SocialAuthController::class, 'handleProviderCallback']);
@@ -45,7 +45,7 @@ Route::group(['middleware' => 'auth'], function () {
     // Dashboard routes
     Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/dashboard/recent-user', [Admin\DashboardController::class, 'recentUser']);
-    Route::get('/dashboard/user/{type}/chart', [Admin\DashboardController::class, 'userChartData']);
+    Route::get('/dashboard/user/chart', [Admin\DashboardController::class, 'userChartData']);
     Route::get('/dashboard/project-feedback/chart', [Admin\DashboardController::class, 'projectFeedbackChartData']);
     Route::get('/dashboard/nps-score/chart', [Admin\DashboardController::class, 'npsScoreChartData']);
     
