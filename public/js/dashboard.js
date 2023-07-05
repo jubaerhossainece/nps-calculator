@@ -1,6 +1,6 @@
 // chart for user summery 
 function getUserData(type) {
-  let chartStatus = Chart.getChart('user-summery') // <canvas> id
+  let chartStatus = Chart.getChart('user-summery-canvas') // <canvas> id
   if (chartStatus != undefined) {
     chartStatus.destroy()
   }
@@ -10,13 +10,13 @@ function getUserData(type) {
     url: 'dashboard/user/' + type + '/chart',
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
-      generateChart(response, type)
+      generateUserChart(response, type)
     },
   })
 }
 
-function generateChart(response, chartType) {
-  const ctx = document.getElementById('user-summery').getContext('2d')
+function generateUserChart(response, chartType) {
+  const ctx = document.getElementById('user-summary-canvas').getContext('2d')
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
   gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
@@ -44,10 +44,13 @@ function generateChart(response, chartType) {
             display: true,
             text: chartType,
           },
+          grid: {
+            display: false
+          }
         },
         y: {
           title: {
-            display: true,
+            display: false,
             text: 'user',
           },
           suggestedMin: 0,
@@ -62,9 +65,9 @@ function generateChart(response, chartType) {
   })
 }
 
-//project summery chart
+//feedback summery chart
 function getProjectFeedback(type = 'month') {
-  let chartStatus = Chart.getChart('project-feedback') // <canvas> id
+  let chartStatus = Chart.getChart('nps-summary-canvas') // <canvas> id
   if (chartStatus != undefined) {
     chartStatus.destroy()
   }
@@ -85,13 +88,13 @@ function getProjectFeedback(type = 'month') {
     },
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
-      generateChartForProjectFeedback(response, type)
+      generateNpsCollectChart(response, type)
     },
   })
 }
 
-function generateChartForProjectFeedback(response, chartType) {
-  var myChart = document.getElementById('project-feedback').getContext('2d');
+function generateNpsCollectChart(response, chartType) {
+  var myChart = document.getElementById('nps-summary-canvas').getContext('2d');
         var label = response.label;
         var data =response.data;
         var score =response.score;
@@ -145,8 +148,8 @@ function generateChartForProjectFeedback(response, chartType) {
 
 
 // NPS Line chart
-function getNpsData(type = 'date') {
-  let chartStatus = Chart.getChart('nps-score') // <canvas> id
+function getProjectData(type = 'date') {
+  let chartStatus = Chart.getChart('project-summary-canvas') // <canvas> id
   if (chartStatus != undefined) {
     chartStatus.destroy()
   }
@@ -168,13 +171,13 @@ function getNpsData(type = 'date') {
     },
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
-      generateNpsChart(response, type)
+      generateProjectChart(response, type)
     },
   })
 }
 
-function generateNpsChart(response, chartType) {
-  const ctx = document.getElementById('nps-score').getContext('2d')
+function generateProjectChart(response, chartType) {
+  const ctx = document.getElementById('project-summary-canvas').getContext('2d')
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
   gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
@@ -220,46 +223,11 @@ function generateNpsChart(response, chartType) {
 }
 
 
-
-// datatables for recent user 
-function getData() {
-  $('#user-table').DataTable({
-    bPaginate: false,
-    bFilter: false,
-    bInfo: false,
-    processing: true,
-    serverSide: true,
-    autoWidth: true,
-    destroy: true,
-    // order: [4, "desc"],
-
-    ajax: {
-      url: '/dashboard/recent-user',
-    },
-    columns: [
-      {
-        data: 'DT_RowIndex',
-        name: 'DT_RowIndex',
-        title: 'Serial',
-        searchable: false,
-        orderable: false,
-      },
-      { data: 'name', title: 'Name', orderable: false },
-      { data: 'email', title: 'Email', orderable: false },
-      { data: 'projects', title: 'Total Project' },
-      { data: 'feedbacks', title: 'Total NPS Collect' },
-
-      { data: 'status', title: 'Status', orderable: false },
-      { data: 'action', title: 'Action', orderable: false },
-    ],
-  })
-}
-
 $(document).ready(function () {
   getUserData('year')
-  getData()
-  // getProjectFeedback()
-  getNpsData()
+  // getData()
+  getProjectFeedback()
+  getProjectData()
 })
 
 function changeStatus(id) {

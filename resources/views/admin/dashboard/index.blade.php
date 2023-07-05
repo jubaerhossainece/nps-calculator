@@ -68,12 +68,12 @@
                         <div class="filter-box">
 
                         <span>filter</span>
-                        <select name="user_time_filter" class="form-select form-select-lg mb-3 select_with_search" id="user-time-filter" onchange="getNpsData()">
-                                    <option value="">This Year</option>
-                                    <option value="">Last week</option>
-                                    <option value="">Last month</option>
-                                    <option value="">Last year</option>
-                                    <option value="">Date range</option>
+                        <select name="user_time_filter" class="form-select form-select-lg mb-3 select_with_search" id="user-time-filter" onchange="getUserData()">
+                                    <option value="today">Last 24 hours</option>
+                                    <option value="week">Last 7 days</option>
+                                    <option value="month">Last 30 days</option>
+                                    <option value="year">Last 365 days</option>
+                                    <option value="range" class="date-range">Date range <i class="fa-solid fa-calendar-days"></i></option>
                                 </select>
 
 
@@ -107,7 +107,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <canvas id="user-summery"></canvas>
+                                        <canvas id="user-summary-canvas"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -123,22 +123,26 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <h4>Collected NPS Summary</h4>
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-9">
                                 <div class="row mt-2">
-                                    <div class="col-md-6 form-group">
+                                    <div class="col-md-4 form-group">
                                         <select name="nps_filter" class="form-select form-select-lg mb-3 select_with_search"
                                             id="nps-filter" data-live-search="true" onchange="getProjectFeedback()">
-                                            <option value="">Select Project</option>
+                                            <option value="">All Projects</option>
                                             @foreach ($projects as $key => $project)
                                                 <option value="{{ $project->id }}">{{ $project->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class="col-md-6 form-group">
-                                        <input type="text" class="form-control" id="date-range"
+                                    <div class="col-md-4 form-group">
+                                        <input type="text" class="form-control date-range"
+                                            placeholder="Select Date Ranges">
+                                    </div>
+                                    <div class="col-md-4 form-group">
+                                        <input type="text" class="form-control date-range"
                                             placeholder="Select Date Ranges">
                                     </div>
                                 </div>
@@ -146,11 +150,11 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="cardCollpase2" class="collapse show">
+                        <div id="cardCollapse2" class="collapse show">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <canvas id="project-feedback"></canvas>
+                                        <canvas id="nps-summary-canvas"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -182,7 +186,7 @@
                                         </select>
                                     </div>
                                     <div class="col-md-6 form-group">
-                                        <input type="text" class="form-control" id="date-range"
+                                        <input type="text" class="form-control date-range"
                                             placeholder="Select Date Ranges">
                                     </div>
                                 </div>
@@ -194,7 +198,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <canvas id="project"></canvas>
+                                        <canvas id="project-summary-canvas"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -204,50 +208,6 @@
             </div>
 
         </div>
-
-        <!-- <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h4>NPS score</h4>
-                            </div>
-                            <div class="col-md-8">
-                                <div class="row mt-2">
-                                    <div class="col-md-6 form-group">
-                                        {{-- <label> Projects </label> --}}
-                                        <select name="select_box" class="form-select form-select-lg mb-3 select_with_search"
-                                            id="projectIdNps" data-live-search="true" onchange="getNpsData()">
-                                            <option value="">Select Project</option>
-                                            @foreach ($projects as $key => $project)
-                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        {{-- <label> Date range </label> --}}
-                                        <input type="text" class="form-control" id="date-range-ano" placeholder="Select Date Range">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="cardCollpase2" class="collapse show">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <canvas id="nps-score"></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div> -->
 
     </div>
 @endsection
@@ -262,11 +222,15 @@
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.select_with_search').select2();
+            $('.select_with_search').select2({
+                'search': false
+            });
             $('.select2-selection--single').css('height','38px');
             $('#user-filter').select2({
                 minimumResultsForSearch: Infinity
-            })
+            });
+
+            $('.date-range').daterangepicker();
         });
     </script>
 @endpush
