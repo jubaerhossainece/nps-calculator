@@ -2,7 +2,8 @@
 @push('styles')
     <!-- Select2 CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
     <link rel="stylesheet" href="{{asset('css/dashboard.css')}}">
 @endpush
 
@@ -65,45 +66,19 @@
                         <div>
                             <h4>User Summary</h4>
                         </div>
+
                         <div class="filter-box">
-
-                        <span>filter</span>
-                        <select name="user_time_filter" class="form-select form-select-lg mb-3 select_with_search" id="user-time-filter" onchange="getUserData()">
-                                    <option value="today">Last 24 hours</option>
-                                    <option value="week">Last 7 days</option>
-                                    <option value="month">Last 30 days</option>
-                                    <option value="year">Last 365 days</option>
-                                    <option value="range" class="date-range">Date range <i class="fa-solid fa-calendar-days"></i></option>
-                                </select>
-
-
-
-
-                            <!-- <ul class="nav nav-tabs tabs-bordered" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#" role="tab"
-                                        aria-selected="true" onclick="getUserData('year')">
-                                        <span class="d-none d-sm-block">Yearly</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#" role="tab"
-                                        aria-selected="false" onclick="getUserData('month')">
-                                        <span class="d-none d-sm-block">Monthly</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#" role="tab"
-                                        aria-selected="false" onclick="getUserData('week')">
-                                        <span class="d-none d-sm-block">Weekly</span>
-                                    </a>
-                                </li>
-                            </ul> -->
+                            <span>filter</span>
+                            <div id="user-report-range" class="date-range-picker">
+                                <i class="fa fa-calendar"></i>&nbsp;
+                                <span></span> <i class="fa fa-caret-down"></i>
+                            </div>
+                            <!-- <input id="user-report-range" name="user_date_range" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" onchange="getUserData()"> -->
                         </div>
                     </div>
 
                     <div class="card-body">
-                        <div id="cardCollpase1" class="collapse show">
+                        <div id="cardCollapse1" class="collapse show">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -129,21 +104,33 @@
                             <div class="col-md-9">
                                 <div class="row mt-2">
                                     <div class="col-md-4 form-group">
-                                        <select name="nps_filter" class="form-select form-select-lg mb-3 select_with_search"
-                                            id="nps-filter" data-live-search="true" onchange="getProjectFeedback()">
+                                        <span>User</span>
+                                        <select name="user_nps_filter" class="select2 form-select form-select-lg mb-3 select_with_search"
+                                            id="user-nps-filter" data-live-search="true" onchange="getProjectFeedback()">
+                                            <option value="">All Users</option>
+                                            @foreach ($users as $key => $user)
+                                                <option value="{{ $project->id }}">{{ $project->email }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="col-md-4 form-group">
+                                        <span>Project</span>
+                                        <select name="project_nps_filter" class="select2 form-select form-select-lg mb-3 select_with_search"
+                                            id="project-nps-filter" data-live-search="true" onchange="getProjectFeedback()">
                                             <option value="">All Projects</option>
                                             @foreach ($projects as $key => $project)
                                                 <option value="{{ $project->id }}">{{ $project->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="col-md-4 form-group">
-                                        <input type="text" class="form-control date-range"
-                                            placeholder="Select Date Ranges">
-                                    </div>
-                                    <div class="col-md-4 form-group">
-                                        <input type="text" class="form-control date-range"
-                                            placeholder="Select Date Ranges">
+                                        <span>filter</span>
+                                        <div id="nps-report-range" class="date-range-picker">
+                                            <i class="fa fa-calendar"></i>&nbsp;
+                                            <span></span> <i class="fa fa-caret-down"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -174,21 +161,11 @@
                             <div class="col-md-4">
                                 <h4>Project Summary</h4>
                             </div>
-                            <div class="col-md-8">
-                                <div class="row mt-2">
-                                    <div class="col-md-6 form-group">
-                                        <select name="project_filter" class="form-select form-select-lg mb-3 select_with_search"
-                                            id="project-filter" data-live-search="true" onchange="getProjectFeedback()">
-                                            <option value="">Select Project</option>
-                                            @foreach ($projects as $key => $project)
-                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 form-group">
-                                        <input type="text" class="form-control date-range"
-                                            placeholder="Select Date Ranges">
-                                    </div>
+                            <div class="col-md-4 offset-md-4">
+                                <span>filter</span>
+                                <div id="project-report-range" class="date-range-picker">
+                                    <i class="fa fa-calendar"></i>&nbsp;
+                                    <span></span> <i class="fa fa-caret-down"></i>
                                 </div>
                             </div>
                         </div>
@@ -214,23 +191,24 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <!-- Select2 JS -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <!-- date range JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
     <script src="{{ asset('js/dashboard.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
-    <!-- Select2 JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('.select_with_search').select2({
-                'search': false
-            });
+            $('.select2').select2();
             $('.select2-selection--single').css('height','38px');
             $('#user-filter').select2({
                 minimumResultsForSearch: Infinity
-            });
-
-            $('.date-range').daterangepicker();
+            })
         });
     </script>
+
 @endpush

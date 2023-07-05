@@ -114,7 +114,6 @@
 
 /* user chart */
 .filter-box {
-    width: 200px;
     display: flex;
     align-items: center;
 }
@@ -164,4 +163,13 @@
 .daterangepicker {
     border-color: #F1F1F1;
     box-shadow: 0px 6px 20px 1px #F1F1F1;
+}
+
+.date-range-picker {
+    background: #fff;
+    cursor: pointer;
+    padding: 8px 10px;
+    border: 1px solid #EEEEEE;
+    width: 100%;
+    border-radius: 4px;
 }

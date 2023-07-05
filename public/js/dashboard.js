@@ -1,26 +1,39 @@
 // chart for user summery 
-function getUserData(type) {
+function getUserData() {
   let chartStatus = Chart.getChart('user-summery-canvas') // <canvas> id
   if (chartStatus != undefined) {
     chartStatus.destroy()
   }
 
+  // change chart according to date range
+  let dateRangeInput = $('#user-report-range span').html();
+  console.log(dateRangeInput);
+  var dates = dateRangeInput.split(' - ');
+  var startDate = dates[0];
+  var endDate = dates[1];
+  
   $.ajax({
     type: 'GET',
-    url: 'dashboard/user/' + type + '/chart',
+    url: 'dashboard/user/chart',
+    data: {
+      from_date: startDate,
+      to_date: endDate,
+    },
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
-      generateUserChart(response, type)
+      console.log(response);
+      generateUserChart(response)
     },
   })
 }
 
-function generateUserChart(response, chartType) {
+function generateUserChart(response) {
   const ctx = document.getElementById('user-summary-canvas').getContext('2d')
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
   gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
-
+  let chartType = response.type;
+  
   const userChart = new Chart(ctx, {
     type: 'line',
     data: {
@@ -66,14 +79,14 @@ function generateUserChart(response, chartType) {
 }
 
 //feedback summery chart
-function getProjectFeedback(type = 'month') {
+function getProjectFeedback() {
   let chartStatus = Chart.getChart('nps-summary-canvas') // <canvas> id
   if (chartStatus != undefined) {
     chartStatus.destroy()
   }
-  var projectId = $('#projectId').val()
-  var dateRangeInput = $('#date-range').val()
-  var dates = dateRangeInput.split(' - ')
+  var projectId = $('#projectId').val();
+  var dateRangeInput = $('#nps-report-range').val();
+  var dates = dateRangeInput.split(' - ');
 
   var startDate = dates[0]
   var endDate = dates[1]
@@ -88,74 +101,72 @@ function getProjectFeedback(type = 'month') {
     },
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
-      generateNpsCollectChart(response, type)
+      generateNpsCollectChart(response)
     },
   })
 }
 
-function generateNpsCollectChart(response, chartType) {
-  var myChart = document.getElementById('nps-summary-canvas').getContext('2d');
-        var label = response.label;
-        var data =response.data;
-        var score =response.score;
-        var myNPSChart = new Chart(myChart, {
-            type: 'pie',
-            data: {
-                labels: label,
-                datasets: [{
-                    label: '% of Votes',
-                    data: data,
-                    backgroundColor: [
-                        '#b91d47',
-                        '#00aba9',
-                        '#2b5797',
-                        '#e8c3b9',
-                    ],
+function generateNpsCollectChart(response) {
+  var ctx = document.getElementById('nps-summary-canvas').getContext('2d');
+  
+  const gradient = ctx.createLinearGradient(0, 0, 0, 400)
+  gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
+  let chartType = response.type;
 
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'top'
-                },
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem, data) {
-                            var dataset = data.datasets[tooltipItem.datasetIndex];
-                            var meta = dataset._meta[Object.keys(dataset._meta)[0]];
-                            var total = meta.total;
-                            var currentValue = dataset.data[tooltipItem.index];
-                            var percentage = parseFloat((currentValue / total * 100).toFixed(1));
-                            return currentValue + ' (' + percentage + '%)';
-                        },
-                        title: function(tooltipItem, data) {
-                            return data.labels[tooltipItem[0].index];
-                        }
-                    }
-                },
-                plugins: {
-                  title: {
-                      display: true,
-                      text: 'NPS Score : '+score,
-                  }
-              }
-            }
-        });
+  const userChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: response.label,
+      datasets: [
+        {
+          data: response.user,
+          backgroundColor: gradient,
+          pointColor: '#fff',
+          borderWidth: 1,
+          tension: 0.3,
+          fill: 'origin',
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: chartType,
+          },
+          grid: {
+            display: false
+          }
+        },
+        y: {
+          title: {
+            display: false,
+            text: 'user',
+          },
+          suggestedMin: 0,
+        },
+      },
+      plugins: {
+        legend: {
+          display: false,
+        },
+      },
+    },
+  })
 }
 
 
 // NPS Line chart
-function getProjectData(type = 'date') {
+function getProjectData() {
   let chartStatus = Chart.getChart('project-summary-canvas') // <canvas> id
   if (chartStatus != undefined) {
     chartStatus.destroy()
   }
 
   var projectId = $('#projectIdNps').val()
-  var dateRangeInput = $('#date-range-ano').val()
+  var dateRangeInput = $('#project-report-range').val()
   var dates = dateRangeInput.split(' - ')
 
   var startDate = dates[0]
@@ -171,12 +182,12 @@ function getProjectData(type = 'date') {
     },
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
-      generateProjectChart(response, type)
+      generateProjectChart(response)
     },
   })
 }
 
-function generateProjectChart(response, chartType) {
+function generateProjectChart(response) {
   const ctx = document.getElementById('project-summary-canvas').getContext('2d')
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
@@ -224,10 +235,12 @@ function generateProjectChart(response, chartType) {
 
 
 $(document).ready(function () {
-  getUserData('year')
+  let userReportRange = $('#user-report-range').val();
+  getUserData(userReportRange);
   // getData()
-  getProjectFeedback()
-  getProjectData()
+  getProjectFeedback();
+  getProjectData();
+
 })
 
 function changeStatus(id) {
@@ -242,3 +255,4 @@ function changeStatus(id) {
     },
   })
 }
+
