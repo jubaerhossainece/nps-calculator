@@ -19,7 +19,7 @@
                             </div>
                         </div>
                         <div class="stats user-stat">
-                            <h2>{{ $users }}</h2>
+                            <h2>{{ $total_users }}</h2>
                             <span>Total user</span>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                                 <i class="fa fa-calendar"></i>&nbsp;
                                 <span></span> <i class="fa fa-caret-down"></i>
                             </div>
-                            <!-- <input id="user-report-range" name="user_date_range" class="form-control" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" onchange="getUserData()"> -->
+                            <input type="hidden" name="user_date_range">
                         </div>
                     </div>
 
@@ -109,7 +109,7 @@
                                             id="user-nps-filter" data-live-search="true" onchange="getProjectFeedback()">
                                             <option value="">All Users</option>
                                             @foreach ($users as $key => $user)
-                                                <option value="{{ $project->id }}">{{ $project->email }}</option>
+                                                <option value="{{ $user->id }}">{{ $user->email }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -131,6 +131,7 @@
                                             <i class="fa fa-calendar"></i>&nbsp;
                                             <span></span> <i class="fa fa-caret-down"></i>
                                         </div>
+                                        <input type="hidden" name="nps_date_range">
                                     </div>
                                 </div>
                             </div>
@@ -167,6 +168,7 @@
                                     <i class="fa fa-calendar"></i>&nbsp;
                                     <span></span> <i class="fa fa-caret-down"></i>
                                 </div>
+                                <input type="hidden" name="project_date_range">
                             </div>
                         </div>
                     </div>
@@ -198,8 +200,9 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
-    <script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/chart.js') }}"></script>
     <script src="{{ asset('js/datepicker.js') }}"></script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
 
     <script>
         $(document).ready(function() {
