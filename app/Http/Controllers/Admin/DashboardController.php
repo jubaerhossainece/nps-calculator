@@ -65,9 +65,8 @@ class DashboardController extends Controller
         $chart_data->end_date = $endDate;
         $chart_data->diff = $diff;
         
-        if($diff < 1){
-            $group = 'hour';
-            $type = 'hour';
+        if($diff <= 1){
+            $data = $chart_data->hourlyData();
         }elseif($diff <= 90){
             $data = $chart_data->dailyData();
         }elseif ($diff < 180) {

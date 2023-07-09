@@ -18,17 +18,17 @@ class ChartService
         $data = User::select(DB::raw("COUNT(*) as count"), DB::raw("HOUR(created_at) as hour"))
         ->where('created_at', '>=', $this->start_date)
         ->where('created_at', '<=', $this->end_date)
-        ->groupBy('date')
-        ->orderBy('date')
+        ->groupBy('hour')
+        ->orderBy('hour')
         ->get();
 
         while ($this->start_date <= $this->end_date) {
             $this->data[] = $data->where('hour', $this->start_date->format('h'))->pluck('count')->first() ?? 0;
-            $this->label[] = $this->start_date->format('d M, y');
-            $this->start_date->addDay();
+            $this->label[] = $this->start_date->format('h:i A d, M');
+            $this->start_date->addHour();
         }
         
-        return ['data' => $this->data, 'label' => $this->label, 'type' => 'Day'];
+        return ['data' => $this->data, 'label' => $this->label, 'type' => 'Hour'];
     }
 
     public function dailyData()
