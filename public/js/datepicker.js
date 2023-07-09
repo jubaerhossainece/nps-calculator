@@ -5,9 +5,9 @@ $(function() {
   var end = moment();
 
   function cb(start, end) {
-    console.log(start.format('MMMM D, YYYY')+" "+end.format('MMMM D, YYYY'));
-    console.log(start.unix()+" "+end.unix());
-    console.log(end.diff(start, 'hours'));
+    // console.log(start.format('MMMM D, YYYY')+" "+end.format('MMMM D, YYYY'));
+    // console.log(start.unix()+" "+end.unix());
+    // console.log(end.diff(start, 'hours'));
     if(end.diff(start, 'hours') == 24){
       alert('hello');
     }

@@ -55,21 +55,32 @@ class DashboardController extends Controller
 
     public function userChartData(Request $request)
     {
-        // return response([
-        //     'start' => $request->startDate,
-        //     'end' => $request->endDate,
-        // ]);
-
         $startDate = Carbon::parse($request['startDate']); 
         $endDate = Carbon::parse($request['endDate']); 
         $diff = $endDate->diffInDays($startDate);
-        if($diff == 0){
-            $diff = $endDate->diffInHours($startDate);
-        }
-        return $diff;
-        if($diff >= 180){
+        
+        if($diff < 1){
+            $group = 'hour';
+            $type = 'hour';
+
+        }elseif($diff <= 90){
+            $group = 'day';
+            $db_data = User::select(DB::raw("COUNT(*) as count"), DB::raw("DAY(created_at) as day"))
+            ->whereDate('created_at', '>=', $startDate)
+            ->whereDate('created_at', '<=', $endDate)
+            ->groupBy(DB::raw("DAY(created_at)"))
+            ->orderBy(DB::raw("DAY(created_at)"))
+            ->get();
+        }elseif ($diff < 180) {
+            $group = 'week';
+            $db_data = User::select(DB::raw("COUNT(*) as count"), DB::raw("WEEK(created_at) as week"))
+            ->whereDate('created_at', '>=', $startDate)
+            ->whereDate('created_at', '<=', $endDate)
+            ->groupBy(DB::raw("WEEK(created_at)"))
+            ->orderBy(DB::raw("WEEK(created_at)"))
+            ->get();
+        }else {
             $group = 'month';
-            $type = 'month';
 
             $db_data = User::select(DB::raw("COUNT(*) as count"), DB::raw("MONTH(created_at) as month"),DB::raw("YEAR(created_at) AS year"))
             ->whereDate('created_at', '>=', $startDate)
@@ -77,20 +88,14 @@ class DashboardController extends Controller
             ->groupBy(DB::raw("YEAR(created_at), MONTH(created_at)"))
             ->orderBy(DB::raw("YEAR(created_at), MONTH(created_at)"))
             ->get();
-        }elseif($diff >= 90){
-            $group = 'week';
-        }elseif($diff >= 7){
-            $group = 'day';
-            $db_data = User::select(DB::raw("COUNT(*) as count"), DB::raw("date(created_at) as date"))
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->groupBy(DB::raw("YEAR(created_at), MONTH(created_at)"))
-            ->orderBy(DB::raw("YEAR(created_at), MONTH(created_at)"))
-            ->get();
-        }elseif ($diff <= 1) {
-            $group = 'hour';
         }
 
+
+        return response([
+            'start' => $request->startDate,
+            'end' => $request->endDate,
+            'db_data' => $db_data
+        ]);
 
         // $db_data = User::select(DB::raw("(COUNT(*)) as count"), DB::raw($type . " (created_at) as " . $type))
         //     ->whereDate('created_at', '>=', $startDate)

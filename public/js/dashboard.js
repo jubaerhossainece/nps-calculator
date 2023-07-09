@@ -11,5 +11,6 @@ $(document).ready(function () {
 });
 
 $('#user-report-range').on('apply.daterangepicker', function(ev, picker) {
+  console.log('hello');
   getUserData();
 });
