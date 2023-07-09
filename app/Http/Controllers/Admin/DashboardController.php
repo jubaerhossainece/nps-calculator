@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectLinkFeedback;
 use App\Models\User;
+use App\Services\ChartService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -58,119 +59,24 @@ class DashboardController extends Controller
         $startDate = Carbon::parse($request['startDate']); 
         $endDate = Carbon::parse($request['endDate']); 
         $diff = $endDate->diffInDays($startDate);
+
+        $chart_data = new ChartService();
+        $chart_data->start_date = $startDate;
+        $chart_data->end_date = $endDate;
+        $chart_data->diff = $diff;
         
         if($diff < 1){
             $group = 'hour';
             $type = 'hour';
-
         }elseif($diff <= 90){
-            $group = 'day';
-            $db_data = User::select(DB::raw("COUNT(*) as count"), DB::raw("DAY(created_at) as day"))
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->groupBy(DB::raw("DAY(created_at)"))
-            ->orderBy(DB::raw("DAY(created_at)"))
-            ->get();
+            $data = $chart_data->dailyData();
         }elseif ($diff < 180) {
-            $group = 'week';
-            $db_data = User::select(DB::raw("COUNT(*) as count"), DB::raw("WEEK(created_at) as week"))
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->groupBy(DB::raw("WEEK(created_at)"))
-            ->orderBy(DB::raw("WEEK(created_at)"))
-            ->get();
-        }else {
-            $group = 'month';
-
-            $db_data = User::select(DB::raw("COUNT(*) as count"), DB::raw("MONTH(created_at) as month"),DB::raw("YEAR(created_at) AS year"))
-            ->whereDate('created_at', '>=', $startDate)
-            ->whereDate('created_at', '<=', $endDate)
-            ->groupBy(DB::raw("YEAR(created_at), MONTH(created_at)"))
-            ->orderBy(DB::raw("YEAR(created_at), MONTH(created_at)"))
-            ->get();
+            $data = $chart_data->weeklyData();
+        }elseif ($diff >= 180){
+            $data = $chart_data->monthlyData();
         }
 
-
-        return response([
-            'start' => $request->startDate,
-            'end' => $request->endDate,
-            'db_data' => $db_data
-        ]);
-
-        // $db_data = User::select(DB::raw("(COUNT(*)) as count"), DB::raw($type . " (created_at) as " . $type))
-        //     ->whereDate('created_at', '>=', $startDate)
-        //     ->whereDate('created_at', '<=', $endDate)
-        //     ->groupBy($type)
-        //     ->orderBy($type)
-        //     ->get();
-            return $db_data;
-
-        if ($type == 'year') {
-            $db_data = User::select(
-                DB::raw("(COUNT(*)) as count"),
-                DB::raw("YEAR(created_at) as year")
-            )
-                ->groupBy('year')
-                ->orderBy('year')
-                ->get();
-        }
-
-        $temp = [];
-        foreach ($db_data as $value) {
-            $temp[$value->$type] = $value->count;
-        }
-
-        $data = [];
-        if ($type == 'week') {
-
-            for ($i = 1; $i <= 52; $i++) {
-                $label[] = $i;
-                $data[] = $temp[$i] ?? 0;
-            }
-        } elseif ($type == 'month') {
-
-            $label = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-            foreach ($label as $key => $value) {
-                $data[$key] = $temp[$key + 1] ?? 0;
-            }
-        } elseif ($type == 'year') {
-
-            $year = array_keys($temp);
-            $start = min($year);
-            $end = date("Y");
-            for ($i = $start; $i <= $end; $i++) {
-                $label[] = $i;
-                $data[] = $temp[$i] ?? 0;
-            }
-        }
-
-        return response([
-            'label' => $label,
-            'user' => $data,
-        ]);
-
-
-        $monthly = User::select(DB::raw("(COUNT(*)) as count"), DB::raw("MONTH(created_at) as month"))
-            ->whereYear('created_at', date('Y'))
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
-        if ($type == 'yearly') {
-
-            $label = [];
-        } elseif ($type == 'monthly') {
-            $label = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        } elseif ($type == 'weekly') {
-            $weekly = User::select(DB::raw("(COUNT(*)) as count"), DB::raw("WEEK(created_at) as week"))
-                ->whereDate('created_at', date('Y-m-d'))
-                ->groupBy('week')
-                ->orderBy('week')
-                ->get();
-
-            return successResponseJson([$label, $data]);
-        }
+        return successResponseJson($data);
     }
 
     public function projectFeedbackChartData(Request $request)

@@ -30,16 +30,17 @@ function generateUserChart(response) {
   const ctx = document.getElementById('user-summary-canvas').getContext('2d')
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
-  gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
-  let chartType = response.type;
+  gradient.addColorStop(0, 'rgba(37, 88, 220, 1)');
+  gradient.addColorStop(1, 'rgba(0, 180, 239, 1)');
+  let chartType = response.data.type;
   
   const userChart = new Chart(ctx, {
-    type: 'line',
+    type: 'bar',
     data: {
-      labels: response.label,
+      labels: response.data.label,
       datasets: [
         {
-          data: response.user,
+          data: response.data.data,
           backgroundColor: gradient,
           pointColor: '#fff',
           borderWidth: 1,
