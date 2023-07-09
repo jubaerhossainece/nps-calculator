@@ -86,6 +86,10 @@
                         data: 'user_name',
                         title: 'User',
                         orderable: false
+                    },{
+                        data: 'user_email',
+                        title: 'User Email',
+                        orderable: false
                     },
                     {
                         data: 'status',

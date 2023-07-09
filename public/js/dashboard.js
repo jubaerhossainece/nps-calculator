@@ -1,7 +1,3 @@
-
-
-
-
 $(document).ready(function () {
   getUserData();
 
@@ -10,7 +6,18 @@ $(document).ready(function () {
 
 });
 
+// generate user chart for a selected date range
 $('#user-report-range').on('apply.daterangepicker', function(ev, picker) {
-  console.log('hello');
   getUserData();
+});
+
+
+// generate nps chart for a selected date range
+$('#nps-report-range').on('apply.daterangepicker', function(ev, picker) {
+  getProjectFeedback();
+});
+
+// generate nps chart for a selected date range
+$('#nps-report-range').on('apply.daterangepicker', function(ev, picker) {
+  getProjectFeedback();
 });

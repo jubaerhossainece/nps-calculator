@@ -39,7 +39,7 @@ class ReportAbuseController extends Controller
             ->join('projects as p', 'p.id', '=', 'plink.project_id')
             ->join('users as u', 'u.id', '=', 'p.user_id')
             ->whereIntegerInRaw('plink.id', $projectLinkIds)
-            ->select('plink.id as project_link_id', 'plink.code', 'plink.status as project_link_status', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status');
+            ->select('plink.id as project_link_id', 'plink.code', 'plink.status as project_link_status', 'p.id as project_id', 'p.name as project_name', 'u.id as user_id', 'u.name as user_name', 'u.status as status', 'u.email as user_email');
 
         if ($type == 'inactive') {
             $reports = $reports->where('plink.status', false);

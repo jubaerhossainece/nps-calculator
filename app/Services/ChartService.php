@@ -10,15 +10,32 @@ class ChartService
     public $start_date;
     public $end_date;
     public $diff;
+    public $condition;
     private $data = [];
     private $label = [];
+    private $model;
+
+    public function __construct($model) {
+        $this->model = $model;
+    }
 
     public function hourlyData()
     {
-        $data = User::select(DB::raw("COUNT(*) as count"), DB::raw("HOUR(created_at) as hour"))
-        ->where('created_at', '>=', $this->start_date)
-        ->where('created_at', '<=', $this->end_date)
-        ->groupBy('hour')
+        $data = $this->model::select(DB::raw("COUNT(*) as count"), DB::raw("HOUR(created_at) as hour"));
+
+        if($this->start_date){
+            $data->where('created_at', '>=', $this->start_date);
+        }
+
+        if($this->end_date){
+            $data->where('created_at', '<=', $this->end_date);
+        }
+
+        if ($this->condition) {
+            $data->where($this->condition);
+        }
+
+        $data = $data->groupBy('hour')
         ->orderBy('hour')
         ->get();
 
@@ -33,10 +50,21 @@ class ChartService
 
     public function dailyData()
     {
-        $data = User::select(DB::raw("COUNT(*) as count"), DB::raw("DATE(created_at) as date"))
-        ->whereDate('created_at', '>=', $this->start_date)
-        ->whereDate('created_at', '<=', $this->end_date)
-        ->groupBy('date')
+        $data = $this->model::select(DB::raw("COUNT(*) as count"), DB::raw("DATE(created_at) as date"));
+
+        if($this->start_date){
+            $data->whereDate('created_at', '>=', $this->start_date);
+        }
+
+        if($this->end_date){
+            $data->whereDate('created_at', '<=', $this->end_date);
+        }
+
+        if ($this->condition) {
+            $data->where($this->condition);
+        }
+
+        $data = $data->groupBy('date')
         ->orderBy('date')
         ->get();
 
@@ -52,10 +80,21 @@ class ChartService
 
     public function weeklyData()
     {
-        $data = User::select(DB::raw("COUNT(*) as count"), DB::raw("WEEK(created_at) as week"), DB::raw("YEAR(created_at) as year"))
-        ->whereDate('created_at', '>=', $this->start_date)
-        ->whereDate('created_at', '<=', $this->end_date)
-        ->groupBy(DB::raw("WEEK(created_at)"), DB::raw("YEAR(created_at)"))
+        $data = $this->model::select(DB::raw("COUNT(*) as count"), DB::raw("WEEK(created_at) as week"), DB::raw("YEAR(created_at) as year"));
+
+        if($this->start_date){
+            $data->whereDate('created_at', '>=', $this->start_date);
+        }
+
+        if($this->end_date){
+            $data->whereDate('created_at', '<=', $this->end_date);
+        }
+
+        if ($this->condition) {
+            $data->where($this->condition);
+        }
+
+        $data = $data->groupBy(DB::raw("WEEK(created_at)"), DB::raw("YEAR(created_at)"))
         ->orderBy(DB::raw("YEAR(created_at)"))
         ->orderBy(DB::raw("WEEK(created_at)"))
         ->get();
@@ -76,9 +115,21 @@ class ChartService
 
     public function monthlyData() 
     {
-        $data = User::select(DB::raw("MONTH(created_at) AS month"), DB::raw("YEAR(created_at) AS year"), DB::raw('COUNT(*) AS count'))
-        ->whereDate('created_at', '>=', $this->start_date)
-        ->whereDate('created_at', '<=', $this->end_date)
+        $data = $this->model::select(DB::raw("MONTH(created_at) AS month"), DB::raw("YEAR(created_at) AS year"), DB::raw('COUNT(*) AS count'));
+
+        if($this->start_date){
+            $data->whereDate('created_at', '>=', $this->start_date);
+        }
+
+        if($this->end_date){
+            $data->whereDate('created_at', '<=', $this->end_date);
+        }
+
+        if ($this->condition) {
+            $data->where($this->condition);
+        }
+
+        $data = $data->groupBy(DB::raw("WEEK(created_at)"), DB::raw("YEAR(created_at)"))
         ->groupBy('month', 'year')
         ->orderBy('month')
         ->orderBy('year')

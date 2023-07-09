@@ -30,7 +30,7 @@ $(function() {
          'Last 24 hours': [moment().subtract(1, 'day'), moment()],
          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-         'Last 365 days': [moment().subtract(364, 'days'), moment()]
+         'Last 90 days': [moment().subtract(89, 'days'), moment()]
       }
   }, cb);
 
@@ -42,7 +42,7 @@ $(function() {
     var duration = moment.duration(start.diff(end));
     var hours = duration.asHours();
 
-    if(hours == -24){
+    if(hours <= -24){
       $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }else{
@@ -60,7 +60,7 @@ $(function() {
        'Last 24 hours': [moment().subtract(1, 'day'), moment()],
        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'Last 365 days': [moment().subtract(364, 'days'), moment()]
+       'Last 90 days': [moment().subtract(89, 'days'), moment()]
     }
   }, cbNps);
 
@@ -91,7 +91,7 @@ $(function() {
        'Last 24 hours': [moment().subtract(1, 'day'), moment()],
        'Last 7 Days': [moment().subtract(6, 'days'), moment()],
        'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'Last 365 days': [moment().subtract(364, 'days'), moment()]
+       'Last 90 days': [moment().subtract(89, 'days'), moment()]
     }
   }, cbProject);
 
