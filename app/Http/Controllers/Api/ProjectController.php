@@ -134,17 +134,14 @@ class ProjectController extends Controller
         //filter by date
         $from = request('from');
         $to = request('to') ?? now();
-        if ($from) {
-            $feedbacks = $feedbacks->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
-        }
         
         if(request('search_param')){
             $anonymous = ['anonymous', 'anonimous', 'annonymous', 'anonymious', 'annonimous'];
             
             if(in_array(request('search_param'), $anonymous)){
                 $feedbacks = $feedbacks->where(function($q){
-                    return $q->where('name', "")
-                    ->orWhere('email', "");
+                    return $q->where('name', null)
+                    ->where('email', null);
                 });
             }else{
                 $feedbacks = $feedbacks->where(function($q){
@@ -156,12 +153,13 @@ class ProjectController extends Controller
 
         // graph data
         $graph_data = new ChartService();
-        $graph_data->start_date = $from;
-        $graph_data->end_date = $to;
+        $startDate = Carbon::parse($from);
+        $endDate = Carbon::parse($to);
+        
+        $graph_data->start_date = $startDate;
+        $graph_data->end_date = $endDate;
         $graph_data->query = clone $feedbacks;
 
-        $startDate = Carbon::parse(request('startDate')); 
-        $endDate = Carbon::parse(request('endDate')); 
         $diff = $endDate->diffInDays($startDate);
 
         if($diff <= 1){
@@ -174,6 +172,10 @@ class ProjectController extends Controller
             $graph = $graph_data->monthlyData();
         }
 
+        if ($from) {
+            $feedbacks = $feedbacks->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
+        }
+        
         $feedbacks = $feedbacks->paginate(10);
 
         return successResponseJson([
