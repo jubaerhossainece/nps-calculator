@@ -139,7 +139,7 @@ class ProjectController extends Controller
         }
         
         if(request('search_param')){
-            $anonymous = ['anonymous', 'anonimous', 'annonymous', 'anonymious'];
+            $anonymous = ['anonymous', 'anonimous', 'annonymous', 'anonymious', 'annonimous'];
             
             if(in_array(request('search_param'), $anonymous)){
                 $feedbacks = $feedbacks->where(function($q){
@@ -152,7 +152,6 @@ class ProjectController extends Controller
                     ->orWhere('email', 'like', "%".request('search_param')."%");
                 });
             }
-            
         }
 
         // graph data
