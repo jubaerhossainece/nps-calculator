@@ -1,5 +1,5 @@
 // chart generator function
-function generateChart(response, id, color) {
+function generateChart(response, id, color, y_title) {
 
   let chartStatus = Chart.getChart(id) // <canvas> id
   if (chartStatus != undefined) {
@@ -35,6 +35,10 @@ function generateChart(response, id, color) {
           title: {
             display: true,
             text: chartType,
+            font: {
+              size: 18,
+              lineHeight: 1.2
+            },
           },
           grid: {
             display: false
@@ -42,8 +46,12 @@ function generateChart(response, id, color) {
         },
         y: {
           title: {
-            display: false,
-            text: 'user',
+            display: true,
+            text: y_title,
+            font: {
+              size: 18,
+              lineHeight: 1.2
+            },
           },
           ticks: {
             precision: 0, // Enforce integer values
@@ -78,7 +86,7 @@ function getUserData() {
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
       let color = ['rgba(37, 88, 220, 1)', 'rgba(0, 180, 239, 1)'];
-      generateChart(response, "user-summary-canvas", color);
+      generateChart(response, "user-summary-canvas", color, 'Number if users');
     },
   })
 }
@@ -109,60 +117,10 @@ function getProjectFeedback() {
     success: function (response) {
       console.log(response); 
       let color = ['rgba(247, 148, 32, 1)', "rgba(251, 167, 70, 0.56)"];
-      generateChart(response, "nps-summary-canvas", color);
+      generateChart(response, "nps-summary-canvas", color, 'No of feedbacks');
     },
   })
 }
-
-//   var ctx = document.getElementById('nps-summary-canvas').getContext('2d');
-  
-//   const gradient = ctx.createLinearGradient(0, 0, 0, 400)
-//   gradient.addColorStop(0, 'rgba(29, 170, 226, 0.5)')
-//   let chartType = response.type;
-
-//   const userChart = new Chart(ctx, {
-//     type: 'line',
-//     data: {
-//       labels: response.label,
-//       datasets: [
-//         {
-//           data: response.user,
-//           backgroundColor: gradient,
-//           pointColor: '#fff',
-//           borderWidth: 1,
-//           tension: 0.3,
-//           fill: 'origin',
-//         },
-//       ],
-//     },
-//     options: {
-//       responsive: true,
-//       scales: {
-//         x: {
-//           title: {
-//             display: true,
-//             text: chartType,
-//           },
-//           grid: {
-//             display: false
-//           }
-//         },
-//         y: {
-//           title: {
-//             display: false,
-//             text: 'user',
-//           },
-//           suggestedMin: 0,
-//         },
-//       },
-//       plugins: {
-//         legend: {
-//           display: false,
-//         },
-//       },
-//     },
-//   })
-// }
 
 
 // NPS Line chart
@@ -184,7 +142,7 @@ function getProjectData() {
     success: function (response) {
       console.log(response);
       let color = ['rgba(221, 58, 107, 1)', 'rgba(221, 58, 107, 0.56)'];
-      generateChart(response, "project-summary-canvas", color);
+      generateChart(response, "project-summary-canvas", color, 'No of projects');
     },
   })
 }
