@@ -106,10 +106,10 @@
                                     <div class="col-md-4 form-group">
                                         <span>User</span>
                                         <select name="user_nps_filter" class="select2 form-select form-select-lg mb-3 select_with_search"
-                                            id="user-nps-filter" data-live-search="true" onchange="getProjectFeedback()">
+                                            id="user-nps-filter" data-live-search="true">
                                             <option value="">All Users</option>
                                             @foreach ($users as $key => $user)
-                                                <option value="{{ $user->id }}">{{ $user->email }}</option>
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -119,9 +119,6 @@
                                         <select name="project_nps_filter" class="select2 form-select form-select-lg mb-3 select_with_search"
                                             id="project-nps-filter" data-live-search="true" onchange="getProjectFeedback()">
                                             <option value="">All Projects</option>
-                                            @foreach ($projects as $key => $project)
-                                                <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                            @endforeach
                                         </select>
                                     </div>
 
@@ -173,7 +170,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div id="cardCollpase2" class="collapse show">
+                        <div id="cardCollapse2" class="collapse show">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -210,7 +207,7 @@
             $('.select2-selection--single').css('height','38px');
             $('#user-filter').select2({
                 minimumResultsForSearch: Infinity
-            })
+            });
         });
     </script>
 

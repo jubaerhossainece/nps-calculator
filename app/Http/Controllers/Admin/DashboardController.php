@@ -56,15 +56,16 @@ class DashboardController extends Controller
 
     public function userChartData(Request $request)
     {
-        $startDate = Carbon::parse($request['startDate']); 
-        $endDate = Carbon::parse($request['endDate']); 
+        $startDate = Carbon::parse(request('startDate')); 
+        $endDate = Carbon::parse(request('endDate')); 
         $diff = $endDate->diffInDays($startDate);
+        $query = User::query();
 
-        $chart_data = new ChartService(new User);
+        $chart_data = new ChartService();
         $chart_data->start_date = $startDate;
         $chart_data->end_date = $endDate;
-        $chart_data->diff = $diff;
-        
+        $chart_data->query = $query;
+
         if($diff <= 1){
             $data = $chart_data->hourlyData();
         }elseif($diff <= 90){
@@ -80,15 +81,24 @@ class DashboardController extends Controller
 
     public function projectFeedbackChartData(Request $request)
     {
-        $startDate = Carbon::parse($request['startDate']); 
-        $endDate = Carbon::parse($request['endDate']); 
+        $startDate = Carbon::parse(request('startDate')); 
+        $endDate = Carbon::parse(request('endDate'));
         $diff = $endDate->diffInDays($startDate);
+        $query = ProjectLinkFeedback::query();
 
-        $chart_data = new ChartService(new User);
+        if(request('user_id')){
+            if(request('project_id')){
+                $query = $query->where('project_id', request('project_id'));
+            }else{
+                $projectId = Project::where('user_id', request('user_id'))->pluck('id')->all();
+                $query = $query->whereIn('project_id', $projectId);
+            }
+        }
+
+        $chart_data = new ChartService();
         $chart_data->start_date = $startDate;
         $chart_data->end_date = $endDate;
-        $chart_data->diff = $diff;
-        $chart_data->condition = [];
+        $chart_data->query = $query;
         
         if($diff <= 1){
             $data = $chart_data->hourlyData();
@@ -103,37 +113,35 @@ class DashboardController extends Controller
         return successResponseJson($data);
     }
 
-    public function npsScoreChartData(Request $request){
 
-        $type = 'date';
-        $from_date = $request->from_date ??  Carbon::today()->startOfMonth()->toDateString();
-        $to_date = $request->to_date ?? Carbon::today()->endOfMonth()->toDateString();
-        $project_ids = $request->project_id ? [$request->project_id] : Project::orderBy('id','asc')->pluck('id')->toArray();
+    function projectChartData() {
+        
+        $startDate = Carbon::parse(request('startDate')); 
+        $endDate = Carbon::parse(request('endDate')); 
+        $diff = $endDate->diffInDays($startDate);
+        $query = Project::query();
 
-        $score_ranges = [
-            'DETRACTOR' => [0,6],
-            'PASSIVE' => [7,8],
-            'PROMOTER' => [9,10],
-        ];
-
-        $collections = ProjectLinkFeedback::select( 
-        DB::raw('SUM(CASE WHEN rating >= ' . $score_ranges['DETRACTOR'][0] . ' AND rating <= ' . $score_ranges['DETRACTOR'][1] . ' THEN 1 ELSE 0 END) AS DETRACTOR'),
-        DB::raw('SUM(CASE WHEN rating >= ' . $score_ranges['PASSIVE'][0] . ' AND rating <= ' . $score_ranges['PASSIVE'][1] . ' THEN 1 ELSE 0 END) AS PASSIVE'),
-        DB::raw('SUM(CASE WHEN rating >= ' . $score_ranges['PROMOTER'][0] . ' AND rating <= ' . $score_ranges['PROMOTER'][1] . ' THEN 1 ELSE 0 END) AS PROMOTER'), DB::raw($type . " (created_at) as " . $type))
-        ->whereDate('created_at', '>=', $from_date)->whereDate('created_at', '<=', $to_date)
-        ->whereIntegerInRaw('project_id',$project_ids)
-        ->groupBy($type)
-        ->orderBy($type)
-        ->get();
-
-
-        foreach($collections as $key => $_data){
-            $label[] = $_data->date;
-            $data[] =  round( ($_data->PROMOTER - $_data->DETRACTOR) / ( $_data->PROMOTER + $_data->PASSIVE +  $_data->DETRACTOR) * 100, 2) ?? 0;
+        $chart_data = new ChartService();
+        $chart_data->start_date = $startDate;
+        $chart_data->end_date = $endDate;
+        $chart_data->query = $query;
+        
+        if($diff <= 1){
+            $data = $chart_data->hourlyData();
+        }elseif($diff <= 90){
+            $data = $chart_data->dailyData();
+        }elseif ($diff < 180) {
+            $data = $chart_data->weeklyData();
+        }elseif ($diff >= 180){
+            $data = $chart_data->monthlyData();
         }
-        return response([
-            'label' => $label ?? [],
-            'data' => $data ?? [],
-        ]);
+        return successResponseJson($data);
+    }
+
+
+    public function userProjects($user){
+        $projects = Project::select('id', DB::raw('name as text'))->where('user_id', $user)->get();
+
+        return successResponseJson($projects);
     }
 }

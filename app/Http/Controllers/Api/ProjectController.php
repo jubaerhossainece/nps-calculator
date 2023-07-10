@@ -11,7 +11,9 @@ use App\Http\Resources\ProjectResource;
 use App\Models\Project;
 use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
+use App\Services\ChartService;
 use App\Services\ProjectLinkService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -98,7 +100,6 @@ class ProjectController extends Controller
 
     public function getFeedbacks()
     {
-
         if(request('project_id')){
             $projectId = [request('project_id')];
             $link = ProjectLink::where('project_id', request('project_id'))->first();
@@ -138,29 +139,40 @@ class ProjectController extends Controller
         }
         
         if(request('search_param')){
-            $feedbacks = $feedbacks->where(function($q){
-                return $q->where('name', 'like', "%".request('search_param')."%")
-                ->orWhere('email', 'like', "%".request('search_param')."%");
-            });
+            $anonymous = ['anonymous', 'anonimous', 'annonymous', 'anonymious'];
+            
+            if(in_array(request('search_param'), $anonymous)){
+                $feedbacks = $feedbacks->where(function($q){
+                    return $q->where('name', "")
+                    ->orWhere('email', "");
+                });
+            }else{
+                $feedbacks = $feedbacks->where(function($q){
+                    return $q->where('name', 'like', "%".request('search_param')."%")
+                    ->orWhere('email', 'like', "%".request('search_param')."%");
+                });
+            }
+            
         }
 
-        // if (\request('users')) {
-        //     $users = explode(',', \request('users'));
+        // graph data
+        $graph_data = new ChartService();
+        $graph_data->start_date = $from;
+        $graph_data->end_date = $to;
+        $graph_data->query = clone $feedbacks;
 
-        //     if (gettype($users) === 'array' && count($users) > 0) {
-        //         $feedbacks->whereIn('id', $users);
-        //     }
-        // }
+        $startDate = Carbon::parse(request('startDate')); 
+        $endDate = Carbon::parse(request('endDate')); 
+        $diff = $endDate->diffInDays($startDate);
 
-//        $f = $d->selectRaw('MONTH(created_at) as month')->get();
-
-        //show graph
-        $graph['categories'] = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-
-        //TODO: optimize query
-        foreach ($graph['categories'] as $key => $month) {
-            $d = clone $feedbacks;
-            $graph['data'][] = $d->whereMonth('created_at', $key + 1)->count();
+        if($diff <= 1){
+            $graph = $graph_data->hourlyData();
+        }elseif($diff <= 90){
+            $graph = $graph_data->dailyData();
+        }elseif ($diff < 180) {
+            $graph = $graph_data->weeklyData();
+        }elseif ($diff >= 180){
+            $graph = $graph_data->monthlyData();
         }
 
         $feedbacks = $feedbacks->paginate(10);

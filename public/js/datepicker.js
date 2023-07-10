@@ -6,10 +6,10 @@ $(function() {
 
   function cb(start, end) {
     let target = "#user-report-range";
-    var duration = moment.duration(start.diff(end));
+    var duration = moment.duration(end.diff(start));
     var hours = duration.asHours();
-
-    if(hours == -24){
+    console.log(hours);
+    if(hours <= 24){
       $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }else{
@@ -39,10 +39,10 @@ $(function() {
   // nps datepicker
   function cbNps(start, end) {
     let target = "#nps-report-range";
-    var duration = moment.duration(start.diff(end));
+    var duration = moment.duration(end.diff(start));
     var hours = duration.asHours();
-
-    if(hours <= -24){
+    console.log(hours);
+    if(hours <= 24){
       $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }else{
@@ -53,15 +53,18 @@ $(function() {
 
   $('#nps-report-range').daterangepicker({
     startDate: start,
-    endDate: end,
-    timePicker: true,
-    timePicker24Hour: true,
-    ranges: {
-       'Last 24 hours': [moment().subtract(1, 'day'), moment()],
-       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'Last 90 days': [moment().subtract(89, 'days'), moment()]
-    }
+      endDate: end,
+      timePicker: true,
+      timePicker24Hour: true,
+      locale: {
+        format: 'YYYY-MM-DD HH:mm:ss'
+      },
+      ranges: {
+         'Last 24 hours': [moment().subtract(1, 'day'), moment()],
+         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+         'Last 90 days': [moment().subtract(89, 'days'), moment()]
+      }
   }, cbNps);
 
   cbNps(start, end);
@@ -69,11 +72,11 @@ $(function() {
 
   // date picker for projects
   function cbProject(start, end) {
-    let target = "#project-report-range";
-    var duration = moment.duration(start.diff(end));
+    var duration = moment.duration(end.diff(start));
     var hours = duration.asHours();
 
-    if(hours == -24){
+    let target = "#project-report-range";
+    if(hours <= 24){
       $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }else{
@@ -84,18 +87,20 @@ $(function() {
 
   $('#project-report-range').daterangepicker({
     startDate: start,
-    endDate: end,
-    timePicker: true,
-    timePicker24Hour: true,
-    ranges: {
-       'Last 24 hours': [moment().subtract(1, 'day'), moment()],
-       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'Last 90 days': [moment().subtract(89, 'days'), moment()]
-    }
+      endDate: end,
+      timePicker: true,
+      timePicker24Hour: true,
+      locale: {
+        format: 'YYYY-MM-DD HH:mm:ss'
+      },
+      ranges: {
+         'Last 24 hours': [moment().subtract(1, 'day'), moment()],
+         'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+         'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+         'Last 90 days': [moment().subtract(89, 'days'), moment()]
+      }
   }, cbProject);
 
   cbProject(start, end);
-  
 });
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\ReportAbuseController;
 use App\Http\Controllers\Admin\UserController;
@@ -47,8 +48,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard/recent-user', [Admin\DashboardController::class, 'recentUser']);
     Route::get('/dashboard/user/chart', [Admin\DashboardController::class, 'userChartData']);
     Route::get('/dashboard/project-feedback/chart', [Admin\DashboardController::class, 'projectFeedbackChartData']);
-    Route::get('/dashboard/nps-score/chart', [Admin\DashboardController::class, 'npsScoreChartData']);
-    
+    Route::get('/dashboard/project/chart', [Admin\DashboardController::class, 'projectChartData']);
+    Route::get('/dashboard/user/{user}/projects', [DashboardController::class, 'userProjects']);
+
     // Profile 
     Route::get('/profile/show', [Admin\ProfileController::class, 'show'])->name('admin.profile.show');
     Route::get('/profile/edit', [Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
