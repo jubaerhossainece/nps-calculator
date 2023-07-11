@@ -148,8 +148,24 @@
                     getData(type);
                 }
             });
-
         }
+
+
+        function changeUserStatus(id) {
+            $.ajax({
+                type: "POST",
+                url: "/users/" + id + "/status-change",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data) {
+                    let type = $(".nav-link.active").attr('id');
+
+                    getData(type);
+                }
+            });
+        }
+
 
         function reportLogs(project_link_id) {
             $.ajax({
