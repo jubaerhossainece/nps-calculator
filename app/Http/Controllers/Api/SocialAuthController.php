@@ -68,13 +68,18 @@ class SocialAuthController extends Controller
     public function providerLogin($response)
     {
         $provider_id = $response->sub;
-        $user = User::where([
-            'provider_id' => $provider_id,
-        ])->first();
+        $user = User::where('provider_id', $provider_id)
+        ->orWhere('email', $response->email)
+        ->first();
 
         if($user){
             $has_name = $user->name ? true : false;
             $user->name = $user->name ? $user->name : $response->name;
+            
+            if(!$user->provider_id){
+                $user->provider_id = $response->provider_id;
+                $user->save();
+            }
 
             return successResponseJson([
             'access_token' => $user->createToken('authToken')->plainTextToken,
