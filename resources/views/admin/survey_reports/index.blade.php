@@ -70,7 +70,7 @@
                 serverSide: true,
                 autoWidth: true,
                 destroy: true,
-        		searching: false,
+        		// searching: false,
                 // order: [4, "desc"],
 
                 ajax: {
@@ -134,27 +134,8 @@
 
         });
 
-        function changeStatus(id) {
-
-            $.ajax({
-                type: "POST",
-                url: "/audiences/" + id + "/status-change",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data) {
-                    let type = $(".nav-link.active").attr('id');
-
-                    getData(type);
-                }
-            });
-
-        }
-
 
         function changeProjectLinkStatus(id) {
-            console.log(id);
-
             $.ajax({
                 type: "POST",
                 url: "/project-link/" + id + "/status-change",

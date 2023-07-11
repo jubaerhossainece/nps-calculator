@@ -40,6 +40,11 @@ Route::get('/test', [TestController::class, 'test']);
 // Route::get('login/{provider}', [Api\SocialAuthController::class, 'redirectToProvider']);
 // Route::get('login/{provider}/callback', [Api\SocialAuthController::class, 'handleProviderCallback']);
 
+
+Route::get('/abuse-reports/list/{type}', [ReportAbuseController::class, 'list'])->name('abuse-reports.list');
+
+
+
 Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => '2Fa'], function () {
@@ -79,6 +84,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/show-reports/all/{project_link_id}', [ReportAbuseController::class, 'showAllReportRecords'])->name('abuse-reports-records-show');
     Route::get('/abuse-reports-records/all/{project_link_id}', [ReportAbuseController::class, 'getReportRecords'])->name('abuse-reports-records');
     Route::get('/abuse-reports-records/top-five/{project_link_id}', [ReportAbuseController::class, 'getReportRecordsTopFive'])->name('abuse-reports-records-top-five');
-    Route::get('/abuse-reports/list/{type}', [ReportAbuseController::class, 'list'])->name('abuse-reports.list');
+    // Route::get('/abuse-reports/list/{type}', [ReportAbuseController::class, 'list'])->name('abuse-reports.list');
     });
 });
