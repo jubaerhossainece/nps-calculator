@@ -138,7 +138,7 @@ class ProjectController extends Controller
         if(request('search_param')){
             $anonymous = ['anonymous', 'anonimous', 'annonymous', 'anonymious', 'annonimous'];
             
-            if(in_array(request('search_param'), $anonymous)){
+            if(in_array(strtolower(request('search_param')), $anonymous)){
                 $feedbacks = $feedbacks->where(function($q){
                     return $q->where('name', null)
                     ->where('email', null);
