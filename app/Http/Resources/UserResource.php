@@ -15,10 +15,11 @@ class UserResource extends JsonResource
      */
     public function toArray($request): array
     {
+        $url = filter_var($this->image, FILTER_VALIDATE_URL);
         return [
             'name' => $this->name,
             'email' => $this->email,
-            'image' => $this->image ? ($this->provider_id == null ? Storage::disk('public')->url('organization/' . $this->image) : $this->image) : null,
+            'image' => $this->image ? ($url ? $this->image : Storage::disk('public')->url('organization/' . $this->image)) : null,
         ];
     }
 }
