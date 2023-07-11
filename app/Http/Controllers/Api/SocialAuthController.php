@@ -77,7 +77,7 @@ class SocialAuthController extends Controller
             $user->name = $user->name ? $user->name : $response->name;
             
             if(!$user->provider_id){
-                $user->provider_id = $response->provider_id;
+                $user->provider_id = $provider_id;
                 $user->save();
             }
 
