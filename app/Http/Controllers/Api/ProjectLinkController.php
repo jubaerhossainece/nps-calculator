@@ -179,8 +179,9 @@ class ProjectLinkController extends Controller
     }
 
     public function storeReportAbuse(Request $request){
-        $link = ProjectLink::where('code', $request->code)->first();
-
+        $link = ProjectLink::where('code', $request->code)
+        ->first();
+        
         if (!$link) {
             return errorResponseJson('No Link found!', 404);
         }
@@ -197,6 +198,8 @@ class ProjectLinkController extends Controller
             'project_link_id' => ['required', 'integer'],
             'project_id' => ['required', 'integer']
         ]);
+
+
 
         $link->reportAbuse()->create($validated);
 

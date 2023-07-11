@@ -64,6 +64,7 @@
 		serverSide: true,
 		autoWidth: true,
 		destroy: true,
+		// searching: false,
 		// order: [4, "desc"],
 		
 		ajax: {

@@ -70,6 +70,7 @@
                 serverSide: true,
                 autoWidth: true,
                 destroy: true,
+        		searching: false,
                 // order: [4, "desc"],
 
                 ajax: {
@@ -84,36 +85,43 @@
                     },
                     {
                         data: 'user_name',
+                        name: 'user_name',
                         title: 'User',
                         orderable: false
                     },{
                         data: 'user_email',
+                        name: 'user_email',
                         title: 'User Email',
                         orderable: false
                     },
                     {
                         data: 'status',
                         title: 'User Status',
-                        orderable: false
+                        orderable: false,
+                        searchable: false,
                     },
                     {
                         data: 'project_name',
+                        name: 'project_name',
                         title: 'Project Name',
                         orderable: false
                     },
                     {
                         data: 'code',
                         title: 'Code',
+                        searchable: false,
                         orderable: false
                     },
                     {
                         data: 'project_link_status',
                         title: 'Survey link status',
+                        searchable: false,
                         orderable: false
                     },
                     {
                         data: 'action',
                         title: 'Action',
+                        searchable: false,
                         orderable: false
                     },
                 ]

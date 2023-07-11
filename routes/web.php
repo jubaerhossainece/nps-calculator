@@ -60,8 +60,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/password/update', [Admin\ProfileController::class, 'updatePassword'])->name('admin.password.update');
 
     // Project
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
-    Route::get('/projects/list', [ProjectController::class, 'list'])->name('projects.list');
+    Route::get('/user/{user}/projects', [ProjectController::class, 'index'])->name('user.projects');
+    Route::get('/user/{user}/projects/list', [ProjectController::class, 'list'])->name('user.projects.list');
     Route::post('/project-link/{id}/status-change', [ProjectController::class, 'toggleStatus'])->name('project-link.status-change');
 
 

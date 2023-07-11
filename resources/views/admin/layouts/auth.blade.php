@@ -101,14 +101,14 @@
     </div>
 </div>
 <div class="login-footer row">
-    <div class="div-left col-md-12">
+    <div class="div-left col-md-4">
         <span>© 2023 – Riseup Labs | All Rights Reserved</span>
     </div>
-    <!-- <div class="div-right col-md-6">
+    <div class="div-right col-md-4 offset-md-3">
         <a href="">Terms of Service</a>
         <a href="">Privacy Policy</a>
         <a href="">Security Statement</a>
-    </div> -->
+    </div>
 </div>
 <!-- Vendor js -->
 <script src="{{ asset('assets/js/vendor.min.js') }}"></script>

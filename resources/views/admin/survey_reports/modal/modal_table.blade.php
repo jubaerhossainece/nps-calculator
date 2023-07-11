@@ -6,7 +6,7 @@
         </tr>
         @foreach ($link_reports as $report)
             <tr>
-                <td>{{ $report->getReportTypeUsingId($report->id) }}</td>
+                <td>{{ $report->getReportTypeUsingId($report->report_abuse_option_id) }}</td>
                 <td>{{ $report->comment }}</td>
             </tr>
         @endforeach

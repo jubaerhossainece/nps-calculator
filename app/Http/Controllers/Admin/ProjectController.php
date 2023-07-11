@@ -15,17 +15,28 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($user)
     {   
-        return view('admin.projects.index');
+        return view('admin.projects.index', compact('user'));
     }
 
 
-    public function list(){
-        $projects = Project::select('id', 'name', 'logo', 'wt_visibility', 'name_field_visibility', 'email_field_visibility', 'comment_field_visibility', 'welcome_text', 'question');
+    public function list($user){
+        $projects = Project::select('id', 'name')
+        ->withCount('feedbacks')
+        ->with('link:id,project_id,status')
+        ->where('user_id', $user);
         
         return DataTables::of($projects)
         ->addIndexColumn()
+        ->addColumn('status', function($project){
+            return $project->link->status ? "<span class='text-success'><i class='mr-2 fas fa-circle fa-xs'></i>Active</span>" : "<span class='text-danger'><i class='mr-2 fas fa-circle fa-xs'></i>Inactive</span>";
+        })
+        ->addColumn('action', function($project){
+            $link = $project->link;
+            return view('components.project-status', compact('link'));
+        })
+        ->rawColumns(['status', 'action'])
         ->make(true);
     }
 

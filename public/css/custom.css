@@ -18,7 +18,36 @@ input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   span.logo-lg img {
     height: 40px;
   }
+
+  .left-side-menu {
+    padding-top: 50px;
+    background: rgba(27, 28, 30, 1);
+  }
+
+  .logo-box {
+    background: rgba(27, 28, 30, 1);
+  }
   
+  .metismenu li {
+    list-style: none;
+    padding: 10px 15px;
+  }
+
+  #sidebar-menu>ul>li>a {
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+  }
+
+  #sidebar-menu>ul>li>a.active {
+    background: linear-gradient(45deg, rgba(0, 180, 239, 1), rgba(37, 88, 220, 1));
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  #sidebar-menu>ul>li>a:active, #sidebar-menu>ul>li>a:focus, #sidebar-menu>ul>li>a:hover {
+    background: linear-gradient(45deg, rgba(0, 180, 239, 1), rgba(37, 88, 220, 1));
+    color: rgba(255, 255, 255, 0.8);
+    transition: 0.5s;
+  }
   /* .left-side-menu{
     background-color: black;
     width: 256px;
@@ -58,4 +87,4 @@ input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
 
   .user-box .user-info a.dropdown-toggle{
     color: white;
-  } */
+  }

@@ -15,7 +15,7 @@
                     <div class="card-body d-flex">
                         <div class="user">
                             <div class="user-icon">
-                                <i class="fas fa-users"></i>
+                                <img src="{{asset('assets/images/users.png')}}" alt="">
                             </div>
                         </div>
                         <div class="stats user-stat">
@@ -31,7 +31,7 @@
                     <div class="card-body d-flex">
                         <div class="nps">
                             <div class="nps-icon">
-                            <i class="fas fa-layer-group"></i>
+                                <img src="{{asset('assets/images/nps-collect.png')}}" alt="">
                             </div>
                         </div>
                         <div class="stats nps-stat">

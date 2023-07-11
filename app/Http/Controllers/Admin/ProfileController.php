@@ -63,7 +63,7 @@ class ProfileController extends Controller
 
         $request->validate([
             'old_password' => 'required|different:new_password|current_password',
-            'new_password' => 'required|min:6|confirmed|string',
+            'new_password' => 'required|min:8|confirmed|string',
             'new_password_confirmation' => 'required'
         ]);
 

@@ -1,7 +1,7 @@
 <!--- Sidemenu -->
 <div id="sidebar-menu">
 
-    <div class="user-box">
+    <!-- <div class="user-box">
 
         <div class="float-left">
             <img src="{{auth()->user()->image ? Storage::url('public/admin/'. auth()->user()->image) : asset('assets/images/7074311_3551739.jpg')}}" alt="" class="avatar-md rounded-circle">
@@ -28,7 +28,7 @@
             </div>
             <p class="font-13 text-muted m-0"> {{  strlen(auth()->user()->email) >= 15 ? substr( auth()->user()->email, 0, 2) . '...' . substr( auth()->user()->email, -10) : auth()->user()->email }} </p>
         </div>
-    </div>
+    </div> -->
 
     <ul class="metismenu" id="side-menu">
 

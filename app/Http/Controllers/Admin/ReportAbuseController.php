@@ -51,7 +51,7 @@ class ReportAbuseController extends Controller
         $inactive_status = "<span class='text-danger'><i class='mr-2 fas fa-circle fa-xs'></i>Inactive</span>";
 
         return DataTables::of($reports)
-            ->addColumn('name', function ($report) {
+            ->addColumn('user_name', function ($report) {
                 return $report->user_name;
             })
             ->addColumn('project_name', function ($report) {

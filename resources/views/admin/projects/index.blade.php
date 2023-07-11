@@ -41,41 +41,30 @@
 <script>
 
 	function getData(){
-
-		let from_date = $('#from_date').val();
-		let to_date = $('#to_date').val();
 		
 		$('#project-table').DataTable({
 		processing: true,
 		serverSide: true,
 		autoWidth: true,
 		destroy: true,
-		order: [4, "desc"],
+		searching: false,
+		// order: [4, "desc"],
 		
 		ajax: {
-			url : "{{ route('projects.list') }}",
-			data: function(d) { d.from_date = from_date, d.to_date = to_date }
+			url : "{{ route('user.projects.list', $user) }}"
 		},
 		columns: [
 				{data: "DT_RowIndex",name:'DT_RowIndex', title: "Serial", searchable: false, orderable: false},
-				{data: 'name', title:'Name',orderable: false},
-				{data: 'logo', title:'Name',orderable: false},
-				{data: 'wt_visibility', title:'Phone', orderable: false},
-				{data: 'name_field_visibility', title:'Email', orderable: false},
-				{data: 'email_field_visibility', title:'Total coin spent', searchable: false},
-				{data: 'comment_field_visibility', title:'Total coin spent', searchable: false},
-				{data: 'welcome_text', title:'Total coin spent', searchable: false},
+				{data: 'name', title:'Project Name',orderable: false},
+				{data: 'feedbacks_count', title:'Total nps collect',orderable: false},
+                {data: 'status', title:'Status',orderable: false},
+                {data: 'action', title:'Action',orderable: false},
+
 			]
 		});
 	}
 
-	$(document).ready(function(){
-		$('.datePicker').datepicker({
-			format: "yyyy-mm-dd",
-			autoclose: true,
-			todayHighlight: true
-		});
-        
+	$(document).ready(function(){        
 		getData();
 	});
 
