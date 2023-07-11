@@ -86,7 +86,7 @@ function getUserData() {
     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
     success: function (response) {
       let color = ['rgba(37, 88, 220, 1)', 'rgba(0, 180, 239, 1)'];
-      generateChart(response, "user-summary-canvas", color, 'Number if users');
+      generateChart(response, "user-summary-canvas", color, 'Number of users');
     },
   })
 }
