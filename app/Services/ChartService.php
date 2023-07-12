@@ -25,11 +25,7 @@ class ChartService
         if($this->end_date){
             $data->where('created_at', '<=', $this->end_date);
         }
-
-        // if ($this->condition) {
-        //     $data->where($this->condition);
-        // }
-
+        
         $data = $data->groupBy('hour')
         ->orderBy('hour')
         ->get();

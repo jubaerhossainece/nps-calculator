@@ -173,7 +173,7 @@ class ProjectController extends Controller
         }
 
         if ($from) {
-            $feedbacks = $feedbacks->whereDate('created_at', '>=', $from)->whereDate('created_at', '<=', $to);
+            $feedbacks = $feedbacks->where('created_at', '>=', $from)->where('created_at', '<=', $to);
         }
         
         $feedbacks = $feedbacks->paginate(10);
