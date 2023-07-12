@@ -81,8 +81,8 @@ class DashboardController extends Controller
 
     public function projectFeedbackChartData(Request $request)
     {
-        $startDate = Carbon::parse(request('startDate')); 
-        $endDate = Carbon::parse(request('endDate'));
+        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka'); 
+        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka');
         $diff = $endDate->diffInDays($startDate);
         $query = ProjectLinkFeedback::query();
 

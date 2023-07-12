@@ -24,7 +24,8 @@ class ChartService
 
         while ($this->start_date <= $this->end_date) {
             $this->data[] = $data->where('hour', $this->start_date->hour)->pluck('count')->first() ?? 0;
-            $this->label[] = $this->start_date->format('h:i A d, M');
+            $from = $this->start_date;
+            $this->label[] = $from->setTimezone('Asia/Dhaka')->format('h:i A d, M');
             $this->start_date->addHour();
         }
         
@@ -42,7 +43,8 @@ class ChartService
 
         while ($this->start_date <= $this->end_date) {
             $this->data[] = $data->where('date', $this->start_date->format('Y-m-d'))->pluck('count')->first() ?? 0;
-            $this->label[] = $this->start_date->format('d M, y');
+            $from = $this->start_date;
+            $this->label[] = $from->setTimezone('Asia/Dhaka')->format('d M, y');
             $this->start_date->addDay();
         }
         
@@ -72,8 +74,8 @@ class ChartService
             ->where('year', $this->start_date->year)
             ->pluck('count')
             ->first() ?? 0;
-            
-            $this->label[] = $this->start_date->format('d M, y');
+            $from = $this->start_date;
+            $this->label[] = $from->setTimezone('Asia/Dhaka')->format('d M, y');
             $this->start_date->addWeek();
         }
         
@@ -104,8 +106,9 @@ class ChartService
             ->where('month', $this->start_date->month)
             ->pluck('count')
             ->first() ?? 0;
-            
-            $this->label[] = $this->start_date->format('M, y');
+
+            $from = $this->start_date;
+            $this->label[] = $from->setTimezone('Asia/Dhaka')->format('M, y');
             $this->start_date->addMonth();
         }
         

@@ -153,9 +153,13 @@ class ProjectController extends Controller
 
         // graph data
         $graph_data = new ChartService();
-        $startDate = Carbon::parse($from);
-        $endDate = Carbon::parse($to);
         
+        $startDate = Carbon::parse($from, 'Asia/Dhaka')->tz('GMT');
+        $endDate = Carbon::parse($to, 'Asia/Dhaka')->tz('GMT');
+        // return response([
+        //     'start' => $startDate,
+        //     'endDate' => $endDate
+        // ]);
         $graph_data->start_date = $startDate;
         $graph_data->end_date = $endDate;
 
