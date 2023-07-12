@@ -35,7 +35,7 @@ Route::get('/sym-link', function(){
 
 require __DIR__ . '/auth.php';
 
-Route::get('/test', [TestController::class, 'test']);
+Route::get('/test/{id}', [TestController::class, 'test']);
 
 // Route::get('login/{provider}', [Api\SocialAuthController::class, 'redirectToProvider']);
 // Route::get('login/{provider}/callback', [Api\SocialAuthController::class, 'handleProviderCallback']);
