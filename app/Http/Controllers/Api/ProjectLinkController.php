@@ -86,7 +86,7 @@ class ProjectLinkController extends Controller
         $user = User::find($project->user_id);
 
         if( !$user || !$link->status || !$link->project->user->status){
-            return errorResponseJson('Link is deactivated.', 400);
+            return errorResponseJson('Link is not available.', 400);
         }
 
         $device_id = $request->device_id ?? Str::random(15);
