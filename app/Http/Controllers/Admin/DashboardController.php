@@ -98,15 +98,26 @@ class DashboardController extends Controller
         $chart_data = new ChartService();
         $chart_data->start_date = $startDate;
         $chart_data->end_date = $endDate;
-        $chart_data->query = $query;
         
         if($diff <= 1){
+            $query->where('created_at', '>=', $startDate);
+            $query->where('created_at', '<=', $endDate);
+            $chart_data->query = $query;
             $data = $chart_data->hourlyData();
         }elseif($diff <= 90){
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+            $chart_data->query = $query;
             $data = $chart_data->dailyData();
         }elseif ($diff < 180) {
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+            $chart_data->query = $query;
             $data = $chart_data->weeklyData();
         }elseif ($diff >= 180){
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+            $chart_data->query = $query;
             $data = $chart_data->monthlyData();
         }
 

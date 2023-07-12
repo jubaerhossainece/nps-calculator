@@ -158,25 +158,40 @@ class ProjectController extends Controller
         
         $graph_data->start_date = $startDate;
         $graph_data->end_date = $endDate;
-        $graph_data->query = clone $feedbacks;
 
         $diff = $endDate->diffInDays($startDate);
 
         if($diff <= 1){
+            $feedbacks->where('created_at', '>=', $startDate);
+            $feedbacks->where('created_at', '<=', $endDate);
+
+            $graph_data->query = clone $feedbacks;
             $graph = $graph_data->hourlyData();
         }elseif($diff <= 90){
+            $feedbacks->whereDate('created_at', '>=', $startDate);
+            $feedbacks->whereDate('created_at', '<=', $endDate);
+
+            $graph_data->query = clone $feedbacks;
             $graph = $graph_data->dailyData();
         }elseif ($diff < 180) {
+            $feedbacks->whereDate('created_at', '>=', $startDate);
+            $feedbacks->whereDate('created_at', '<=', $endDate);
+
+            $graph_data->query = clone $feedbacks;
             $graph = $graph_data->weeklyData();
         }elseif ($diff >= 180){
+            $feedbacks->whereDate('created_at', '>=', $startDate);
+            $feedbacks->whereDate('created_at', '<=', $endDate);
+
+            $graph_data->query = clone $feedbacks;
             $graph = $graph_data->monthlyData();
         }
 
-        if ($from) {
-            $feedbacks = $feedbacks->where('created_at', '>=', $from)->where('created_at', '<=', $to);
-        }
+        // if ($from) {
+        //     $feedbacks = $feedbacks->where('created_at', '>=', $from)->where('created_at', '<=', $to);
+        // }
         
-        $feedbacks = $feedbacks->paginate(10);
+        $feedbacks = $feedbacks->latest()->paginate(10);
 
         return successResponseJson([
             'graph' => $graph,
