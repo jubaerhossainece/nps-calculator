@@ -63,9 +63,15 @@ class ProjectLinkController extends Controller
      */
     public function show(Request $request, string $code)
     {
-        $link = ProjectLink::with('project')
+        $link = ProjectLink::with('project:id,user_id', 'project.user:id,status')
             ->where('code', $code)
             ->first();
+
+        // if(!$link->status || !$link->project->user->status){
+        //     return successResponseJson([
+        //         'link' => 
+        //     ])
+        // }
 
         if (!$link) {
             return errorResponseJson('No link found.', 404);
@@ -79,7 +85,7 @@ class ProjectLinkController extends Controller
 
         $user = User::find($project->user_id);
 
-        if( !$user || !$user->status){
+        if( !$user || !$link->status || !$link->project->user->status){
             return errorResponseJson('Link is deactivated.', 400);
         }
 

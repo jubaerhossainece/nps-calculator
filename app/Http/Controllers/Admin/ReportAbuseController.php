@@ -58,7 +58,7 @@ class ReportAbuseController extends Controller
                 return $report->project->name;
             })
             ->addColumn('code', function ($report) {
-                return $report->project->code;
+                return $report->code;
             })
             ->addColumn('project_link_status', function ($report) use ($active_status, $inactive_status) {
                 return $report->status ?  $active_status : $inactive_status;
