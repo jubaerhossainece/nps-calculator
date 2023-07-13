@@ -8,6 +8,8 @@ use Illuminate\Support\Str;
 
 class ProjectLink extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'project_id',
         'name',

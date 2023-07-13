@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\ProjectLink;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class ProjectLinkSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,6 +14,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->count(50)->create();
+        ProjectLink::factory()->count(50)->create();
     }
 }

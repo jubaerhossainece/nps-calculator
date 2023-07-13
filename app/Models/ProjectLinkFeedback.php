@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProjectLinkFeedback extends Model
 {
+    use HasFactory;
+
     const RATING_VALUE = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const DETRACTOR = [0, 1, 2, 3, 4, 5, 6];
     const PASSIVE = [7, 8];
