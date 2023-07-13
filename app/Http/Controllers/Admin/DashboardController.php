@@ -56,23 +56,39 @@ class DashboardController extends Controller
 
     public function userChartData(Request $request)
     {
-        $startDate = Carbon::parse(request('startDate')); 
-        $endDate = Carbon::parse(request('endDate')); 
+        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka')->tz('GMT'); 
+        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka')->tz('GMT'); 
         $diff = $endDate->diffInDays($startDate);
         $query = User::query();
-
+        
         $chart_data = new ChartService();
         $chart_data->start_date = $startDate;
         $chart_data->end_date = $endDate;
         $chart_data->query = $query;
 
         if($diff <= 1){
+            $query->where('created_at', '>=', $startDate);
+            $query->where('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->hourlyData();
         }elseif($diff <= 90){
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->dailyData();
         }elseif ($diff < 180) {
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->weeklyData();
         }elseif ($diff >= 180){
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->monthlyData();
         }
 
@@ -81,8 +97,8 @@ class DashboardController extends Controller
 
     public function projectFeedbackChartData(Request $request)
     {
-        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka'); 
-        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka');
+        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka')->tz('GMT'); 
+        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka')->tz('GMT');
         $diff = $endDate->diffInDays($startDate);
         $query = ProjectLinkFeedback::query();
 
@@ -126,9 +142,9 @@ class DashboardController extends Controller
 
 
     function projectChartData() {
-        
-        $startDate = Carbon::parse(request('startDate')); 
-        $endDate = Carbon::parse(request('endDate')); 
+
+        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka')->tz('GMT'); 
+        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka')->tz('GMT');
         $diff = $endDate->diffInDays($startDate);
         $query = Project::query();
 
@@ -138,14 +154,31 @@ class DashboardController extends Controller
         $chart_data->query = $query;
         
         if($diff <= 1){
+            $query->where('created_at', '>=', $startDate);
+            $query->where('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->hourlyData();
         }elseif($diff <= 90){
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->dailyData();
         }elseif ($diff < 180) {
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->weeklyData();
         }elseif ($diff >= 180){
+            $query->whereDate('created_at', '>=', $startDate);
+            $query->whereDate('created_at', '<=', $endDate);
+
+            $chart_data->query = $query;
             $data = $chart_data->monthlyData();
         }
+        
         return successResponseJson($data);
     }
 

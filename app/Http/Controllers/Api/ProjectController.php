@@ -114,6 +114,7 @@ class ProjectController extends Controller
         }
 
         $feedbacks = ProjectLinkFeedback::whereIn('project_id', $projectId);
+        // $feedbacks = ProjectLinkFeedback::query();
 
         //filter by response
         if (request('response') === 'detractor') {
@@ -151,21 +152,24 @@ class ProjectController extends Controller
             }
         }
 
-        // graph data
-        $graph_data = new ChartService();
         
-        $startDate = Carbon::parse($from, 'Asia/Dhaka')->tz('GMT');
-        $endDate = Carbon::parse($to, 'Asia/Dhaka')->tz('GMT');
-        // return response([
-        //     'start' => $startDate,
-        //     'endDate' => $endDate
-        // ]);
-        $graph_data->start_date = $startDate;
-        $graph_data->end_date = $endDate;
+        $startDate = Carbon::parse($from, 'Asia/Dhaka');
+        $endDate = Carbon::parse($to, 'Asia/Dhaka');
 
         $diff = $endDate->diffInDays($startDate);
 
+        // graph data
+        $graph_data = new ChartService();
+        $graph_data->start_date = clone $startDate;
+        $graph_data->end_date = clone $endDate;
+
         if($diff <= 1){
+            $startDate = $startDate->tz('GMT');
+            $endDate = $endDate->tz('GMT');
+
+            $graph_data->start_date = clone $startDate;
+            $graph_data->end_date = clone $endDate;
+
             $feedbacks->where('created_at', '>=', $startDate);
             $feedbacks->where('created_at', '<=', $endDate);
 

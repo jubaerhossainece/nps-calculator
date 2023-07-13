@@ -24,7 +24,7 @@ class ChartService
 
         while ($this->start_date <= $this->end_date) {
             $this->data[] = $data->where('hour', $this->start_date->hour)->pluck('count')->first() ?? 0;
-            $from = $this->start_date;
+            $from = clone $this->start_date;
             $this->label[] = $from->setTimezone('Asia/Dhaka')->format('h:i A d, M');
             $this->start_date->addHour();
         }
@@ -56,14 +56,6 @@ class ChartService
     {
         $data = $this->query->select(DB::raw("COUNT(*) as count"), DB::raw("WEEK(created_at) as week"), DB::raw("YEAR(created_at) as year"));
 
-        if($this->start_date){
-            $data->whereDate('created_at', '>=', $this->start_date);
-        }
-
-        if($this->end_date){
-            $data->whereDate('created_at', '<=', $this->end_date);
-        }
-
         $data = $data->groupBy(DB::raw("WEEK(created_at)"), DB::raw("YEAR(created_at)"))
         ->orderBy(DB::raw("YEAR(created_at)"))
         ->orderBy(DB::raw("WEEK(created_at)"))
@@ -86,14 +78,6 @@ class ChartService
     public function monthlyData() 
     {
         $data = $this->query->select(DB::raw("MONTH(created_at) AS month"), DB::raw("YEAR(created_at) AS year"), DB::raw('COUNT(*) AS count'));
-
-        if($this->start_date){
-            $data->whereDate('created_at', '>=', $this->start_date);
-        }
-
-        if($this->end_date){
-            $data->whereDate('created_at', '<=', $this->end_date);
-        }
 
         $data = $data->groupBy(DB::raw("MONTH(created_at)"), DB::raw("YEAR(created_at)"))
         ->groupBy('month', 'year')
