@@ -1,7 +1,7 @@
 //date range
 $(function() {
 
-  var start = moment().subtract(364, 'days');
+  var start = moment().subtract(11, 'months');
   var end = moment();
 
   function cb(start, end) {
@@ -27,7 +27,7 @@ $(function() {
         format: 'YYYY-MM-DD HH:mm:ss'
       },
       ranges: {
-         'Last 24 hours': [moment().subtract(1, 'day'), moment()],
+         'Last 24 hours': [moment().subtract(23, 'hours'), moment()],
          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
          'Last 90 days': [moment().subtract(89, 'days'), moment()]
@@ -60,7 +60,7 @@ $(function() {
         format: 'YYYY-MM-DD HH:mm:ss'
       },
       ranges: {
-         'Last 24 hours': [moment().subtract(1, 'day'), moment()],
+         'Last 24 hours': [moment().subtract(23, 'hours'), moment()],
          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
          'Last 90 days': [moment().subtract(89, 'days'), moment()]
@@ -94,7 +94,7 @@ $(function() {
         format: 'YYYY-MM-DD HH:mm:ss'
       },
       ranges: {
-         'Last 24 hours': [moment().subtract(1, 'day'), moment()],
+         'Last 24 hours': [moment().subtract(23, 'hours'), moment()],
          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
          'Last 90 days': [moment().subtract(89, 'days'), moment()]
