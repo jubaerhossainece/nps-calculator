@@ -24,18 +24,20 @@ class TestController extends Controller
 
     function chartDate()
     {
-        if(request('project_id')){
-            $projectId = [request('project_id')];
-            $link = ProjectLink::where('project_id', request('project_id'))->first();
-        }else{
-            $projectId = Project::where('user_id', auth()->user()->id)->pluck('id')->all();
-            $link = '';
-        }
+        // if(request('project_id')){
+        //     $projectId = [request('project_id')];
+        //     $link = ProjectLink::where('project_id', request('project_id'))->first();
+        // }else{
+        //     $projectId = Project::where('user_id', auth()->user()->id)->pluck('id')->all();
+        //     $link = '';
+        // }
 
-        $project = Project::whereIn('id', $projectId)->where('user_id', auth()->user()->id)->get();
-        if ($project->isEmpty()) {
-            return errorResponseJson('No project found!', 404);
-        }
+        $projectId = [ 12, 13, 14, 15, 31, 32, 33, 34, 35, 36, 39, 68, 75, 80, 92, 93, 94, 98, 99, 100, 102, 117, 118, 120, 128, 129 ];
+
+        // $project = Project::whereIn('id', $projectId)->where('user_id', auth()->user()->id)->get();
+        // if ($project->isEmpty()) {
+        //     return errorResponseJson('No project found!', 404);
+        // }
 
         $feedbacks = ProjectLinkFeedback::whereIn('project_id', $projectId);
         // $feedbacks = ProjectLinkFeedback::query();
@@ -128,7 +130,7 @@ class TestController extends Controller
         return successResponseJson([
             'graph' => $graph,
             'feedbacks' => new FeedbackPaginateResouce($feedbacks),
-            'link' => $link ? new LinkResource($link) : ''
+            // 'link' => $link ? new LinkResource($link) : ''
         ]);
     }
 }

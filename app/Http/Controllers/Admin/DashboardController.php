@@ -56,8 +56,8 @@ class DashboardController extends Controller
 
     public function userChartData(Request $request)
     {
-        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka')->tz('GMT'); 
-        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka')->tz('GMT'); 
+        $startDate = Carbon::parse(request('startDate')); 
+        $endDate = Carbon::parse(request('endDate')); 
         $diff = $endDate->diffInDays($startDate);
         $query = User::query();
         
@@ -97,8 +97,8 @@ class DashboardController extends Controller
 
     public function projectFeedbackChartData(Request $request)
     {
-        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka')->tz('GMT'); 
-        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka')->tz('GMT');
+        $startDate = Carbon::parse(request('startDate')); 
+        $endDate = Carbon::parse(request('endDate'));
         $diff = $endDate->diffInDays($startDate);
         $query = ProjectLinkFeedback::query();
 
@@ -143,8 +143,8 @@ class DashboardController extends Controller
 
     function projectChartData() {
 
-        $startDate = Carbon::parse(request('startDate'), 'Asia/Dhaka')->tz('GMT'); 
-        $endDate = Carbon::parse(request('endDate'), 'Asia/Dhaka')->tz('GMT');
+        $startDate = Carbon::parse(request('startDate')); 
+        $endDate = Carbon::parse(request('endDate'));
         $diff = $endDate->diffInDays($startDate);
         $query = Project::query();
 

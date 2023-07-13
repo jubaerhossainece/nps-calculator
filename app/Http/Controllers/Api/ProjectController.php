@@ -153,8 +153,8 @@ class ProjectController extends Controller
         }
 
         
-        $startDate = Carbon::parse($from, 'Asia/Dhaka');
-        $endDate = Carbon::parse($to, 'Asia/Dhaka');
+        $startDate = Carbon::parse($from);
+        $endDate = Carbon::parse($to);
 
         $diff = $endDate->diffInDays($startDate);
 
@@ -164,12 +164,6 @@ class ProjectController extends Controller
         $graph_data->end_date = clone $endDate;
 
         if($diff <= 1){
-            $startDate = $startDate->tz('GMT');
-            $endDate = $endDate->tz('GMT');
-
-            $graph_data->start_date = clone $startDate;
-            $graph_data->end_date = clone $endDate;
-
             $feedbacks->where('created_at', '>=', $startDate);
             $feedbacks->where('created_at', '<=', $endDate);
 
@@ -194,10 +188,6 @@ class ProjectController extends Controller
             $graph_data->query = clone $feedbacks;
             $graph = $graph_data->monthlyData();
         }
-
-        // if ($from) {
-        //     $feedbacks = $feedbacks->where('created_at', '>=', $from)->where('created_at', '<=', $to);
-        // }
         
         $feedbacks = $feedbacks->latest()->paginate(10);
 
