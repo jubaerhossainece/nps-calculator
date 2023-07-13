@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -14,14 +15,19 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $startDate = Carbon::now()->subYears(2);
+
+        // Generate a random end date within the desired range
+        $endDate = Carbon::now();
+        $randomDateTime = $this->dateTimeBetween($startDate, $endDate);
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => bcrypt(12345678),
             'remember_token' => Str::random(10),
-            'created_at' => Str::random(10),
-            'updated_at' => Str::random(10),
+            'created_at' => $randomDateTime,
+            'updated_at' => $randomDateTime,
         ];
     }
 
