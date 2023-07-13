@@ -37,6 +37,7 @@ $(document).ready(function () {
           $select2.prop('disabled', false);
         }
         $('#project-nps-filter').empty().select2({
+          placeholder: 'All projects',
           data: response.data
         });
         $('#project-nps-filter').val(null).trigger('change');
@@ -54,6 +55,9 @@ $(document).ready(function () {
       // Enable Select2
       $select2.on('click').on('keydown').on('select2:opening');
       $select2.prop('disabled', true);
+      $('#project-nps-filter').empty().select2({
+        placeholder: 'All projects'
+      });
     }
 
     getProjectFeedback();

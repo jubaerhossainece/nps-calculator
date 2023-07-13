@@ -70,7 +70,13 @@
         <li class="dropdown notification-list">
             <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                 <img src="{{auth()->user()->image ? Storage::url('public/admin/'. auth()->user()->image) : asset('assets/images/7074311_3551739.jpg')}}" alt="user-image" class="rounded-circle">
+
+                <span class="text-dark">{{auth()->user()->name}}
+            </span>
+      
+                
             </a>
+
             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                 <!-- item-->
                 <div class="dropdown-header noti-title">

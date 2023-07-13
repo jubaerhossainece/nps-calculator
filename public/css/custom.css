@@ -48,6 +48,20 @@ input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: rgba(255, 255, 255, 0.8);
     transition: 0.5s;
   }
+
+  .logout-btn {
+    color: white;
+    padding: 13px 20px;
+    color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+  }
+
+  .logout-btn:hover{
+    background: linear-gradient(45deg, rgba(0, 180, 239, 1), rgba(37, 88, 220, 1));
+    color: rgba(255, 255, 255, 0.8);
+    transition: 0.5s;
+  }
+
   /* .left-side-menu{
     background-color: black;
     width: 256px;

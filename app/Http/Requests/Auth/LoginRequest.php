@@ -7,6 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 
@@ -31,7 +32,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email' => ['required', 'string', 'email'],
-            'password' => ['required', 'string'],
+            'password' => ['required', 'string', Password::min(8)->letters()->numbers()->symbols()->mixedCase()],
         ];
     }
 
@@ -48,7 +49,7 @@ class LoginRequest extends FormRequest
 
         if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
-            Toastr::error('Login Failed. Try later.', 'Message', ["positionClass" => "toast-bottom-right"]);
+            Toastr::error('Credential not matched.', 'Message', ["positionClass" => "toast-bottom-right"]);
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Brian2694\Toastr\Facades\Toastr;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -63,7 +64,7 @@ class ProfileController extends Controller
 
         $request->validate([
             'old_password' => 'required|different:new_password|current_password',
-            'new_password' => 'required|min:8|confirmed|string',
+            'new_password' => ['required', 'string', Password::min(8)->letters()->numbers()->symbols()->mixedCase()],
             'new_password_confirmation' => 'required'
         ]);
 

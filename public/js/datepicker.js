@@ -21,6 +21,7 @@ $(function() {
   $('#user-report-range').daterangepicker({
       startDate: start,
       endDate: end,
+      localToday: moment(),
       timePicker: true,
       timePicker24Hour: true,
       locale: {

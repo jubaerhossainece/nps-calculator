@@ -24,8 +24,8 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'email',
-            'name' => 'min:3',
+            'email' => 'email|max:50',
+            'name' => 'min:3|max:50',
             'image' => 'image'
         ];
     }
