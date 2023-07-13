@@ -72,7 +72,6 @@ class ProfileController extends Controller
         $user->password = Hash::make($request->new_password);
         $result = $user->save();
 
-        return ;
         if($result){
             return redirect()->back()->withMessage('Password updated successfully.');
         }
