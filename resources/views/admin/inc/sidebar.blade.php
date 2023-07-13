@@ -40,7 +40,6 @@
         </li>
 
         <li>
-            
             <a href="{{route('users')}}"><i class="fas fa-users"></i> Users</a>
         </li>
 

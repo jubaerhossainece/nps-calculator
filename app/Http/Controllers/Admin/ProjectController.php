@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Models\ProjectLink;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,6 +18,7 @@ class ProjectController extends Controller
      */
     public function index($user)
     {   
+        $user = User::find($user);
         return view('admin.projects.index', compact('user'));
     }
 
