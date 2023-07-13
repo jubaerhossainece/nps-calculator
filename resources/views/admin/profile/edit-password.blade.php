@@ -75,11 +75,19 @@
                     <input type="password" class="form-control" id="new-pass" name="new_password" placeholder="new password">
                     <i class="fas fa-eye-slash" id="eye-new"></i>
                     </div>
-                    @error('new_password')
+                    @if($errors->get('new_password'))
+                        @foreach ($errors->get('new_password') as $error)
+                            <!-- <li>{{ $error }}</li> -->
+                            <div class="text-danger">
+                                <li><strong>{{$error}}</strong></li>
+                            </div>
+                        @endforeach
+                    @endif
+                    <!-- @error('new_password')
                     <div class="text-danger">
                         <strong>{{$message}}</strong>
                     </div>
-                    @enderror
+                    @enderror -->
                 </div>
 
                 <div class="form-group">

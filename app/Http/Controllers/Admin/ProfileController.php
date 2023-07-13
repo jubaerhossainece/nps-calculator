@@ -62,9 +62,9 @@ class ProfileController extends Controller
     public function updatePassword(Request $request)
     {
 
-        $request->validate([
+        $validated = $request->validate([
             'old_password' => 'required|different:new_password|current_password',
-            'new_password' => ['required', 'string', Password::min(8)->letters()->numbers()->symbols()->mixedCase()],
+            'new_password' => ['required', 'string', Password::min(8)->numbers()->symbols()->mixedCase()],
             'new_password_confirmation' => 'required'
         ]);
 
@@ -72,6 +72,7 @@ class ProfileController extends Controller
         $user->password = Hash::make($request->new_password);
         $result = $user->save();
 
+        return ;
         if($result){
             return redirect()->back()->withMessage('Password updated successfully.');
         }
