@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class UserFactory extends Factory
+class ProjectFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,28 +21,12 @@ class UserFactory extends Factory
         // Generate a random end date within the desired range
         $endDate = Carbon::now();
         $randomDateTime = $this->faker->dateTimeBetween($startDate, $endDate);
+
         return [
+            'user_id' => User::all()->random(),
             'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
-            'password' => bcrypt(12345678),
-            'remember_token' => Str::random(10),
             'created_at' => $randomDateTime,
             'updated_at' => $randomDateTime,
         ];
-    }
-
-    /**
-     * Indicate that the model's email address should be unverified.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function unverified()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'email_verified_at' => null,
-            ];
-        });
     }
 }
