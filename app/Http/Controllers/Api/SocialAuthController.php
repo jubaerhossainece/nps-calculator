@@ -75,6 +75,9 @@ class SocialAuthController extends Controller
         if($user){
             $has_name = $user->name ? true : false;
             $user->name = $user->name ? $user->name : $response->name;
+            if(!$user->image){
+                $user->image = $response->image;
+            }
             
             if(!$user->provider_id){
                 $user->provider_id = $provider_id;
