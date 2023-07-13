@@ -23,7 +23,7 @@ class ProjectFactory extends Factory
         $randomDateTime = $this->faker->dateTimeBetween($startDate, $endDate);
 
         return [
-            'user_id' => User::all()->random(),
+            'user_id' => User::first(),
             'name' => $this->faker->name(),
             'created_at' => $randomDateTime,
             'updated_at' => $randomDateTime,

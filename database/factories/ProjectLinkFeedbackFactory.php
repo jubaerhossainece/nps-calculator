@@ -20,13 +20,13 @@ class ProjectLinkFeedbackFactory extends Factory
      */
     public function definition()
     {
-        $startDate = Carbon::now()->subYears(2);
+        // $startDate = Carbon::now()->subYears(2);
 
         // Generate a random end date within the desired range
         $endDate = Carbon::now();
-        $randomDateTime = $this->faker->dateTimeBetween($startDate, $endDate);
+        // $randomDateTime = $this->faker->dateTimeBetween($startDate, $endDate);
 
-        $project_link = ProjectLink::all()->random();
+        $project_link = ProjectLink::find(1);
 
         return [
             'project_link_id' => $project_link->id,
@@ -34,8 +34,8 @@ class ProjectLinkFeedbackFactory extends Factory
             'name' => $this->faker->optional()->name(),
             'email' => $this->faker->optional()->email(),
             'rating' => $this->faker->numberBetween(0, 10),
-            'created_at' => $randomDateTime,
-            'updated_at' => $randomDateTime,
+            'created_at' => $endDate,
+            'updated_at' => $endDate,
         ];
     }
 }
