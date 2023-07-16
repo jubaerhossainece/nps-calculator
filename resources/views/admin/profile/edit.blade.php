@@ -9,7 +9,7 @@
     }
 
     /* profile image */
-    .image-wrapper{
+    .image-wrapper {
         height: 114px;
         width: 114px;
         border-radius: 50%;
@@ -17,7 +17,8 @@
         border: 4px solid #1287E6;
         margin: 0px auto;
         background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-size: cover;
+        background-position: center;
         overflow: hidden;
     }
 
