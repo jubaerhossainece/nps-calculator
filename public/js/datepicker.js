@@ -8,7 +8,7 @@ $(function() {
     let target = "#user-report-range";
     var duration = moment.duration(end.diff(start));
     var hours = duration.asHours();
-    console.log(hours);
+    
     if(hours <= 24){
       $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));

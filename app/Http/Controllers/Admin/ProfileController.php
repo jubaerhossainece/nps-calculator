@@ -31,24 +31,31 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|min:4',
             'email' => 'required|email|string',
-            'image' => 'image'
+            'image' => 'image|max:2'
         ]);
-
+        
         $admin->name = $request->name;
         $admin->email = $request->email;
 
-        if($request->hasFile('image')){
-            $path = 'public/admin';
-            $file = $request->file('image');
-            $extension = $file->getClientOriginalExtension();
-            $filename_with_ext = time() . '.' . $extension;
-            if ($admin->image) {
-                Storage::delete('public/admin/' . $admin->photo);
+        try {
+            if($request->hasFile('image')){
+                $path = 'public/admin';
+                $file = $request->file('image');
+                $extension = $file->getClientOriginalExtension();
+                $filename_with_ext = time() . '.' . $extension;
+                if ($admin->image) {
+                    if (Storage::exists('public/admin/' . $admin->photo)) {
+                        Storage::delete('public/admin/' . $admin->photo);
+                    }
+                }
+                $request->file('image')->storeAs($path, $filename_with_ext);
+                $admin->image = $filename_with_ext;
             }
-            $request->file('image')->storeAs($path, $filename_with_ext);
-            $admin->image = $filename_with_ext;
+            $admin->save();
+        } catch (\Exception $e) {
+            return errorResponseJson($e, 422);
         }
-        $admin->save();
+
         Toastr::success('Profile updated successfully.', 'Message', ["positionClass" => "toast-bottom-right"]);
         return redirect()->route('admin.profile.show')->withMessage('Profile updated successfully.');
     }

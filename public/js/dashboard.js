@@ -36,8 +36,11 @@ $(document).ready(function () {
           $select2.on('click').on('keydown').on('select2:opening');
           $select2.prop('disabled', false);
         }
+
+        // add all projects option at the beginning of the list
+        response.data.unshift({id:'', text: "All Projects"});
+        
         $('#project-nps-filter').empty().select2({
-          placeholder: 'All projects',
           data: response.data
         });
         $('#project-nps-filter').val(null).trigger('change');
@@ -56,7 +59,7 @@ $(document).ready(function () {
       $select2.on('click').on('keydown').on('select2:opening');
       $select2.prop('disabled', true);
       $('#project-nps-filter').empty().select2({
-        placeholder: 'All projects'
+        placeholder: 'All Projects'
       });
     }
 
