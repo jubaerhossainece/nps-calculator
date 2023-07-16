@@ -31,7 +31,8 @@ $(function() {
          'Last 24 hours': [moment().subtract(23, 'hours'), moment()],
          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-         'Last 90 days': [moment().subtract(89, 'days'), moment()]
+         'Last 90 days': [moment().subtract(89, 'days'), moment()],
+         'Last 1 year': [moment().subtract(11, 'months'), moment()],
       }
   }, cb);
 
@@ -64,7 +65,8 @@ $(function() {
          'Last 24 hours': [moment().subtract(23, 'hours'), moment()],
          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-         'Last 90 days': [moment().subtract(89, 'days'), moment()]
+         'Last 90 days': [moment().subtract(89, 'days'), moment()],
+         'Last 1 year': [moment().subtract(11, 'months'), moment()],
       }
   }, cbNps);
 
@@ -98,7 +100,8 @@ $(function() {
          'Last 24 hours': [moment().subtract(23, 'hours'), moment()],
          'Last 7 Days': [moment().subtract(6, 'days'), moment()],
          'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-         'Last 90 days': [moment().subtract(89, 'days'), moment()]
+         'Last 90 days': [moment().subtract(89, 'days'), moment()],
+         'Last 1 year': [moment().subtract(11, 'months'), moment()],
       }
   }, cbProject);
 
