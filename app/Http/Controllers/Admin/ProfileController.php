@@ -31,7 +31,7 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|min:4',
             'email' => 'required|email|string',
-            'image' => 'image|max:2'
+            'image' => 'image|max:2024'
         ]);
         
         $admin->name = $request->name;
