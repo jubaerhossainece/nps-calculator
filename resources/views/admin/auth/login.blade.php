@@ -36,6 +36,33 @@
         line-height: 19px;
     }
     
+    #password-container{
+        position: relative;
+    }
+    
+    #password-container input[type="password"],
+    #password-container input[type="text"]{
+        width: 100%;
+        padding: 12px 36px 12px 12px;
+        box-sizing: border-box;
+    }
+    .password-container{
+        position: relative;
+    }
+    
+    .password-container input[type="password"],
+    .password-container input[type="text"]{
+        width: 100%;
+        padding: 12px 36px 12px 12px;
+        box-sizing: border-box;
+    }
+    .fa-eye, .fa-eye-slash{
+        position: absolute;
+        top: 60%;
+        right: 3%;
+        cursor: pointer;
+        color: lightgray;
+    }
 </style>
 @section('content')
 
@@ -49,9 +76,10 @@
             <input class="form-control" name="email" type="email" required="" placeholder="Your Email Address">
         </div>
 
-        <div class="form-group mb-3">
+        <div class="form-group mb-3" id="password-container">
             <label for="">Your Password</label>
             <input class="form-control" name="password" type="password" required="" placeholder="Password">
+            <i class="fas fa-eye-slash" id="password-icon"></i>
         </div>
 
         <!-- <div class="form-group mb-3">
@@ -76,3 +104,21 @@
         </div> -->
     </form>
 @endsection
+
+@push('scripts')
+<script>
+    $(document).ready(function(){
+
+        $("input[name='password']+i").click(function(){
+            console.log("clicked");
+            const passInput = ($(this).prev());
+
+            let type =  passInput.attr("type") === "password" ? "text" : "password";
+
+            $(this).toggleClass("fa-eye fa-eye-slash");
+
+            passInput.attr("type", type);
+        });
+    });
+</script>
+@endpush

@@ -72,6 +72,8 @@
         }
 
     </style>
+    @stack('styles')
+
 </head>
 
 <body class="authentication-page">
@@ -105,9 +107,9 @@
         <span>© 2023 – Riseup Labs | All Rights Reserved</span>
     </div>
     <div class="div-right col-md-4 offset-md-3">
-        <a href="">Terms of Service</a>
-        <a href="">Privacy Policy</a>
-        <a href="">Security Statement</a>
+        <a href="https://npsdesk.com/terms">Terms of Service</a>
+        <a href="https://npsdesk.com/privacy">Privacy Policy</a>
+        <a href="https://npsdesk.com/security">Security Statement</a>
     </div>
 </div>
 <!-- Vendor js -->
@@ -116,6 +118,8 @@
 <!-- App js -->
 <script src="{{ asset('assets/js/app.min.js') }}"></script>
 <script src="https://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+@stack('scripts')
+
 {!! Toastr::message() !!}
 
 </body>
