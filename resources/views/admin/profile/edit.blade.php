@@ -98,7 +98,7 @@
                 
                 <div class="form-group">
                     <div class="image-wrapper" style="background-image: url({{ $admin->image ? Storage::url('public/admin/'. $admin->image) : asset('assets/images/7074311_3551739.jpg')}});">
-                        <input type="file" id="input-image" name="image" class="profile-image">
+                        <input type="file" id="input-image" name="image" accept="image/*" class="profile-image">
                     </div>
                     @error('image')
                     <div class="text-danger d-flex justify-content-center">

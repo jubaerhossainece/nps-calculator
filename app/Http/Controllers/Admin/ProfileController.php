@@ -26,6 +26,7 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        ini_set("upload_max_filesize", "10M");
         $admin = auth()->user();
 
         $request->validate([
@@ -39,6 +40,19 @@ class ProfileController extends Controller
 
         try {
             if($request->hasFile('image')){
+
+                // resize image
+                // $file = $request->file('image');
+                // $size = getimagesize($file);
+                // $ratio = $size[0]/420;
+                // $length = intval($size[0]/$ratio);
+                // $width = intval($size[1]/$ratio);
+
+                // return response([
+                //     "length" => $length,
+                //     "width" => $width,
+                // ]);
+
                 $path = 'public/admin';
                 $file = $request->file('image');
                 $extension = $file->getClientOriginalExtension();
