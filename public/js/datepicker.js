@@ -4,17 +4,22 @@ $(function() {
   var start = moment().subtract(11, 'months');
   var end = moment();
 
-  function cb(start, end) {
+  function cb(start, end, label) {
     let target = "#user-report-range";
     var duration = moment.duration(end.diff(start));
     var hours = duration.asHours();
     
     if(hours <= 24){
-      $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
+      $(target+' span').html(label);
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }else{
-      $(target+' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+      $(target+' span').html(label);
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD')+ ' : ' + end.format('YYYY-MM-DD'));
+    }
+
+    // label for custom range
+    if(label.toLowerCase() == "custom range"){
+      $(target+' span').html(start.format('DD/MM/YYYY')+ ' - ' + end.format('DD/MM/YYYY'));
     }
   }
 
@@ -36,20 +41,25 @@ $(function() {
       }
   }, cb);
 
-  cb(start, end);
+  cb(start, end, "Last 1 year");
 
   // nps datepicker
-  function cbNps(start, end) {
+  function cbNps(start, end, label) {
     let target = "#nps-report-range";
     var duration = moment.duration(end.diff(start));
     var hours = duration.asHours();
     console.log(hours);
     if(hours <= 24){
-      $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
+      $(target+' span').html(label);
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }else{
-      $(target+' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+      $(target+' span').html(label);
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD')+ ' : ' + end.format('YYYY-MM-DD'));
+    }
+
+    // label for custom range
+    if(label.toLowerCase() == "custom range"){
+      $(target+' span').html(start.format('DD/MM/YYYY')+ ' - ' + end.format('DD/MM/YYYY'));
     }
   }
 
@@ -70,21 +80,26 @@ $(function() {
       }
   }, cbNps);
 
-  cbNps(start, end);
+  cbNps(start, end, "Lat 1 year");
 
 
   // date picker for projects
-  function cbProject(start, end) {
+  function cbProject(start, end, label) {
     var duration = moment.duration(end.diff(start));
     var hours = duration.asHours();
 
     let target = "#project-report-range";
     if(hours <= 24){
-      $(target+' span').html(start.format('MMMM D, YYYY HH:mm:ss') + ' - ' + end.format('MMMM D, YYYY HH:mm:ss'));
+      $(target+' span').html(label);
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD HH:mm:ss')+ ' : ' + end.format('YYYY-MM-DD HH:mm:ss'));
     }else{
-      $(target+' span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+      $(target+' span').html(label);
       $(target).next("input[type='hidden']").val(start.format('YYYY-MM-DD')+ ' : ' + end.format('YYYY-MM-DD'));
+    }
+
+    // label for custom range
+    if(label.toLowerCase() == "custom range"){
+      $(target+' span').html(start.format('DD/MM/YYYY')+ ' - ' + end.format('DD/MM/YYYY'));
     }
   }
 
@@ -105,6 +120,6 @@ $(function() {
       }
   }, cbProject);
 
-  cbProject(start, end);
+  cbProject(start, end, "Lat 1 year");
 });
 

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
@@ -26,31 +27,42 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
-        $admin = auth()->user();
-
         $request->validate([
             'name' => 'required|string|min:4',
-            'email' => 'required|email|string',
-            'image' => 'image|max:2'
+            'email' => 'required|email',
+            'image' => 'image'
         ]);
         
+        $admin = auth()->user();
         $admin->name = $request->name;
         $admin->email = $request->email;
 
         try {
             if($request->hasFile('image')){
-                $path = 'public/admin';
                 $file = $request->file('image');
-                $extension = $file->getClientOriginalExtension();
-                $filename_with_ext = time() . '.' . $extension;
+                $path = 'public/admin/';
+                $filename_with_ext = time() . '.' . $file->getClientOriginalExtension();
+
+                // delete previous image if exists
                 if ($admin->image) {
-                    if (Storage::exists('public/admin/' . $admin->photo)) {
-                        Storage::delete('public/admin/' . $admin->photo);
+                    if (Storage::exists($path . $admin->image)) {
+                        Storage::delete($path . $admin->image);
                     }
                 }
-                $request->file('image')->storeAs($path, $filename_with_ext);
-                $admin->image = $filename_with_ext;
+
+                $image = Image::make($file);
+
+                // compress if image width is greater than 400px
+                if($image->width() > 400){
+                    $image = $image->resize(400, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                }
+
+                $admin->image = $filename_with_ext;            
+                Storage::disk('public')->put('admin/' . $filename_with_ext, $image->stream());
             }
+            
             $admin->save();
         } catch (\Exception $e) {
             return errorResponseJson($e, 422);
