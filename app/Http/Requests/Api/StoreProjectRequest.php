@@ -41,7 +41,7 @@ class StoreProjectRequest extends FormRequest
                     $query->where('user_id', $this->user_id)->where('name', $this->name);
                 })->ignore($this->project)
             ],
-            'logo' => 'nullable|image|mimes:jpeg,jpg,png,gif|max:1024',
+            'logo' => 'nullable|image|mimes:jpeg,jpg,png|max:10240',
             'wt_visibility' => 'nullable|boolean',
             'name_field_visibility' => 'nullable|boolean',
             'email_field_visibility' => 'nullable|boolean',
