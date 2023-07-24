@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class ProfileController extends Controller
 {
@@ -25,7 +25,7 @@ class ProfileController extends Controller
     }
 
 
-    public function update(Request $request)
+    public function update(Request $request, ImageService $image)
     {
         $request->validate([
             'name' => 'required|string|min:4',
@@ -39,28 +39,20 @@ class ProfileController extends Controller
 
         try {
             if($request->hasFile('image')){
-                $file = $request->file('image');
-                $path = 'public/admin/';
-                $filename_with_ext = time() . '.' . $file->getClientOriginalExtension();
+                // get file extension
+                $ext = $request->file('image')->getClientOriginalExtension();
+                
+                // compress file using service
+                $compressed_image = $image->compress($request->file('image'));
 
-                // delete previous image if exists
-                if ($admin->image) {
-                    if (Storage::exists($path . $admin->image)) {
-                        Storage::delete($path . $admin->image);
-                    }
+                // upload file using service method
+                $filename = $image->upload($compressed_image, $ext, 'public/admin/', $admin->image);
+                
+                if(!$filename){
+                    return errorResponseJson('Image upload failed!', 422);
                 }
-
-                $image = Image::make($file);
-
-                // compress if image width is greater than 400px
-                if($image->width() > 400){
-                    $image = $image->resize(400, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
-                }
-
-                $admin->image = $filename_with_ext;            
-                Storage::disk('public')->put('admin/' . $filename_with_ext, $image->stream());
+    
+                $admin->image = $filename;
             }
             
             $admin->save();
