@@ -178,7 +178,8 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Brian2694\Toastr\ToastrServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        App\Providers\ImagerServiceProvider::class,
     ],
 
     /*
