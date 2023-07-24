@@ -12,12 +12,21 @@ use App\Models\Project;
 use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
 use App\Services\ChartService;
+use App\Services\ImageService;
 use App\Services\ProjectLinkService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+    private $image;
+
+    function __construct(ImageService $image){
+        $this->image = $image;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -35,6 +44,18 @@ class ProjectController extends Controller
         $validated = $request->validated();
 
         //@params description to upload image respectively request, field_name, upload_path(destination) and exist_file as exist file path.
+
+        $compressed_image = $this->image->compress($request->file('logo'));
+
+        $name = time().$request->file('logo')->getClientOriginalExtension();
+
+        $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo');
+
+        if(!$filename){
+            return errorResponseJson('Logo upload failed!', 422);
+        }
+
+        
         $validated['logo'] = imageUpload($request,'logo','upload/images/project-logo',null);
 
         $project = Project::create($validated);
@@ -73,6 +94,7 @@ class ProjectController extends Controller
         $validated = $request->validated();
 
         //@params description to upload image respectively request, field_name, upload_path(destination) and exist_file as exist file path.
+        
         $validated['logo'] = imageUpload($request,'logo','upload/images/project-logo',$exist_file);
 
         $project->update($validated);

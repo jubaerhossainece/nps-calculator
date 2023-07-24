@@ -26,7 +26,7 @@ class ProfileRequest extends FormRequest
         return [
             'email' => 'email|max:50',
             'name' => 'min:3|max:50',
-            'image' => 'image'
+            'image' => 'image|max:10240'
         ];
     }
 }
