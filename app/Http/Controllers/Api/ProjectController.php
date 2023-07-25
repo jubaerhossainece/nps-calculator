@@ -12,12 +12,21 @@ use App\Models\Project;
 use App\Models\ProjectLink;
 use App\Models\ProjectLinkFeedback;
 use App\Services\ChartService;
+use App\Services\ImageService;
 use App\Services\ProjectLinkService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
+
+    private $image;
+
+    function __construct(ImageService $image){
+        $this->image = $image;
+    }
+
+
     /**
      * Display a listing of the resource.
      */
@@ -34,9 +43,20 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        //@params description to upload image respectively request, field_name, upload_path(destination) and exist_file as exist file path.
-        $validated['logo'] = imageUpload($request,'logo','upload/images/project-logo',null);
+        // compress using service method
+        $compressed_image = $this->image->compress($request->file('logo'));
 
+        // generate a name for logo
+        $name = time().$request->file('logo')->getClientOriginalExtension();
+
+        //upload the logo
+        $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo');
+
+        if(!$filename){
+            return errorResponseJson('Logo upload failed!', 422);
+        }
+
+        $validated['logo'] = $filename;
         $project = Project::create($validated);
 
         $link_data = [
@@ -44,6 +64,7 @@ class ProjectController extends Controller
             'name' => $project->name,
             'response' => 'We really appreciate your feedback'
         ];
+
         $link_data = (new ProjectLinkService())->create($link_data);
 
         return successResponseJson([
@@ -51,6 +72,7 @@ class ProjectController extends Controller
             'link' => new LinkResource($link_data),
         ], 'Project created successfully');
     }
+
 
     /**
      * Display the specified resource.
@@ -69,12 +91,23 @@ class ProjectController extends Controller
         if (!$project) {
             return errorResponseJson('Project not found', 404);
         }
-        $exist_file = $project->logo ?? null;
+
         $validated = $request->validated();
 
-        //@params description to upload image respectively request, field_name, upload_path(destination) and exist_file as exist file path.
-        $validated['logo'] = imageUpload($request,'logo','upload/images/project-logo',$exist_file);
+        // compress using service method
+        $compressed_image = $this->image->compress($request->file('logo'));
 
+        // generate a name for logo
+        $name = time().$request->file('logo')->getClientOriginalExtension();
+
+        //upload the logo
+        $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo', $project->logo);
+
+        if(!$filename){
+            return errorResponseJson('Logo upload failed!', 422);
+        }
+
+        $validated['logo'] = $filename;
         $project->update($validated);
 
         return successResponseJson([
@@ -82,6 +115,7 @@ class ProjectController extends Controller
             'link' => new LinkResource($project->link),
         ], 'Project updated successfully');
     }
+    
 
     /**
      * Remove the specified resource from storage.

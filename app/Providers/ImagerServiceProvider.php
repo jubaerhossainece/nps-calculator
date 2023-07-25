@@ -15,7 +15,8 @@ class ImagerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('ImageService', function($app){
-            return new ImageService();
+            $driver = 'public';
+            return new ImageService($driver);
         });
     }
 

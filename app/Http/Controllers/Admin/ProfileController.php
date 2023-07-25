@@ -30,7 +30,7 @@ class ProfileController extends Controller
         $request->validate([
             'name' => 'required|string|min:4',
             'email' => 'required|email',
-            'image' => 'image'
+            'image' => 'image|max:10240'
         ]);
         
         $admin = auth()->user();
@@ -39,14 +39,14 @@ class ProfileController extends Controller
 
         try {
             if($request->hasFile('image')){
-                // get file extension
-                $ext = $request->file('image')->getClientOriginalExtension();
+                // create file name
+                $name = time().$request->file('image')->getClientOriginalExtension();
                 
                 // compress file using service
                 $compressed_image = $image->compress($request->file('image'));
 
                 // upload file using service method
-                $filename = $image->upload($compressed_image, $ext, 'public/admin/', $admin->image);
+                $filename = $image->upload($compressed_image, $name, 'admin', $admin->image);
                 
                 if(!$filename){
                     return errorResponseJson('Image upload failed!', 422);

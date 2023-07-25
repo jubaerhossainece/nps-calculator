@@ -7,6 +7,15 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class ImageService
 {
+
+    private $driver;
+
+    public function __construct($driver = "public")
+    {
+        $this->driver = $driver;
+    }
+
+
     public function compress($image, $compressed_width = 400)
     {
         $image = Image::make($image);
@@ -22,22 +31,20 @@ class ImageService
     }
 
 
-    public function upload($file_to_upload, $extension, $path_to_upload = 'public', $previous_file_name = null){
-        $filename_with_ext = time() . '.' . $extension;
-
+    public function upload($file_to_upload, $filename, $path_to_upload = '/', $previous_file_name = null){
         // delete previous image if exists
         if ($previous_file_name) {
-            if (Storage::exists($path_to_upload . $previous_file_name)) {
-                Storage::delete($path_to_upload . $previous_file_name);
+            if (Storage::disk($this->driver)->exists($path_to_upload .'/'. $previous_file_name)) {
+                Storage::disk($this->driver)->delete($path_to_upload .'/'. $previous_file_name);
             }
         }
 
         // upload file using storage facade
-        Storage::put($path_to_upload . $filename_with_ext, $file_to_upload);
+        Storage::disk($this->driver)->put($path_to_upload .'/'. $filename, $file_to_upload);
 
         // check if file is being uploaded
-        if(Storage::exists($path_to_upload . $filename_with_ext)){
-            return $filename_with_ext;
+        if(Storage::disk($this->driver)->exists($path_to_upload .'/'. $filename)){
+            return $filename;
         }
 
         return null;
