@@ -43,20 +43,23 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        // compress using service method
-        $compressed_image = $this->image->compress($request->file('logo'));
+        if($request->hasFile('logo')){
+            // compress using service method
+            $compressed_image = $this->image->compress($request->file('logo'));
 
-        // generate a name for logo
-        $name = time().$request->file('logo')->getClientOriginalExtension();
+            // generate a name for logo
+            $name = time().$request->file('logo')->getClientOriginalExtension();
 
-        //upload the logo
-        $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo');
+            //upload the logo
+            $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo');
 
-        if(!$filename){
-            return errorResponseJson('Logo upload failed!', 422);
+            if(!$filename){
+                return errorResponseJson('Logo upload failed!', 422);
+            }
+
+            $validated['logo'] = $filename;
         }
 
-        $validated['logo'] = $filename;
         $project = Project::create($validated);
 
         $link_data = [
@@ -94,20 +97,24 @@ class ProjectController extends Controller
 
         $validated = $request->validated();
 
-        // compress using service method
-        $compressed_image = $this->image->compress($request->file('logo'));
+        $validated['logo'] = $project->logo;
+        if($request->hasFile('logo')){
+            // compress using service method
+            $compressed_image = $this->image->compress($request->file('logo'));
 
-        // generate a name for logo
-        $name = time().$request->file('logo')->getClientOriginalExtension();
+            // generate a name for logo
+            $name = time().$request->file('logo')->getClientOriginalExtension();
 
-        //upload the logo
-        $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo', $project->logo);
+            //upload the logo
+            $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo', $project->logo);
 
-        if(!$filename){
-            return errorResponseJson('Logo upload failed!', 422);
+            if(!$filename){
+                return errorResponseJson('Logo upload failed!', 422);
+            }
+
+            $validated['logo'] = $filename;
         }
 
-        $validated['logo'] = $filename;
         $project->update($validated);
 
         return successResponseJson([
