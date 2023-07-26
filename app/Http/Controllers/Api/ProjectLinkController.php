@@ -91,7 +91,10 @@ class ProjectLinkController extends Controller
         if ($hasAlreadyFeedback) {
             return errorResponseJson('You cannot make two consecutive submissions within one hour, please try after one hour.', 400);
         }
-        return successResponseJson(['link' => new LinkResource($link)]);
+        return successResponseJson([
+            'link' => new LinkResource($link),
+            'project_owner' => $user->name
+        ]);
     }
 
     /**
