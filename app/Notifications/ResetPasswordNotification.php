@@ -49,8 +49,7 @@ class ResetPasswordNotification extends Notification
                     ->greeting("Hello $this->name!")
                     ->line("You requested to reset the password for your nps calculator account. Click the button below to proceed.")
                     ->action('Reset Password', $this->url)
-                    ->line('Thank you for using our application!')
-                    ->from('jubaer.riseuplabs@gmail.com', 'NPS Desk');
+                    ->line('Thank you for using our application!');
     }
 
     /**
