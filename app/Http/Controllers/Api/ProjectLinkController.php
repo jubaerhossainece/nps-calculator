@@ -68,19 +68,19 @@ class ProjectLinkController extends Controller
             ->first();
 
         if (!$link) {
-            return errorResponseJson('No link found.', 404);
+            return errorResponseJson('The link has been Expired.', 404);
         }
 
         $project = Project::find($link->project_id);
 
         if (!$project) {
-            return errorResponseJson('Project not found.', 404);
+            return errorResponseJson('The link has been Expired.', 404);
         }
 
         $user = User::find($project->user_id);
 
         if( !$user || !$link->status || !$link->project->user->status){
-            return errorResponseJson('Link is not available.', 400);
+            return errorResponseJson('The link has been Expired.', 400);
         }
 
         $device_id = $request->device_id ?? Str::random(15);
@@ -125,7 +125,7 @@ class ProjectLinkController extends Controller
         $link = ProjectLink::where('code', $request->code)->first();
 
         if (!$link) {
-            return errorResponseJson('No data found!', 404);
+            return errorResponseJson('The link has been Expired.', 404);
         }
 
         $device_id = $request->device_id ?? Str::random(15);
@@ -172,7 +172,7 @@ class ProjectLinkController extends Controller
         $link = ProjectLink::where('code', $code)->first();
 
         if (!$link) {
-            return errorResponseJson('No Link found!', 404);
+            return errorResponseJson('The link has been Expired.', 404);
         }
 
         $report_abuse_options = Setting::get_array_without_index(Setting::getReportAbuseOptionList());
@@ -193,7 +193,7 @@ class ProjectLinkController extends Controller
             'project_link_id' => $link->id,
             'project_id' => $link->project->id
         ]);
-// return $request;
+        
         $validated = $request->validate([
             'code' => ['required', 'string'],
             'report_abuse_option_id' => ['required'],
