@@ -29,7 +29,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('image')) {
             // get file extension
-            $name = time().$request->file('image')->getClientOriginalExtension();
+            $name = time().'.'.$request->file('image')->getClientOriginalExtension();
                 
             // compress file using service
             $compressed_image = $image->compress($request->file('image'));
