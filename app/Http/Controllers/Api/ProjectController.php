@@ -48,7 +48,7 @@ class ProjectController extends Controller
             $compressed_image = $this->image->compress($request->file('logo'));
 
             // generate a name for logo
-            $name = time().$request->file('logo')->getClientOriginalExtension();
+            $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
             $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo');
@@ -103,7 +103,7 @@ class ProjectController extends Controller
             $compressed_image = $this->image->compress($request->file('logo'));
 
             // generate a name for logo
-            $name = time().$request->file('logo')->getClientOriginalExtension();
+            $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
             $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo', $project->logo);
