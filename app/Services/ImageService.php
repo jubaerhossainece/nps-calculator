@@ -18,16 +18,16 @@ class ImageService
 
     public function compress($image, $compressed_width = 400)
     {
-        $image = Image::make($image);
+        $file = Image::make($image);
 
         // compress if image width is greater than 400px
-        if($image->width() > $compressed_width){
-            $image = $image->resize($compressed_width, null, function ($constraint) {
+        if($file->width() > $compressed_width){
+            $file = $file->resize($compressed_width, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
         }
 
-        return $image->stream();
+        return $file->stream();
     }
 
 
