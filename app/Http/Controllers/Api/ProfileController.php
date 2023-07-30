@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
@@ -29,7 +30,7 @@ class ProfileController extends Controller
 
         if ($request->hasFile('image')) {
             // get file extension
-            $name = time().'.'.$request->file('image')->getClientOriginalExtension();
+            $name = Str::random(20).time().'.'.$request->file('image')->getClientOriginalExtension();
 
             // upload file using service method 
             $request_image = $request->file('image');
