@@ -17,6 +17,7 @@ use App\Services\ProjectLinkService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -47,7 +48,7 @@ class ProjectController extends Controller
         if($request->hasFile('logo')){
 
             // generate a name for logo
-            $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
+            $name = Str::random(20).time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
             $request_image = $request->file('logo');
@@ -101,7 +102,7 @@ class ProjectController extends Controller
         if($request->hasFile('logo')){
 
             // generate a name for logo
-            $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
+            $name = Str::random(20).time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
             $request_image = $request->file('logo');
