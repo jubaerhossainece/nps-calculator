@@ -32,7 +32,7 @@ class ProfileController extends Controller
             $name = time().'.'.$request->file('image')->getClientOriginalExtension();
 
             // upload file using service method 
-            $filename = $image->upload($request->file('image'), $name, 'organization', $user->image);
+            $filename = $image->upload(file_get_contents($request->file('logo')), $name, 'organization', $user->image);
 
             if(!$filename){
                 return errorResponseJson('Image upload failed!', 422);

@@ -49,7 +49,7 @@ class ProjectController extends Controller
             $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
-            $filename = $this->image->upload($request->file('logo'), $name, 'upload/images/project-logo');
+            $filename = $this->image->upload(file_get_contents($request->file('logo')), $name, 'upload/images/project-logo');
 
             if(!$filename){
                 return errorResponseJson('Logo upload failed!', 422);
@@ -102,7 +102,7 @@ class ProjectController extends Controller
             $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
-            $filename = $this->image->upload($request->file('logo'), $name, 'upload/images/project-logo', $project->logo);
+            $filename = $this->image->upload(file_get_contents($request->file('logo')), $name, 'upload/images/project-logo', $project->logo);
 
             if(!$filename){
                 return errorResponseJson('Logo upload failed!', 422);
