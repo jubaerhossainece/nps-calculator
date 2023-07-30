@@ -16,6 +16,7 @@ use App\Services\ImageService;
 use App\Services\ProjectLinkService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -131,6 +132,14 @@ class ProjectController extends Controller
 
         if (!$project) {
             return errorResponseJson('Project not found', 404);
+        }
+
+        // delete previous image if exists
+        $image_path = 'upload/images/project-logo';
+        if ($project->logo) {
+            if (Storage::disk('public')->exists($image_path .'/'. $project->logo)) {
+                Storage::disk('public')->delete($image_path .'/'. $project->logo);
+            }
         }
 
         $project->delete();
