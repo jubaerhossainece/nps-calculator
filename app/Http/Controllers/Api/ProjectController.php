@@ -44,14 +44,12 @@ class ProjectController extends Controller
         $validated = $request->validated();
 
         if($request->hasFile('logo')){
-            // compress using service method
-            $compressed_image = $this->image->compress($request->file('logo'));
 
             // generate a name for logo
             $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
-            $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo');
+            $filename = $this->image->upload($request->file('logo'), $name, 'upload/images/project-logo');
 
             if(!$filename){
                 return errorResponseJson('Logo upload failed!', 422);
@@ -99,14 +97,12 @@ class ProjectController extends Controller
 
         $validated['logo'] = $project->logo;
         if($request->hasFile('logo')){
-            // compress using service method
-            $compressed_image = $this->image->compress($request->file('logo'));
 
             // generate a name for logo
             $name = time().'.'.$request->file('logo')->getClientOriginalExtension();
 
             //upload the logo
-            $filename = $this->image->upload($compressed_image, $name, 'upload/images/project-logo', $project->logo);
+            $filename = $this->image->upload($request->file('logo'), $name, 'upload/images/project-logo', $project->logo);
 
             if(!$filename){
                 return errorResponseJson('Logo upload failed!', 422);
