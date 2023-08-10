@@ -72,7 +72,7 @@
                 autoWidth: true,
                 destroy: true,
                 searching: false,
-                // order: [4, "desc"],
+                stateSave:true,
 
                 ajax: {
                     url: "/abuse-reports-records/all/" + id

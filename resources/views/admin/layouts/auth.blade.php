@@ -78,7 +78,9 @@
 
 <body class="authentication-page">
 <div class="login-header">
+    <a href="https://npsdesk.com" target="_blank">
     <img src="{{asset('assets/images/logo.nps.png')}}" alt="">
+    </a>
 </div>
 <div class="account-pages my-5">
     <div class="container">
@@ -86,7 +88,7 @@
             <div class="col-md-8 col-lg-6 col-xl-5">
                 <div class="card mt-4">
                     <div class="card-body p-4 mt-2">
-
+                        
                         @yield('content')
                     </div>
                     <!-- end card-body -->
