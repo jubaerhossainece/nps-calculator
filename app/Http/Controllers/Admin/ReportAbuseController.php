@@ -36,6 +36,7 @@ class ReportAbuseController extends Controller
 
         $reports = ProjectLink::with('project:id,name,user_id', 'project.user:id,name,status,email')
         ->select('id','project_id','code','status')
+        ->withCount('reportAbuse')
         ->whereIntegerInRaw('id',$projectLinkIds)->get();
 
         if ($type == 'inactive') {

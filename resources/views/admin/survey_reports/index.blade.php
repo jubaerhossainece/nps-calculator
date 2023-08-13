@@ -70,6 +70,7 @@
                 serverSide: true,
                 autoWidth: true,
                 destroy: true,
+                stateSave: true,
         		// searching: false,
                 // order: [4, "desc"],
 
@@ -88,7 +89,8 @@
                         name: 'user_name',
                         title: 'User',
                         orderable: false
-                    },{
+                    },
+                    {
                         data: 'user_email',
                         name: 'user_email',
                         title: 'User Email',
@@ -109,6 +111,12 @@
                     {
                         data: 'code',
                         title: 'Code',
+                        searchable: false,
+                        orderable: false
+                    },
+                    {
+                        data: 'report_abuse_count',
+                        title: 'Report Count',
                         searchable: false,
                         orderable: false
                     },
