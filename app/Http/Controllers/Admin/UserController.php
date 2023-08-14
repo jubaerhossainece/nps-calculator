@@ -26,7 +26,7 @@ class UserController extends Controller
             $users = $users->where('status', true);
         }
         
-        return DataTables::of($users)
+        return DataTables::eloquent($users)
         ->addColumn('projects', function($user){
             return $user->projects_count ?? 0;
         })
@@ -42,7 +42,7 @@ class UserController extends Controller
         })
         ->rawColumns(['status', 'action'])
         ->addIndexColumn()
-        ->make(true);
+        ->toJson();
     }
 
     public function toggleStatus($id){

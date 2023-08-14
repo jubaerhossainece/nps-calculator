@@ -37,7 +37,7 @@
 					</div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table table-hover table-bordered" id="project-table">
+                            <table class="table table-hover table-bordered" id="users-table">
                                 <thead>
                                 </thead>
                             </table>
@@ -58,14 +58,13 @@
 <script>
 
 	function getData(type){
-		
-		$('#project-table').DataTable({
+
+		let table = $('#users-table').DataTable({
 		processing: true,
 		serverSide: true,
 		autoWidth: true,
 		destroy: true,
-		// searching: false,
-		// order: [4, "desc"],
+		stateSave: true,
 		
 		ajax: {
 			url : "/users/list/"+type
@@ -81,14 +80,40 @@
 				{data: 'action', title:'Action',orderable: false},
 			]
 		});
+
+		// check previous type and draw datatable accordingly
+		let prev_type = localStorage.getItem("prev_type");
+		if(prev_type !== null){
+			if(prev_type != type){
+				// Clear the saveState
+				table.state.clear();
+
+				// Redraw the table
+				table.draw();
+			}
+		}
+		localStorage.setItem('prev_type', type);
+
+		// redraw the datatable if last page is greater than current page or changes route		
+		table.on('draw.dt', function () {
+			if(table.page.info().page+1 > table.page.info().pages){
+				// Clear the saveState
+				table.state.clear();
+
+				// Redraw the table
+				table.page(table.page.info().pages - 1).draw(false)
+			}
+    	});
 	}
 
+	// call at the beginning
 	$(document).ready(function(){
         
 		getData("all");
 
 	});
 
+	// call when user status changes
 	function changeStatus(id){
 
 		$.ajax({
@@ -97,7 +122,6 @@
 			headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			success: function(data){
 				let type = $(".nav-link.active").attr('id');
-				
 				getData(type);
 			}
 		});

@@ -65,14 +65,12 @@
     <script>
         function getData(type) {
 
-            $('#project-report-table').DataTable({
+            let table = $('#project-report-table').DataTable({
                 processing: true,
                 serverSide: true,
                 autoWidth: true,
                 destroy: true,
                 stateSave: true,
-        		// searching: false,
-                // order: [4, "desc"],
 
                 ajax: {
                     url: "/abuse-reports/list/" + type
@@ -133,6 +131,30 @@
                         orderable: false
                     },
                 ]
+            });
+
+            // check previous type and draw datatable accordingly
+            let prev_type = localStorage.getItem("prev_type");
+            if(prev_type){
+                if(prev_type != type){
+                    // Clear the saveState
+                    table.state.clear();
+
+                    // Redraw the table
+                    table.draw();
+                }
+            }
+            localStorage.setItem('prev_type', type);
+
+            // redraw the datatable if last page is greater than current page or changes route		
+            table.on('draw.dt', function () {
+                if(table.page.info().page+1 > table.page.info().pages){
+                    // Clear the saveState
+                    table.state.clear();
+
+                    // Redraw the table
+                    table.page(table.page.info().pages - 1).draw(false)
+                }
             });
         }
 
